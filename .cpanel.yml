@@ -1,5 +1,16 @@
+---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/c2792933c/public_html/katuiscia
-    - /bin/mkdir -p $DEPLOYPATH
-    - /bin/cp -R dist/* $DEPLOYPATH
+    - export DEPLOYPATH=/home/dcweb5/katuiscia.com/
+    - /bin/cp -R public/* $DEPLOYPATH
+    - /bin/cp -R app $DEPLOYPATH/..
+    - /bin/cp -R bootstrap $DEPLOYPATH/..
+    - /bin/cp -R config $DEPLOYPATH/..
+    - /bin/cp -R database $DEPLOYPATH/..
+    - /bin/cp -R resources $DEPLOYPATH/..
+    - /bin/cp -R routes $DEPLOYPATH/..
+    - /bin/cp -R storage $DEPLOYPATH/..
+    - /bin/cp -R vendor $DEPLOYPATH/..
+    - /bin/cp artisan $DEPLOYPATH/..
+    - /bin/cp composer.json $DEPLOYPATH/..
+    - /bin/cp composer.lock $DEPLOYPATH/..
