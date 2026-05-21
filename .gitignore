@@ -22,13 +22,11 @@
 /storage/pail
 /storage/framework/views/*
 /storage/framework/cache/*
-/storage/app/public/*
 /vendor
 /dist
 _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
-/database/database.sqlite
 /bootstrap/cache/*
 
