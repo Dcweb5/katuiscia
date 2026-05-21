@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Utilisateurs — KATUISCIA Admin</title>
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin-guard.js"></script>
+</head>
+<body class="dashboard-layout admin-dashboard">
+  {{> admin-sidebar }}
+
+  <main class="dashboard-main">
+    <header class="dashboard-header">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="mobile-toggle" id="mobileToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div class="header-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Rechercher un client..."></div>
+      </div>
+      <div class="header-actions">
+        <a href="admin-recompenses" class="btn-primary" style="text-decoration:none;">⚙ Programme Fidélité</a>
+        <div style="width:36px; height:36px; border-radius:50%; background:var(--color-dark); color:var(--color-white); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:bold;">AD</div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <h1 class="page-title">Gestion des Clients</h1>
+      <p class="page-subtitle">Consultez et gérez les comptes clients, points de fidélité et historiques d'achat.</p>
+
+      <!-- Stats -->
+      <div class="stats-grid" style="grid-template-columns:repeat(4, 1fr);">
+        <div class="card stat-card"><span class="stat-title">Total Clients</span><span class="stat-value">1 247</span><span class="stat-change positive">+89 ce mois</span></div>
+        <div class="card stat-card"><span class="stat-title">Clients Actifs</span><span class="stat-value">842</span><span class="stat-change" style="color:var(--color-text-muted);">Achat &lt; 90 jours</span></div>
+        <div class="card stat-card"><span class="stat-title">Valeur Moyenne</span><span class="stat-value">142 €</span><span class="stat-change positive">+5 € vs mois dernier</span></div>
+        <div class="card stat-card"><span class="stat-title">Cercle d'Or</span><span class="stat-value">24</span><span class="stat-change" style="color:var(--color-warm);">👑 Top clients</span></div>
+      </div>
+
+      <!-- Filtres -->
+      <div style="display:flex; gap:var(--space-md); align-items:center; margin-bottom:var(--space-lg); flex-wrap:wrap;">
+        <select class="admin-input" style="width:auto; padding:8px 16px;">
+          <option>Tous les paliers</option>
+          <option>🌱 Découverte</option>
+          <option>🌿 Initié(e)</option>
+          <option>✨ Ambassadeur</option>
+          <option>👑 Cercle d'Or</option>
+        </select>
+        <select class="admin-input" style="width:auto; padding:8px 16px;">
+          <option>Trier par: Plus récent</option>
+          <option>Points décroissants</option>
+          <option>Dépenses totales</option>
+          <option>Nom A-Z</option>
+        </select>
+      </div>
+
+      <!-- Tableau utilisateurs -->
+      <div class="card" style="padding:0; overflow:hidden;">
+        <table class="admin-table">
+          <thead><tr><th>Client</th><th>Email</th><th>Inscrit le</th><th>Commandes</th><th>Dépensé</th><th>Points</th><th>Palier</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div style="display:flex; align-items:center; gap:10px;"><div style="width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg, var(--color-warm), var(--color-peach)); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:white;">SD</div><strong>Sophie Dubois</strong></div></td>
+              <td style="color:var(--color-text-muted);">sophie.d@email.com</td>
+              <td style="color:var(--color-text-muted);">15 Jan 2025</td>
+              <td>18</td>
+              <td><strong>2 450 €</strong></td>
+              <td><strong>2 450</strong></td>
+              <td><span style="font-size:14px;">✨</span> Ambassadeur</td>
+              <td><div style="display:flex; gap:6px;">
+                <button class="action-btn" title="Voir profil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                <button class="action-btn" title="Ajuster points"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+              </div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex; align-items:center; gap:10px;"><div style="width:36px; height:36px; border-radius:50%; background:var(--color-warm); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:white;">AK</div><strong>Amadou Keita</strong></div></td>
+              <td style="color:var(--color-text-muted);">amadou.k@email.com</td>
+              <td style="color:var(--color-text-muted);">3 Mars 2025</td>
+              <td>42</td>
+              <td><strong>5 880 €</strong></td>
+              <td><strong>5 880</strong></td>
+              <td><span style="font-size:14px;">👑</span> Cercle d'Or</td>
+              <td><div style="display:flex; gap:6px;">
+                <button class="action-btn" title="Voir profil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                <button class="action-btn" title="Ajuster points"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+              </div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex; align-items:center; gap:10px;"><div style="width:36px; height:36px; border-radius:50%; background:var(--color-mint); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;">MR</div><strong>Marc Renaud</strong></div></td>
+              <td style="color:var(--color-text-muted);">marc.r@email.com</td>
+              <td style="color:var(--color-text-muted);">10 Avr 2026</td>
+              <td>3</td>
+              <td><strong>380 €</strong></td>
+              <td><strong>380</strong></td>
+              <td><span style="font-size:14px;">🌱</span> Découverte</td>
+              <td><div style="display:flex; gap:6px;">
+                <button class="action-btn" title="Voir profil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                <button class="action-btn" title="Ajuster points"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+              </div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex; align-items:center; gap:10px;"><div style="width:36px; height:36px; border-radius:50%; background:var(--color-gray-medium); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;">JP</div><strong>Julie Petit</strong></div></td>
+              <td style="color:var(--color-text-muted);">julie.p@email.com</td>
+              <td style="color:var(--color-text-muted);">28 Avr 2026</td>
+              <td>1</td>
+              <td><strong>85 €</strong></td>
+              <td><strong>85</strong></td>
+              <td><span style="font-size:14px;">🌱</span> Découverte</td>
+              <td><div style="display:flex; gap:6px;">
+                <button class="action-btn" title="Voir profil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                <button class="action-btn" title="Ajuster points"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+              </div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('mobileToggle')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+    document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'admin-utilisateurs') l.classList.add('active'); });
+  </script>
+  <script src="/js/account.js"></script>
+</body>
+</html>

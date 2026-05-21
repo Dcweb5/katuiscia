@@ -1,0 +1,96 @@
+@extends('layouts.admin')
+
+@section('title', 'Gestion des Récompenses')
+
+@section('content')
+<main class="dashboard-main">
+    <header class="dashboard-header">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="mobile-toggle" id="mobileToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h2 style="font-family:var(--font-heading); font-size:var(--text-lg);">Système de Fidélité</h2>
+      </div>
+      <div class="header-actions">
+        <button class="btn-primary">Enregistrer les Paramètres</button>
+        <div style="width:36px; height:36px; border-radius:50%; background:var(--color-dark); color:var(--color-white); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:bold;">AD</div>
+      </div>
+    </header>
+    <div class="dashboard-content">
+      <h1 class="page-title">Programme de Récompenses</h1>
+      <p class="page-subtitle" style="margin-bottom:var(--space-2xl);">Configurez le système de points de fidélité et les paliers de récompenses.</p>
+
+      <div class="stats-grid" style="grid-template-columns:repeat(3, 1fr); margin-bottom:var(--space-2xl);">
+        <div class="card stat-card"><span class="stat-title">Membres Actifs</span><span class="stat-value">1 247</span><span class="stat-change positive">+89 ce mois</span></div>
+        <div class="card stat-card"><span class="stat-title">Points Distribués</span><span class="stat-value">184 500</span><span class="stat-change" style="color:var(--color-text-muted);">Ce mois</span></div>
+        <div class="card stat-card"><span class="stat-title">Points Échangés</span><span class="stat-value">42 300</span><span class="stat-change" style="color:var(--color-text-muted);">23% taux d'échange</span></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-xl);">
+        <!-- Config -->
+        <div class="card">
+          <h3 style="font-family:var(--font-heading); font-size:var(--text-xl); margin-bottom:var(--space-lg);">Paramètres d'Accumulation</h3>
+          <div class="admin-form-group">
+            <label class="admin-label">Points par euro dépensé</label>
+            <input type="number" class="admin-input" value="1">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Bonus inscription (points offerts)</label>
+            <input type="number" class="admin-input" value="100">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Bonus parrainage</label>
+            <input type="number" class="admin-input" value="250">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Bonus avis vérifié</label>
+            <input type="number" class="admin-input" value="50">
+          </div>
+        </div>
+
+        <!-- Tiers -->
+        <div class="card">
+          <h3 style="font-family:var(--font-heading); font-size:var(--text-xl); margin-bottom:var(--space-lg);">Paliers de Fidélité</h3>
+          <ul class="admin-list">
+            <li>
+              <div class="admin-list-icon" style="background:rgba(196,150,122,0.1);"><span style="font-size:16px;">🌱</span></div>
+              <div class="admin-list-content">
+                <div class="admin-list-title">Découverte</div>
+                <div class="admin-list-subtitle">0 – 499 points • Accès basique</div>
+              </div>
+            </li>
+            <li>
+              <div class="admin-list-icon" style="background:rgba(196,150,122,0.15);"><span style="font-size:16px;">🌿</span></div>
+              <div class="admin-list-content">
+                <div class="admin-list-title">Initié(e)</div>
+                <div class="admin-list-subtitle">500 – 1499 points • -5% permanent</div>
+              </div>
+            </li>
+            <li>
+              <div class="admin-list-icon" style="background:rgba(196,150,122,0.2);"><span style="font-size:16px;">✨</span></div>
+              <div class="admin-list-content">
+                <div class="admin-list-title">Ambassadeur</div>
+                <div class="admin-list-subtitle">1500 – 4999 points • -10% + livraison offerte</div>
+              </div>
+            </li>
+            <li>
+              <div class="admin-list-icon" style="background:rgba(196,150,122,0.3);"><span style="font-size:16px;">👑</span></div>
+              <div class="admin-list-content">
+                <div class="admin-list-title">Cercle d'Or</div>
+                <div class="admin-list-subtitle">5000+ points • -15% + accès exclusif + cadeaux</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  
+@endsection
+
+@section('scripts')
+<script>
+    document.getElementById('mobileToggle')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+    // No specific sidebar link for rewards, keep under Utilisateurs
+  </script>
+<script src="/js/account.js"></script>
+@endsection

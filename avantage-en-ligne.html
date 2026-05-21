@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avantage en Ligne — KATUISCIA | Le Club</title>
+  <meta name="description"
+    content="Entrez dans un monde de privilèges avec le Club KATUISCIA. Découvrez notre programme de fidélité 100% digital.">
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/about.css">
+  <link rel="stylesheet" href="css/club.css">
+</head>
+
+<body class="bg-cream text-dark font-body antialiased">
+
+  {{> header }}
+
+  <main id="main-content">
+
+    <section class="club-hero">
+      <div class="club-hero__bg"></div>
+      <div class="club-hero__content reveal-k">
+        <h1 class="club-hero__title">Le Club KATUISCIA</h1>
+        <p class="club-hero__desc">Entrez dans un monde de privilèges exclusifs. En tant que marque 100% digitale, nous
+          récompensons votre fidélité en ligne avec des avantages uniques et des cadeaux en format vente.</p>
+
+        <div class="points-highlight">
+          <strong>1€ dépensé = 10 points fidélité</strong>
+        </div>
+        <br>
+        <button class="btn btn--warm"
+          style="border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent);"><span>Je
+            rejoins le Club</span></button>
+      </div>
+    </section>
+
+    <section class="benefits-section">
+      <div class="benefits-grid">
+        <div class="benefit-card reveal-k">
+          <div class="benefit-icon">🎁</div>
+          <h3 class="benefit-title">Cadeaux Format Vente</h3>
+          <p class="benefit-text">Échangez vos points contre vos soins favoris en taille réelle directement depuis notre
+            catalogue de récompenses.</p>
+        </div>
+        <div class="benefit-card reveal-k delay-1">
+          <div class="benefit-icon">🚚</div>
+          <h3 class="benefit-title">Livraison Offerte</h3>
+          <p class="benefit-text">Profitez de la livraison offerte sur toutes vos commandes, sans minimum d'achat, dès
+            le palier Privilège.</p>
+        </div>
+        <div class="benefit-card reveal-k delay-2">
+          <div class="benefit-icon">✨</div>
+          <h3 class="benefit-title">Bonus de Bienvenue</h3>
+          <p class="benefit-text">Le Club KATUISCIA vous gâte dès votre inscription ! Recevez 200 points bonus
+            immédiatement après la création de votre compte.</p>
+        </div>
+        <div class="benefit-card reveal-k delay-3">
+          <div class="benefit-icon">📅</div>
+          <h3 class="benefit-title">Surprise d'Anniversaire</h3>
+          <p class="benefit-text">Chaque année, recevez un cadeau exclusif et des points doublés sur votre commande
+            d'anniversaire.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="tiers-section">
+      <div class="tiers-header reveal-k">
+        <h2>Vos Paliers de Fidélité</h2>
+        <p style="color: var(--color-text-light);">Cumulez des points et débloquez des avantages toujours plus généreux.
+        </p>
+      </div>
+
+      <div class="tiers-grid">
+        <div class="tier-card reveal-k delay-1">
+          <h3 class="tier-title">Essentiel</h3>
+          <span class="tier-points">Dès l'inscription</span>
+          <ul class="tier-list">
+            <li>200 points offerts à l'inscription</li>
+            <li>3 échantillons au choix à chaque commande</li>
+            <li>Accès au diagnostic IA avancé</li>
+            <li>Cadeau d'anniversaire</li>
+          </ul>
+        </div>
+
+        <div class="tier-card tier-card--premium reveal-k delay-2">
+          <h3 class="tier-title">Privilège</h3>
+          <span class="tier-points">Dès 1 500 points</span>
+          <ul class="tier-list">
+            <li>Tous les avantages Essentiel</li>
+            <li>Livraison offerte sans minimum d'achat</li>
+            <li>Accès en avant-première aux nouveautés</li>
+            <li>Invitation aux masterclass digitales</li>
+            <li>1 produit format vente offert</li>
+          </ul>
+          <button class="btn btn--sm" style="margin-top: var(--space-xl); width: 100%;"><span>Découvrir</span></button>
+        </div>
+
+        <div class="tier-card reveal-k delay-3">
+          <h3 class="tier-title">Prestige</h3>
+          <span class="tier-points">Dès 4 500 points</span>
+          <ul class="tier-list">
+            <li>Tous les avantages Privilège</li>
+            <li>Service client prioritaire dédié</li>
+            <li>Cadeaux exclusifs non vendus sur le site</li>
+            <li>Consultation beauté vidéo avec nos experts</li>
+            <li>3 produits format vente offerts au choix</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  {{> footer }}
+  <script type="module" src="/js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Votre Panier — KATUISCIA</title>
+  <meta name="description" content="Consultez votre panier KATUISCIA et finalisez votre commande.">
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/panier.css">
+</head>
+<body class="bg-cream text-dark font-body antialiased">
+
+  {{> header }}
+
+  <main id="main-content" class="cart-page">
+    <div class="container">
+      <div class="cart-header">
+        <h1 class="cart-header__title">Votre Sélection Exclusive</h1>
+        <p class="cart-header__subtitle">Prenez un moment pour revoir vos articles avant de finaliser votre commande.</p>
+      </div>
+
+      <div class="cart-layout">
+        <!-- LEFT COL: Items -->
+        <div class="cart-items">
+          
+          <!-- Item 1 -->
+          <div class="cart-item">
+            <div class="cart-item__image-wrap">
+              <a href="produit" style="display:block; width:100%; height:100%;">
+                <img src="assets/images/product-1a.png" alt="Sérum Éclat Lumière" class="cart-item__image">
+              </a>
+            </div>
+            <div class="cart-item__details">
+              <div class="cart-item__top">
+                <h3 class="cart-item__name"><a href="produit" style="text-decoration:none; color:inherit;">Sérum Éclat Lumière</a></h3>
+                <span class="cart-item__price">185€</span>
+              </div>
+              <p class="cart-item__variant">30ML / 1.0 FL OZ</p>
+              <div class="cart-item__bottom">
+                <div class="cart-quantity">
+                  <button class="cart-quantity__btn" aria-label="Diminuer la quantité"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg></button>
+                  <span class="cart-quantity__val">1</span>
+                  <button class="cart-quantity__btn" aria-label="Augmenter la quantité"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+                </div>
+                <button class="cart-item__remove">RETIRER</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="cart-item">
+            <div class="cart-item__image-wrap" style="background:#e8d1cc;">
+              <a href="produit" style="display:block; width:100%; height:100%;">
+                <img src="assets/images/product-3a.png" alt="Masque Capillaire Intense" class="cart-item__image">
+              </a>
+            </div>
+            <div class="cart-item__details">
+              <div class="cart-item__top">
+                <h3 class="cart-item__name"><a href="produit" style="text-decoration:none; color:inherit;">Masque Capillaire Intense</a></h3>
+                <span class="cart-item__price">45€</span>
+              </div>
+              <p class="cart-item__variant">250ML / 8.5 FL OZ</p>
+              <div class="cart-item__bottom">
+                <div class="cart-quantity">
+                  <button class="cart-quantity__btn" aria-label="Diminuer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg></button>
+                  <span class="cart-quantity__val">2</span>
+                  <button class="cart-quantity__btn" aria-label="Augmenter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+                </div>
+                <button class="cart-item__remove">RETIRER</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="cart-item">
+            <div class="cart-item__image-wrap">
+              <a href="produit" style="display:block; width:100%; height:100%;">
+                <img src="assets/images/product-5a.png" alt="Huile Nourrissante Botanique" class="cart-item__image">
+              </a>
+            </div>
+            <div class="cart-item__details">
+              <div class="cart-item__top">
+                <h3 class="cart-item__name"><a href="produit" style="text-decoration:none; color:inherit;">Huile Nourrissante Botanique</a></h3>
+                <span class="cart-item__price">85€</span>
+              </div>
+              <p class="cart-item__variant">100ML / 3.4 FL OZ</p>
+              <div class="cart-item__bottom">
+                <div class="cart-quantity">
+                  <button class="cart-quantity__btn" aria-label="Diminuer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg></button>
+                  <span class="cart-quantity__val">1</span>
+                  <button class="cart-quantity__btn" aria-label="Augmenter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+                </div>
+                <button class="cart-item__remove">RETIRER</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COL: Summary -->
+        <div class="cart-sidebar">
+          <div class="cart-summary">
+            <h2 class="cart-summary__title">Récapitulatif</h2>
+            
+            <div class="cart-summary__row">
+              <span class="cart-summary__label">Sous-total (4 articles)</span>
+              <span class="cart-summary__val">360,00€</span>
+            </div>
+            
+            <div class="cart-summary__row">
+              <span class="cart-summary__label">Livraison</span>
+              <span class="cart-summary__val cart-summary__val--accent">OFFERTE</span>
+            </div>
+            
+            <div class="cart-summary__row cart-summary__row--small">
+              <span class="cart-summary__label">Taxes</span>
+              <span class="cart-summary__val">Calculées à l'étape suivante</span>
+            </div>
+
+            <div class="cart-summary__total">
+              <span class="cart-summary__total-label">Total Estimé</span>
+              <span class="cart-summary__total-val">360,00€</span>
+            </div>
+
+            <a href="paiement" class="cart-summary__checkout-btn">FINALISER LA COMMANDE</a>
+
+            <div class="cart-summary__secure">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span>TRANSACTION SÉCURISÉE ET CRYPTÉE</span>
+            </div>
+          </div>
+
+          <!-- Cross sell -->
+          <div class="cart-cross-sell">
+            <h4 class="cart-cross-sell__title">COMPLÉTEZ VOTRE RITUEL</h4>
+            <a href="produit" class="cart-cross-sell__card" style="text-decoration:none; color:inherit;">
+              <img src="assets/images/product-4a.png" alt="Crème Yeux Cachemire" class="cart-cross-sell__img">
+              <h5 class="cart-cross-sell__name">Crème Yeux Cachemire</h5>
+              <span class="cart-cross-sell__price">115€</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  {{> footer }}
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>

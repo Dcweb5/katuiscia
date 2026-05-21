@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paiement — KATUISCIA</title>
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/paiement.css">
+</head>
+<body class="bg-cream text-dark font-body antialiased">
+
+  {{> header }}
+
+  <main class="checkout-page container">
+    <div class="checkout-layout">
+      
+      <!-- LEFT COL: Form -->
+      <div class="checkout-form">
+        
+        <section class="checkout-form-section">
+          <h2 class="checkout-form-title">Contact</h2>
+          <div class="form-group">
+            <input type="email" class="form-input" placeholder="Adresse e-mail" required>
+          </div>
+        </section>
+
+        <section class="checkout-form-section">
+          <h2 class="checkout-form-title">Livraison</h2>
+          <div class="form-group" style="margin-bottom: var(--space-md);">
+            <input type="text" class="form-input" placeholder="Pays/Région" value="France" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <input type="text" class="form-input" placeholder="Prénom" required>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-input" placeholder="Nom" required>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom: var(--space-md);">
+            <input type="text" class="form-input" placeholder="Adresse" required>
+          </div>
+          <div class="form-group" style="margin-bottom: var(--space-md);">
+            <input type="text" class="form-input" placeholder="Bâtiment, appartement, etc. (facultatif)">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <input type="text" class="form-input" placeholder="Code postal" required>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-input" placeholder="Ville" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="tel" class="form-input" placeholder="Téléphone" required>
+          </div>
+        </section>
+
+        <section class="checkout-form-section">
+          <h2 class="checkout-form-title">Paiement</h2>
+          <p class="text-muted" style="margin-bottom: var(--space-md); font-size: var(--text-sm);">Toutes les transactions sont sécurisées et chiffrées.</p>
+
+          <div class="payment-methods">
+            
+            <!-- Carte Bancaire -->
+            <div class="payment-method">
+              <label class="payment-method__header">
+                <input type="radio" name="payment" value="card" checked>
+                <span class="payment-method__title">Carte bancaire</span>
+              </label>
+              <div class="payment-method__content" style="display: block;">
+                <div class="form-group" style="margin-bottom: var(--space-md);">
+                  <input type="text" class="form-input" placeholder="Numéro de carte">
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <input type="text" class="form-input" placeholder="Date d'expiration (MM/AA)">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-input" placeholder="Code de sécurité">
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top: var(--space-md);">
+                  <input type="text" class="form-input" placeholder="Nom sur la carte">
+                </div>
+              </div>
+            </div>
+
+            <!-- Paiement à la livraison -->
+            <div class="payment-method">
+              <label class="payment-method__header">
+                <input type="radio" name="payment" value="cod">
+                <span class="payment-method__title">Paiement à la livraison</span>
+              </label>
+              <div class="payment-method__content">
+                <p class="payment-method__desc">Réglez votre commande en espèces ou par carte bancaire directement auprès du livreur au moment de la réception de votre colis.</p>
+              </div>
+            </div>
+
+          </div>
+
+          <button class="btn btn--filled checkout-submit">
+            <span>Payer maintenant</span>
+          </button>
+        </section>
+
+      </div>
+
+      <!-- RIGHT COL: Summary -->
+      <aside class="checkout-summary">
+        
+        <div class="checkout-items">
+          <!-- Item 1 -->
+          <div class="checkout-item">
+            <div class="checkout-item__img-wrap">
+              <img src="assets/images/product-1a.png" alt="Sérum Éclat Lumière">
+              <span class="checkout-item__qty">1</span>
+            </div>
+            <div class="checkout-item__info">
+              <div class="checkout-item__name">Sérum Éclat Lumière</div>
+              <div class="checkout-item__variant">30ML / 1.0 FL OZ</div>
+            </div>
+            <div class="checkout-item__price">185,00€</div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="checkout-item">
+            <div class="checkout-item__img-wrap" style="background: #e8d1cc;">
+              <img src="assets/images/product-3a.png" alt="Rouge à Lèvres Mat Velours">
+              <span class="checkout-item__qty">2</span>
+            </div>
+            <div class="checkout-item__info">
+              <div class="checkout-item__name">Rouge à Lèvres Mat Velours</div>
+              <div class="checkout-item__variant">ÉTHÉRÉ POURPRE</div>
+            </div>
+            <div class="checkout-item__price">90,00€</div>
+          </div>
+          
+          <!-- Item 3 -->
+          <div class="checkout-item">
+            <div class="checkout-item__img-wrap">
+              <img src="assets/images/product-5a.png" alt="Baume Nettoyant Botanique">
+              <span class="checkout-item__qty">1</span>
+            </div>
+            <div class="checkout-item__info">
+              <div class="checkout-item__name">Baume Nettoyant Botanique</div>
+              <div class="checkout-item__variant">100G / 3.5 OZ</div>
+            </div>
+            <div class="checkout-item__price">85,00€</div>
+          </div>
+        </div>
+
+        <!-- Code Promo -->
+        <div style="padding: var(--space-lg) 0; border-top: 1px solid var(--color-border);">
+          <label style="font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: var(--space-sm); color: var(--color-text-muted);">Code promo</label>
+          <div class="flex gap-2">
+            <input type="text" class="input input-bordered w-full bg-white/60 focus:bg-white flex-1" id="promo-input" placeholder="Entrez votre code">
+            <button type="button" class="btn-katuiscia-filled px-6" id="promo-btn">Appliquer</button>
+          </div>
+          <div id="promo-success" style="display:none; align-items:center; gap:6px; margin-top:var(--space-sm); padding:8px 12px; background:#E3F2E9; border-radius:var(--radius-sm); font-size:var(--text-xs); color:#2E6545;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
+            Code appliqué avec succès !
+          </div>
+          <div id="promo-error" style="display:none; align-items:center; gap:6px; margin-top:var(--space-sm); padding:8px 12px; background:#FDECEC; border-radius:var(--radius-sm); font-size:var(--text-xs); color:#C53030;">
+            Code invalide ou expiré.
+          </div>
+        </div>
+
+        <div class="checkout-totals">
+          <div class="checkout-total-row">
+            <span>Sous-total</span>
+            <span>360,00€</span>
+          </div>
+          <div class="checkout-total-row" id="promo-discount" style="display:none; color:#2E6545;">
+            <span>Réduction</span>
+            <span>-36,00€</span>
+          </div>
+          <div class="checkout-total-row">
+            <span>Expédition</span>
+            <span>Gratuit</span>
+          </div>
+          <div class="checkout-total-row final">
+            <span>Total</span>
+            <span id="checkout-total">360,00€</span>
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+  </main>
+
+  <script>
+    // Payment method toggle
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('input[name="payment"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          document.querySelectorAll('.payment-method__content').forEach(c => c.style.display = 'none');
+          const content = e.target.closest('.payment-method').querySelector('.payment-method__content');
+          if(content) content.style.display = 'block';
+        });
+      });
+
+      // Promo code
+      document.getElementById('promo-btn').addEventListener('click', () => {
+        const code = document.getElementById('promo-input').value.trim().toUpperCase();
+        const success = document.getElementById('promo-success');
+        const error = document.getElementById('promo-error');
+        const discount = document.getElementById('promo-discount');
+        
+        if(code.length > 0) {
+          success.style.display = 'flex';
+          error.style.display = 'none';
+          discount.style.display = 'flex';
+          document.getElementById('checkout-total').textContent = '324,00€';
+        } else {
+          error.style.display = 'flex';
+          success.style.display = 'none';
+        }
+      });
+    });
+  </script>
+
+  {{> footer }}
+</body>
+</html>

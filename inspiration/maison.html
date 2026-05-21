@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maison — KATUISCIA | Histoire & Origine</title>
+  <meta name="description" content="Découvrez l'histoire de Dolly Batchawa, fondatrice et PDG de KATUISCIA. Une marque née d'une vision, d'une ambition et d'un héritage en construction.">
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/about.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Aller au contenu principal</a>
+
+  <header class="header" id="header">
+    <div class="header__inner">
+      <div class="header__top">
+        <div class="header__search">
+          <input type="text" placeholder="Rechercher" aria-label="Rechercher">
+          <button aria-label="Lancer la recherche">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </button>
+        </div>
+        <div class="header__logo">
+          <a href="index.html">
+            <img src="assets/images/K LOGO.png" alt="KATUISCIA" class="header__logo-img desktop-logo">
+            <img src="assets/images/K%20ICONE.png" alt="KATUISCIA" class="header__logo-img mobile-logo">
+          </a>
+        </div>
+        <div class="header__actions">
+          <a href="connexion.html" class="header__action-btn" aria-label="Mon compte"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
+          <button class="header__action-btn" aria-label="Messages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
+          <a href="panier.html" class="header__action-btn" aria-label="Panier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="header__cart-count">0</span></a>
+          <button class="header__hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+      </div>
+      <div class="header__bottom">
+        <nav class="header__nav-group header__nav-group--left" aria-label="Navigation gauche">
+          <a href="boutique.html" class="header__nav-link">SOINS</a>
+          <a href="maison.html" class="header__nav-link">MAISON</a>
+          <div class="header__dropdown">
+            <a href="#" class="header__nav-link">CONSEILS</a>
+            <div class="header__dropdown-content">
+              <a href="blog.html">Blog</a>
+              <a href="diagnostic.html">Diagnostic</a>
+            </div>
+          </div>
+          <a href="contact.html" class="header__nav-link">CONTACT</a>
+        </nav>
+        <nav class="header__nav-group header__nav-group--right" aria-label="Navigation droite">
+          <div class="header__dropdown">
+            <a href="#" class="header__nav-link">SERVICES &amp; BOUTIQUES</a>
+            <div class="header__dropdown-content">
+              <a href="formation.html">Formation</a>
+              <a href="grossiste.html">Devenir Grossiste</a>
+              <a href="avantage-en-ligne.html">Avantage en ligne</a>
+              <a href="contact.html">Où nous trouver ?</a>
+            </div>
+          </div>
+          <div class="header__dropdown">
+            <a href="#" class="header__nav-link">NOS VALEURS</a>
+            <div class="header__dropdown-content header__dropdown-content--mega">
+              <span class="dropdown-heading">Nos Engagements</span>
+              <a href="valeurs-beaute-responsable.html">À propos de la beauté responsable</a>
+              <a href="valeurs-emballage-durable.html">À propos de l'emballage durable</a>
+              <a href="valeurs-personne-biodiversite.html">À propos de la personne &amp; la biodiversité</a>
+              <div class="dropdown-divider"></div>
+              <span class="dropdown-heading">Notre Vision</span>
+              <a href="maison.html">Un avenir plus beau</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <div class="header__search" style="display: flex; margin-bottom: var(--space-xl);">
+      <input type="text" placeholder="Rechercher" aria-label="Rechercher">
+      <button aria-label="Lancer la recherche">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </button>
+    </div>
+    <a href="index.html" class="mobile-menu__link">Accueil</a>
+    <a href="boutique.html" class="mobile-menu__link">Soins</a>
+    <a href="maison.html" class="mobile-menu__link">Maison</a>
+    <div class="mobile-menu__dropdown-wrapper">
+      <span class="mobile-menu__link">Conseils</span>
+      <div class="mobile-menu__dropdown-content">
+        <a href="blog.html" class="mobile-dropdown-link">Blog</a>
+        <a href="diagnostic.html" class="mobile-dropdown-link">Diagnostic</a>
+      </div>
+    </div>
+    <div class="mobile-menu__dropdown-wrapper">
+      <span class="mobile-menu__link">Nos Valeurs</span>
+      <div class="mobile-menu__dropdown-content">
+        <span class="mobile-dropdown-heading">Nos Engagements</span>
+        <a href="valeurs-beaute-responsable.html" class="mobile-dropdown-link">À propos de la beauté responsable</a>
+        <a href="valeurs-emballage-durable.html" class="mobile-dropdown-link">À propos de l'emballage durable</a>
+        <a href="valeurs-personne-biodiversite.html" class="mobile-dropdown-link">À propos de la personne &amp; la biodiversité</a>
+        <span class="mobile-dropdown-heading">Notre Vision</span>
+        <a href="maison.html" class="mobile-dropdown-link">Un avenir plus beau</a>
+      </div>
+    </div>
+    <a href="contact.html" class="mobile-menu__link">Contact</a>
+    <div class="mobile-menu__dropdown-wrapper">
+      <span class="mobile-menu__link">Services &amp; Boutiques</span>
+      <div class="mobile-menu__dropdown-content">
+        <a href="formation.html" class="mobile-dropdown-link">Formation</a>
+        <a href="grossiste.html" class="mobile-dropdown-link">Devenir Grossiste</a>
+        <a href="avantage-en-ligne.html" class="mobile-dropdown-link">Avantage en ligne</a>
+        <a href="contact.html" class="mobile-dropdown-link">Où nous trouver ?</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+
+    <!-- ===== HERO ===== -->
+    <section class="about-hero">
+      <img src="assets/images/about-hero.png" alt="" class="about-hero__bg" aria-hidden="true">
+      <div class="about-hero__content reveal">
+        <span class="about-hero__brand">KATUISCIA</span>
+        <h1 class="about-hero__title">Histoire &amp; Origine</h1>
+        <p class="about-hero__subtitle">Une marque née d'une vision, d'une conviction et d'une énergie profonde — celle de bâtir bien plus qu'une marque.</p>
+      </div>
+    </section>
+
+    <!-- ===== FONDATRICE ===== -->
+    <section class="founder section" id="story">
+      <div class="founder__inner">
+        <div class="founder__image reveal">
+          <img src="assets/images/about-story.png" alt="Dolly Batchawa, fondatrice de KATUISCIA">
+          <div class="founder__image-tag">
+            <span class="founder__image-tag-name">Dolly Batchawa</span>
+            <span class="founder__image-tag-title">Fondatrice &amp; PDG</span>
+          </div>
+        </div>
+        <div class="founder__content reveal reveal-delay-1">
+          <span class="about-label">La Maison</span>
+          <h2 class="founder__title">Je m'appelle Dolly Batchawa, Fondatrice et PDG de KATUISCIA</h2>
+          <p class="founder__text">Depuis toujours, je suis animée par une énergie profonde : celle de créer, de construire et de donner du sens. Dès l'âge de 17 ans, cette fibre entrepreneuriale s'est imposée comme une évidence, une force intérieure, une vision, ce que j'appelle aujourd'hui une véritable <em>Boss Energy</em>. Mais avec le temps, cette énergie a évolué. Elle est devenue une quête : celle de bâtir bien plus qu'une marque — un <strong>HÉRITAGE</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== AMBITION ===== -->
+    <section class="ambition section" id="ambition">
+      <div class="ambition__inner">
+        <div class="ambition__block reveal">
+          <h2 class="ambition__title">KATUISCIA est née de cette ambition.</h2>
+          <p class="ambition__text">Dans un monde où tout s'accélère, j'ai voulu créer une maison qui prend le temps. Le temps de penser, de concevoir et de proposer des produits qui vont au-delà de leur fonction première. Car pour moi, prendre soin de soi n'est pas un simple geste. C'est une affirmation. Un acte de respect envers soi-même. Une manière silencieuse mais puissante de révéler sa propre identité.</p>
+        </div>
+        <div class="ambition__block reveal reveal-delay-1">
+          <h2 class="ambition__title">KATUISCIA s'inscrit dans cette vision.</h2>
+          <p class="ambition__text">Chaque produit est pensé avec exigence, authenticité et intention, pour accompagner chacun dans son rapport à soi, à son corps et à son image. Mais au-delà des produits, <strong>KATUISCIA</strong> porte une conviction : le véritable luxe réside dans la manière dont on se considère, dont on se respecte, et dont on perpétue cette valeur dans le temps. C'est ainsi que <strong>KATUISCIA</strong> devient plus qu'une marque. C'est une signature. Une empreinte. Un héritage en construction.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== VALEURS ===== -->
+    <section class="values section" id="values">
+      <div class="section-header reveal">
+        <h2 class="section-header__title">Nos Valeurs</h2>
+        <div class="divider"></div>
+        <p class="section-header__subtitle">Les principes fondateurs qui guident chacune de nos créations.</p>
+      </div>
+      <div class="values__grid">
+        <div class="value-card reveal reveal-delay-1">
+          <div class="value-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+          </div>
+          <h3 class="value-card__title">Exigence</h3>
+          <p class="value-card__text">Chaque produit est pensé avec rigueur et authenticité, formulé pour répondre aux exigences les plus hautes de qualité et d'efficacité.</p>
+        </div>
+        <div class="value-card reveal reveal-delay-2">
+          <div class="value-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/><path d="M11 17v.01"/><path d="M7 14v.01"/></svg>
+          </div>
+          <h3 class="value-card__title">Authenticité</h3>
+          <p class="value-card__text">Nous croyons à la beauté vraie, sans artifice. Nos formulations valorisent ce que vous êtes, naturellement et avec confiance.</p>
+        </div>
+        <div class="value-card reveal reveal-delay-3">
+          <div class="value-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg>
+          </div>
+          <h3 class="value-card__title">Intention</h3>
+          <p class="value-card__text">Derrière chaque geste de soin se cache une intention profonde : se respecter, se révéler, et transmettre cette valeur aux générations futures.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ENGAGEMENTS ===== -->
+    <section class="engagements section" id="engagements">
+      <div class="section-header reveal">
+        <h2 class="section-header__title">Nos Engagements</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="engagements__grid">
+        <div class="engagement-card reveal">
+          <span class="engagement-card__number">01</span>
+          <div>
+            <h3 class="engagement-card__title">Ingrédients d'origine naturelle</h3>
+            <p class="engagement-card__text">Chaque formule est élaborée avec au minimum 92% d'ingrédients d'origine naturelle, rigoureusement sélectionnés pour leur efficacité.</p>
+          </div>
+        </div>
+        <div class="engagement-card reveal reveal-delay-1">
+          <span class="engagement-card__number">02</span>
+          <div>
+            <h3 class="engagement-card__title">Sans tests sur les animaux</h3>
+            <p class="engagement-card__text">Nous ne testons jamais nos produits sur les animaux. Notre marque est certifiée cruelty-free et nous en sommes fiers.</p>
+          </div>
+        </div>
+        <div class="engagement-card reveal reveal-delay-2">
+          <span class="engagement-card__number">03</span>
+          <div>
+            <h3 class="engagement-card__title">Emballages éco-conçus</h3>
+            <p class="engagement-card__text">Nos contenants sont recyclables ou réutilisables, conçus pour réduire notre empreinte tout en préservant la qualité du produit.</p>
+          </div>
+        </div>
+        <div class="engagement-card reveal reveal-delay-3">
+          <span class="engagement-card__number">04</span>
+          <div>
+            <h3 class="engagement-card__title">Un héritage en construction</h3>
+            <p class="engagement-card__text">KATUISCIA n'est pas seulement une marque de beauté. C'est une signature, une empreinte durable qui se transmet et se perpétue dans le temps.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CITATION VISION ===== -->
+    <section class="vision" id="vision">
+      <div class="vision__inner reveal">
+        <blockquote class="vision__quote">"Les grandes réalisations naissent toujours d'une vision, de la foi et du courage d'oser."</blockquote>
+        <p class="vision__author">— Dolly Batchawa, Fondatrice de KATUISCIA</p>
+        <a href="boutique.html" class="btn" style="margin-top: var(--space-xl);"><span>Découvrir nos produits</span></a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer" id="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <div class="footer__brand-name"><a href="index.html"><img src="assets/images/K LOGO.png" alt="KATUISCIA" class="footer__logo-img"></a></div>
+        <p class="footer__brand-desc">Élever le quotidien grâce à des rituels botaniques soignés et des formulations conscientes.</p>
+      </div>
+      <div class="footer__column">
+        <h4 class="footer__column-title">Explorer</h4>
+        <a href="boutique.html" class="footer__link">Boutique</a>
+        <a href="maison.html" class="footer__link">À propos</a>
+        <a href="contact.html" class="footer__link">Contact</a>
+      </div>
+      <div class="footer__column">
+        <h4 class="footer__column-title">Informations</h4>
+        <a href="valeurs-beaute-responsable.html" class="footer__link">Durabilité</a>
+        <a href="politique-expedition.html" class="footer__link">Expédition</a>
+        <a href="politique-remboursement.html" class="footer__link">Retours</a>
+      </div>
+      <div class="footer__column">
+        <h4 class="footer__column-title">Légal</h4>
+        <a href="mentions-legales.html" class="footer__link">Mentions légales</a>
+        <a href="politique-confidentialite.html" class="footer__link">Confidentialité</a>
+        <a href="contact.html" class="footer__link">Contact</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2026 KATUISCIA. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <div class="cookie-popup" id="cookie-popup" role="alert">
+    <p class="cookie-popup__text">Nous utilisons des cookies pour améliorer votre expérience. En continuant, vous acceptez notre politique de confidentialité.</p>
+    <div class="cookie-popup__actions">
+      <button class="btn btn--sm" data-cookie-accept><span>Accepter</span></button>
+      <button class="btn btn--sm btn--warm" data-cookie-decline><span>Refuser</span></button>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coupons — KATUISCIA Admin</title>
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin-guard.js"></script>
+</head>
+<body class="dashboard-layout admin-dashboard">
+  {{> admin-sidebar }}
+  <main class="dashboard-main">
+    <header class="dashboard-header">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="mobile-toggle" id="mobileToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h2 style="font-family:var(--font-heading); font-size:var(--text-lg);">Codes Promo & Coupons</h2>
+      </div>
+      <div class="header-actions">
+        <button class="btn-primary" onclick="document.getElementById('modal-coupon').showModal()">+ Nouveau Coupon</button>
+        <div style="width:36px; height:36px; border-radius:50%; background:var(--color-dark); color:var(--color-white); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:bold;">AD</div>
+      </div>
+    </header>
+    <div class="dashboard-content">
+      <h1 class="page-title">Codes Promotionnels</h1>
+      <p class="page-subtitle" style="margin-bottom:var(--space-xl);">Créez et gérez vos codes promo, réductions et offres spéciales.</p>
+
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:var(--space-lg); margin-bottom:var(--space-2xl);">
+        <div class="card stat-card"><span class="stat-title">Coupons Actifs</span><span class="stat-value">4</span></div>
+        <div class="card stat-card"><span class="stat-title">Utilisations ce mois</span><span class="stat-value">127</span></div>
+        <div class="card stat-card"><span class="stat-title">Économie clients</span><span class="stat-value">2 450 €</span></div>
+      </div>
+
+      <div class="card" style="padding:0; overflow:hidden;">
+        <table class="admin-table">
+          <thead><tr><th>Code</th><th>Type</th><th>Valeur</th><th>Utilisations</th><th>Expiration</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><code style="background:var(--color-gray); padding:4px 10px; border-radius:4px; font-weight:bold; letter-spacing:1px;">BIENVENUE20</code></td><td>Pourcentage</td><td>-20%</td><td>89 / ∞</td><td>31 Déc 2026</td><td><span class="status-badge status-badge--success">Actif</span></td><td><div style="display:flex; gap:6px;"><button class="action-btn" title="Modifier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="action-btn action-btn--danger" title="Désactiver"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></button></div></td></tr>
+            <tr><td><code style="background:var(--color-gray); padding:4px 10px; border-radius:4px; font-weight:bold; letter-spacing:1px;">FIDELE15</code></td><td>Pourcentage</td><td>-15%</td><td>38 / 100</td><td>30 Juin 2026</td><td><span class="status-badge status-badge--success">Actif</span></td><td><div style="display:flex; gap:6px;"><button class="action-btn" title="Modifier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="action-btn action-btn--danger" title="Désactiver"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></button></div></td></tr>
+            <tr><td><code style="background:var(--color-gray); padding:4px 10px; border-radius:4px; font-weight:bold; letter-spacing:1px;">LIVRAISON</code></td><td>Livraison gratuite</td><td>0 € frais</td><td>45 / 200</td><td>15 Mai 2026</td><td><span class="status-badge status-badge--warning">Expire bientôt</span></td><td><div style="display:flex; gap:6px;"><button class="action-btn" title="Modifier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="action-btn action-btn--danger" title="Désactiver"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></button></div></td></tr>
+            <tr style="opacity:0.5;"><td><code style="background:var(--color-gray); padding:4px 10px; border-radius:4px; font-weight:bold; letter-spacing:1px;">ETE2025</code></td><td>Montant fixe</td><td>-25 €</td><td>200 / 200</td><td>Expiré</td><td><span class="status-badge status-badge--danger">Expiré</span></td><td><button class="action-btn action-btn--danger" title="Supprimer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <dialog id="modal-coupon" class="admin-modal" style="max-width:540px;">
+    <div class="admin-modal__content">
+      <div class="admin-modal__header">
+        <h2 style="font-family:var(--font-heading); font-size:var(--text-xl);">Nouveau Coupon</h2>
+        <button onclick="document.getElementById('modal-coupon').close()" class="admin-modal__close">&times;</button>
+      </div>
+      <form class="admin-modal__body">
+        <div class="admin-form-group">
+          <label class="admin-label">Code promo *</label>
+          <input type="text" class="admin-input" placeholder="Ex: BIENVENUE20" style="text-transform:uppercase; letter-spacing:1px;" required>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-md);">
+          <div class="admin-form-group">
+            <label class="admin-label">Type de réduction</label>
+            <select class="admin-input"><option>Pourcentage (%)</option><option>Montant fixe (€)</option><option>Livraison gratuite</option></select>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Valeur</label>
+            <input type="number" class="admin-input" placeholder="20">
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-md);">
+          <div class="admin-form-group">
+            <label class="admin-label">Limite d'utilisations</label>
+            <input type="number" class="admin-input" placeholder="Illimité">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Date d'expiration</label>
+            <input type="date" class="admin-input">
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Montant minimum de commande (€)</label>
+          <input type="number" class="admin-input" placeholder="0" step="0.01">
+        </div>
+        <div style="display:flex; gap:var(--space-sm); justify-content:flex-end; padding-top:var(--space-md);">
+          <button type="button" onclick="document.getElementById('modal-coupon').close()" style="padding:10px 20px; border:1px solid var(--color-border); border-radius:var(--radius-sm); background:transparent; cursor:pointer; font-size:var(--text-sm);">Annuler</button>
+          <button type="submit" class="btn-primary">Créer le coupon</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <script>
+    document.getElementById('mobileToggle')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+    document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'admin-coupons') l.classList.add('active'); });
+  </script>
+  <script src="/js/account.js"></script>
+</body>
+</html>

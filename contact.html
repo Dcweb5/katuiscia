@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — KATUISCIA</title>
+  <meta name="description" content="Contactez l'équipe KATUISCIA. Formulaire de contact, adresse, horaires et réseaux sociaux.">
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body class="bg-cream text-dark font-body antialiased">
+
+  {{> header }}
+
+  <main id="main-content">
+    <div class="pt-[calc(190px+3rem)] pb-8 max-w-site mx-auto px-4 lg:px-8 reveal-k-k">
+      <h1 class="font-heading text-4xl font-normal text-dark mb-4">Contactez-nous</h1>
+      <p class="text-md text-text-light max-w-lg leading-relaxed">Nous serions ravis d'échanger avec vous. Envoyez-nous un message et notre équipe vous répondra dans les plus brefs délais.</p>
+    </div>
+
+    <div class="max-w-site mx-auto px-4 lg:px-8 pb-24 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-16">
+      <!-- FORM -->
+      <div class="reveal-k-k">
+        <form class="space-y-6" id="contact-form" novalidate>
+          <div class="form-control">
+            <label class="label px-0 pt-0" for="contact-name"><span class="label-text text-xs font-bold tracking-widest uppercase text-dark">Nom complet *</span></label>
+            <input type="text" class="input input-bordered w-full bg-white border-gray-200 focus:border-dark transition-colors" id="contact-name" name="name" required placeholder="Votre nom">
+          </div>
+          <div class="form-control">
+            <label class="label px-0 pt-0" for="contact-email"><span class="label-text text-xs font-bold tracking-widest uppercase text-dark">Email *</span></label>
+            <input type="email" class="input input-bordered w-full bg-white border-gray-200 focus:border-dark transition-colors" id="contact-email" name="email" required placeholder="votre@email.com">
+          </div>
+          <div class="form-control">
+            <label class="label px-0 pt-0" for="contact-subject"><span class="label-text text-xs font-bold tracking-widest uppercase text-dark">Sujet</span></label>
+            <select class="select select-bordered w-full bg-white border-gray-200 focus:border-dark font-body font-normal" id="contact-subject" name="subject">
+              <option value="">Sélectionner un sujet</option>
+              <option value="commande">Question sur une commande</option>
+              <option value="produit">Information produit</option>
+              <option value="retour">Retour / Remboursement</option>
+              <option value="partenariat">Partenariat / Grossiste</option>
+              <option value="formation">Formation</option>
+              <option value="presse">Presse</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+          <div class="form-control">
+            <label class="label px-0 pt-0" for="contact-message"><span class="label-text text-xs font-bold tracking-widest uppercase text-dark">Message *</span></label>
+            <textarea class="textarea textarea-bordered w-full bg-white border-gray-200 focus:border-dark transition-colors h-40 font-body text-base" id="contact-message" name="message" required placeholder="Votre message..."></textarea>
+          </div>
+          <div class="pt-2">
+            <button type="submit" class="btn-katuiscia-filled w-full py-4 text-sm tracking-widest uppercase font-semibold">Envoyer le message</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- INFO -->
+      <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg border border-border-k/30 space-y-8 reveal-k-k delay-1">
+        <h2 class="font-heading text-2xl font-medium text-dark">Nos Coordonnées</h2>
+
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-full bg-peach flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-warm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <p class="text-xs font-semibold tracking-wider uppercase text-dark mb-1">Adresse</p>
+            <p class="text-sm text-text-light leading-relaxed">9 bis route de Corbeil<br>91360 Villemoisson-sur-Orge<br>France</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-full bg-peach flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-warm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          </div>
+          <div>
+            <p class="text-xs font-semibold tracking-wider uppercase text-dark mb-1">Email</p>
+            <p class="text-sm text-text-light">contact@katuiscia.com</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-full bg-peach flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-warm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <p class="text-xs font-semibold tracking-wider uppercase text-dark mb-1">Horaires</p>
+            <p class="text-sm text-text-light leading-relaxed">Lun — Ven : 9h — 18h<br>Sam : 10h — 16h</p>
+          </div>
+        </div>
+
+        <!-- Map -->
+        <div class="rounded-xl overflow-hidden shadow-md h-[250px]">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2634.5!2d2.35!3d48.68!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDjCsDQwJzQ4LjAiTiAywrAyMScwMC4wIkU!5e0!3m2!1sfr!2sfr!4v1" class="w-full h-full border-0" allowfullscreen="" loading="lazy" title="Localisation KATUISCIA"></iframe>
+        </div>
+
+        <!-- Socials -->
+        <div class="flex gap-4">
+          <a href="#" class="w-11 h-11 rounded-full border border-border-k flex items-center justify-center text-dark hover:bg-dark hover:text-cream hover:border-dark transition-all" aria-label="Instagram">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></svg>
+          </a>
+          <a href="#" class="w-11 h-11 rounded-full border border-border-k flex items-center justify-center text-dark hover:bg-dark hover:text-cream hover:border-dark transition-all" aria-label="Facebook">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="w-11 h-11 rounded-full border border-border-k flex items-center justify-center text-dark hover:bg-dark hover:text-cream hover:border-dark transition-all" aria-label="TikTok">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  {{> footer }}
+
+  <script type="module" src="/js/main.js"></script>
+  <script>
+    document.getElementById('contact-form')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = this.querySelector('.btn-katuiscia-filled');
+      const originalText = btn.textContent;
+      btn.textContent = 'Envoi en cours...';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = '✓ Message envoyé !';
+        btn.classList.add('!border-success', '!text-success');
+        this.reset();
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.disabled = false;
+          btn.classList.remove('!border-success', '!text-success');
+        }, 3000);
+      }, 1500);
+    });
+  </script>
+</body>
+</html>

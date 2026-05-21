@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catégories — KATUISCIA Admin</title>
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin-crud.js"></script>
+  <script src="/js/admin-guard.js"></script>
+  <script>
+    // Polling fiable : vérifie régulièrement si katuisciaUser est défini
+    // (admin-guard.js le définit après la réponse asynchrone du fetch)
+    (function() {
+      var attempts = 0;
+      var maxAttempts = 100; // 100 * 200ms = 20 secondes max
+
+      function tryLoad() {
+        attempts++;
+        if (typeof loadCategories === 'function' && (window.katuisciaUser || window.adminData)) {
+          loadCategories('#categories-grid');
+          return true;
+        }
+        if (attempts < maxAttempts) {
+          setTimeout(tryLoad, 200);
+        }
+        return false;
+      }
+
+      tryLoad();
+    })();
+  </script>
+</head>
+<body class="dashboard-layout admin-dashboard">
+
+  {{> admin-sidebar }}
+
+  <main class="dashboard-main">
+    <header class="dashboard-header">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="mobile-toggle" id="mobileToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div class="header-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Rechercher une catégorie..." id="categorySearchInput"></div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-primary" onclick="openCreateCategoryModal()">+ Nouvelle Catégorie</button>
+        <div style="width:36px; height:36px; border-radius:50%; background:var(--color-dark); color:var(--color-white); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:bold;" class="auth-name-initial">AD</div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:var(--space-2xl);">
+        <div>
+          <h1 class="page-title">Gestion des Catégories</h1>
+          <p class="page-subtitle">Organisez vos produits en catégories pour une navigation claire dans votre boutique.</p>
+        </div>
+        <span style="font-size:var(--text-sm); color:var(--color-text-muted);" class="category-count">Chargement...</span>
+      </div>
+
+      <!-- CATEGORIES GRID -->
+      <div id="categories-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap:var(--space-lg);">
+        <div style="grid-column:1/-1; text-align:center; padding:4rem;">
+          <p style="color:var(--color-text-muted);">Chargement des catégories...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: Créer catégorie -->
+  <dialog id="modal-category" class="admin-modal">
+    <div class="admin-modal__content">
+      <div class="admin-modal__header">
+        <h2 id="modal-category-title" style="font-family:var(--font-heading); font-size:var(--text-xl);">Nouvelle Catégorie</h2>
+        <button onclick="document.getElementById('modal-category').close()" class="admin-modal__close">&times;</button>
+      </div>
+      <form id="category-form" class="admin-modal__body" onsubmit="return false;">
+        <input type="hidden" id="category-id" value="">
+        <div class="admin-form-group">
+          <label class="admin-label">Nom de la catégorie *</label>
+          <input type="text" id="cat-name" class="admin-input" placeholder="Ex: Soin de la Peau" required>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Slug (URL)</label>
+          <input type="text" id="cat-slug" class="admin-input" placeholder="Ex: soin-peau" style="color:var(--color-text-muted);">
+          <small style="font-size:11px; color:var(--color-text-muted); margin-top:4px; display:block;">Généré automatiquement à partir du nom.</small>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Description</label>
+          <textarea id="cat-description" class="admin-input" rows="3" placeholder="Décrivez cette catégorie..." style="resize:vertical;"></textarea>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Statut</label>
+          <label style="display:flex; align-items:center; gap:8px; font-size:var(--text-sm); cursor:pointer;">
+            <input type="checkbox" id="cat-active" checked> Active (visible en boutique)
+          </label>
+        </div>
+        <div style="display:flex; gap:var(--space-sm); justify-content:flex-end; padding-top:var(--space-md);">
+          <button type="button" onclick="document.getElementById('modal-category').close()" style="padding:10px 20px; border:1px solid var(--color-border); border-radius:var(--radius-sm); background:transparent; cursor:pointer; font-size:var(--text-sm);">Annuler</button>
+          <button type="submit" class="btn-primary" id="category-submit-btn">Créer la catégorie</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <script>
+    // Auto-génération du slug
+    document.getElementById('cat-name')?.addEventListener('input', function() {
+      const slugInput = document.getElementById('cat-slug');
+      if (slugInput && !slugInput.dataset.modified) {
+        slugInput.value = this.value
+          .toLowerCase()
+          .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-')
+          .replace(/^-|-$/g, '');
+      }
+    });
+    document.getElementById('cat-slug')?.addEventListener('input', function() {
+      this.dataset.modified = 'true';
+    });
+
+    // Ouvrir modal création
+    function openCreateCategoryModal() {
+      document.getElementById('modal-category-title').textContent = 'Nouvelle Catégorie';
+      document.getElementById('category-submit-btn').textContent = 'Créer la catégorie';
+      document.getElementById('category-id').value = '';
+      document.getElementById('cat-name').value = '';
+      document.getElementById('cat-slug').value = '';
+      document.getElementById('cat-slug').dataset.modified = '';
+      document.getElementById('cat-description').value = '';
+      document.getElementById('cat-active').checked = true;
+      document.getElementById('modal-category').showModal();
+    }
+
+    // Ouvrir modal édition
+    function openEditCategory(id) {
+      const result = KatuisciaAuth.apiFetch('/categories/' + id).then(function(res) {
+        if (!res.success) return;
+        const cat = res.data;
+        document.getElementById('modal-category-title').textContent = 'Modifier — ' + cat.name;
+        document.getElementById('category-submit-btn').textContent = 'Enregistrer';
+        document.getElementById('category-id').value = cat.id;
+        document.getElementById('cat-name').value = cat.name;
+        document.getElementById('cat-slug').value = cat.slug;
+        document.getElementById('cat-slug').dataset.modified = 'true';
+        document.getElementById('cat-description').value = cat.description || '';
+        document.getElementById('cat-active').checked = cat.is_active;
+        document.getElementById('modal-category').showModal();
+      });
+    }
+
+    // Soumission formulaire
+    document.getElementById('category-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const id = document.getElementById('category-id').value;
+      const data = {
+        name: document.getElementById('cat-name').value.trim(),
+        slug: document.getElementById('cat-slug').value.trim() || document.getElementById('cat-name').value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-'),
+        description: document.getElementById('cat-description').value.trim(),
+        is_active: document.getElementById('cat-active').checked,
+      };
+
+      const btn = document.getElementById('category-submit-btn');
+      btn.disabled = true;
+      btn.textContent = 'Enregistrement...';
+
+      let result;
+      if (id) {
+        result = await updateCategory(id, data);
+      } else {
+        result = await createCategory(data);
+      }
+
+      btn.disabled = false;
+
+      if (result.success) {
+        document.getElementById('modal-category').close();
+        loadCategories('#categories-grid');
+        btn.textContent = id ? 'Enregistrer' : 'Créer la catégorie';
+      } else {
+        btn.textContent = id ? 'Enregistrer' : 'Créer la catégorie';
+        alert(result.message || 'Erreur lors de l\'enregistrement.');
+      }
+    });
+
+    // Recherche
+    document.getElementById('categorySearchInput')?.addEventListener('input', function() {
+      const search = this.value.toLowerCase();
+      document.querySelectorAll('#categories-grid .card').forEach(card => {
+        const name = card.querySelector('h3')?.textContent?.toLowerCase() || '';
+        card.style.display = name.includes(search) ? '' : 'none';
+      });
+    });
+
+    document.getElementById('mobileToggle')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+    document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'admin-categories') l.classList.add('active'); });
+  </script>
+  <script src="/js/account.js"></script>
+</body>
+</html>

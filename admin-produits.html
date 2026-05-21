@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produits — KATUISCIA Admin</title>
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin-crud.js"></script>
+  <script src="/js/admin-guard.js"></script>
+  <script>
+    // Polling fiable : attend que katuisciaUser et loadProducts soient disponibles
+    (function() {
+      var attempts = 0;
+      var maxAttempts = 100;
+
+      function initProductsPage() {
+        if (typeof loadProducts !== 'function' || (!window.katuisciaUser && !window.adminData)) {
+          attempts++;
+          if (attempts < maxAttempts) {
+            setTimeout(initProductsPage, 200);
+          }
+          return;
+        }
+        loadProducts('#products-tbody').then(function(products) {
+          document.querySelectorAll('.categories-count').forEach(function(el) {
+            el.textContent = new Set(products.map(function(p) { return p.categories ? p.categories.map(function(c){return c.name}).join(',') : ''; }).filter(Boolean).join(',').split(',')).size || '—';
+          });
+        });
+      }
+
+      initProductsPage();
+    })();
+  </script>
+</head>
+<body class="dashboard-layout admin-dashboard">
+  {{> admin-sidebar }}
+
+  <main class="dashboard-main">
+    <header class="dashboard-header">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="mobile-toggle" id="mobileToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div class="header-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Rechercher un produit..." id="productSearchInput"></div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-primary" onclick="openCreateProductModal()">+ Nouveau Produit</button>
+        <div style="width:36px; height:36px; border-radius:50%; background:var(--color-dark); color:var(--color-white); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:bold;" class="auth-name-initial">AD</div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <h1 class="page-title">Gestion des Produits</h1>
+      <p class="page-subtitle">Ajoutez, modifiez et organisez tous les produits de la boutique.</p>
+
+      <!-- Stats dynamiques -->
+      <div class="stats-grid" style="grid-template-columns:repeat(4, 1fr); margin-bottom:var(--space-xl);">
+        <div class="card stat-card"><span class="stat-title">Total Produits</span><span class="stat-value total-products">—</span></div>
+        <div class="card stat-card"><span class="stat-title">En Stock</span><span class="stat-value in-stock-count">—</span><span class="stat-change positive in-stock-pct">—</span></div>
+        <div class="card stat-card"><span class="stat-title">Stock Faible</span><span class="stat-value low-stock-count">—</span><span class="stat-change negative">Attention</span></div>
+        <div class="card stat-card"><span class="stat-title">Catégories</span><span class="stat-value categories-count">—</span></div>
+      </div>
+
+      <!-- Tableau produits -->
+      <div class="card" style="padding:0; overflow:hidden;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th style="width:40px;"><input type="checkbox"></th>
+              <th>Produit</th>
+              <th>SKU</th>
+              <th>Catégorie</th>
+              <th>Prix</th>
+              <th>Stock</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="products-tbody">
+            <tr><td colspan="8" style="text-align:center; padding:2rem; color:var(--color-text-muted);">Chargement des produits...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: Ajouter/Modifier Produit -->
+  <dialog id="modal-produit" class="admin-modal" style="max-width:720px;">
+    <div class="admin-modal__content">
+      <div class="admin-modal__header">
+        <h2 id="modal-produit-title" style="font-family:var(--font-heading); font-size:var(--text-xl);">Nouveau Produit</h2>
+        <button onclick="document.getElementById('modal-produit').close()" class="admin-modal__close">&times;</button>
+      </div>
+      <form id="product-form" class="admin-modal__body" style="max-height:70vh; overflow-y:auto;" onsubmit="return false;">
+        <input type="hidden" id="product-id" value="">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-md);">
+          <div class="admin-form-group" style="grid-column:1/-1;">
+            <label class="admin-label">Nom du produit *</label>
+            <input type="text" id="prod-name" class="admin-input" placeholder="Ex: Nectar Lumineux" required>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Slug</label>
+            <input type="text" id="prod-slug" class="admin-input" placeholder="Auto-généré" style="color:var(--color-text-muted);">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Badge</label>
+            <select id="prod-badge" class="admin-input">
+              <option value="">Aucun</option>
+              <option value="Best-seller">Best-seller</option>
+              <option value="Nouveau">Nouveau</option>
+              <option value="Promo">Promo</option>
+              <option value="TOP">TOP</option>
+            </select>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Prix (€) *</label>
+            <input type="number" id="prod-price" class="admin-input" placeholder="125.00" step="0.01" required>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Prix barré (€)</label>
+            <input type="number" id="prod-sale-price" class="admin-input" placeholder="150.00" step="0.01">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Stock</label>
+            <input type="number" id="prod-stock" class="admin-input" placeholder="100" min="0" value="0">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">SKU</label>
+            <input type="text" id="prod-sku" class="admin-input" placeholder="Ex: NL-001">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Contenance</label>
+            <input type="text" id="prod-size" class="admin-input" placeholder="Ex: 30ml, 50g">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Besoin</label>
+            <select id="prod-need" class="admin-input">
+              <option value="">—</option>
+              <option value="hydratation">Hydratation</option>
+              <option value="eclat">Éclat</option>
+              <option value="restauration">Restauration</option>
+            </select>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Statut</label>
+            <select id="prod-active" class="admin-input">
+              <option value="1">Publié</option>
+              <option value="0">Brouillon</option>
+            </select>
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Description courte</label>
+          <textarea id="prod-desc" class="admin-input" rows="2" placeholder="Ex: Sérum visage éclat..." style="resize:vertical;"></textarea>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Description détaillée</label>
+          <textarea id="prod-long-desc" class="admin-input" rows="3" placeholder="Description complète..." style="resize:vertical;"></textarea>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Image principale</label>
+          <input type="text" id="prod-img-primary" class="admin-input" placeholder="assets/images/product-1a.png">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Image hover</label>
+          <input type="text" id="prod-img-secondary" class="admin-input" placeholder="assets/images/product-1b.png">
+        </div>
+        <div style="display:flex; gap:var(--space-sm); justify-content:flex-end; padding-top:var(--space-md); border-top:1px solid var(--color-border);">
+          <button type="button" onclick="document.getElementById('modal-produit').close()" style="padding:10px 20px; border:1px solid var(--color-border); border-radius:var(--radius-sm); background:transparent; cursor:pointer; font-size:var(--text-sm);">Annuler</button>
+          <button type="submit" class="btn-primary" id="product-submit-btn">Créer le produit</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <script>
+    // Auto-génération du slug produit
+    document.getElementById('prod-name')?.addEventListener('input', function() {
+      const slugInput = document.getElementById('prod-slug');
+      if (slugInput && !slugInput.dataset.modified) {
+        slugInput.value = this.value
+          .toLowerCase()
+          .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-')
+          .replace(/^-|-$/g, '');
+      }
+    });
+    document.getElementById('prod-slug')?.addEventListener('input', function() {
+      this.dataset.modified = 'true';
+    });
+
+    // Ouvrir modal création produit
+    function openCreateProductModal() {
+      document.getElementById('modal-produit-title').textContent = 'Nouveau Produit';
+      document.getElementById('product-submit-btn').textContent = 'Créer le produit';
+      document.getElementById('product-id').value = '';
+      document.getElementById('product-form').reset();
+      document.getElementById('prod-active').value = '1';
+      document.getElementById('prod-stock').value = '0';
+      document.getElementById('prod-slug').dataset.modified = '';
+      document.getElementById('modal-produit').showModal();
+    }
+
+    // Soumission formulaire produit
+    document.getElementById('product-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const id = document.getElementById('product-id').value;
+      const name = document.getElementById('prod-name').value.trim();
+
+      if (!name) { alert('Le nom du produit est obligatoire.'); return; }
+      if (!document.getElementById('prod-price').value) { alert('Le prix est obligatoire.'); return; }
+
+      const data = {
+        name: name,
+        slug: document.getElementById('prod-slug').value.trim() || undefined,
+        description: document.getElementById('prod-desc').value.trim(),
+        long_description: document.getElementById('prod-long-desc').value.trim(),
+        price: parseFloat(document.getElementById('prod-price').value) || 0,
+        sale_price: document.getElementById('prod-sale-price').value ? parseFloat(document.getElementById('prod-sale-price').value) : null,
+        stock: parseInt(document.getElementById('prod-stock').value) || 0,
+        sku: document.getElementById('prod-sku').value.trim() || undefined,
+        size: document.getElementById('prod-size').value.trim(),
+        badge: document.getElementById('prod-badge').value || null,
+        need: document.getElementById('prod-need').value || null,
+        is_active: document.getElementById('prod-active').value === '1',
+        image_primary: document.getElementById('prod-img-primary').value.trim() || null,
+        image_secondary: document.getElementById('prod-img-secondary').value.trim() || null,
+      };
+
+      const btn = document.getElementById('product-submit-btn');
+      btn.disabled = true;
+      btn.textContent = 'Enregistrement...';
+
+      let result;
+      if (id) {
+        result = await KatuisciaAuth.apiFetch('/products/' + id, {
+          method: 'PUT',
+          body: JSON.stringify(data),
+        });
+      } else {
+        result = await createProduct(data);
+      }
+
+      btn.disabled = false;
+
+      if (result.success) {
+        document.getElementById('modal-produit').close();
+        loadProducts('#products-tbody').then(function(products) {
+          // Mettre à jour le compteur de catégories
+          document.querySelectorAll('.categories-count').forEach(function(el) {
+            el.textContent = new Set(products.map(function(p) { return p.categories ? p.categories.map(function(c){return c.name}).join(',') : ''; }).filter(Boolean).join(',').split(',')).size || '—';
+          });
+        });
+        btn.textContent = id ? 'Enregistrer' : 'Créer le produit';
+      } else {
+        btn.textContent = id ? 'Enregistrer' : 'Créer le produit';
+        alert(result.message || 'Erreur lors de l\'enregistrement.');
+      }
+    });
+
+    // Recherche
+    document.getElementById('productSearchInput')?.addEventListener('input', function() {
+      const search = this.value.toLowerCase();
+      document.querySelectorAll('#products-tbody tr').forEach(function(row) {
+        if (row.querySelector('td[colspan]')) return;
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(search) ? '' : 'none';
+      });
+    });
+
+    document.getElementById('mobileToggle')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+    document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'admin-produits') l.classList.add('active'); });
+  </script>
+  <script src="/js/account.js"></script>
+</body>
+</html>

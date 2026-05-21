@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnostic IA — KATUISCIA | Analyse de Peau Avancée</title>
+  <meta name="description" content="Découvrez notre outil de diagnostic assisté par l'intelligence artificielle pour une routine beauté sur-mesure.">
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    body {
+      background-color: var(--color-background);
+    }
+    .diag-hero {
+      padding: calc(var(--header-height) + var(--space-3xl)) var(--space-md) var(--space-3xl);
+      text-align: center;
+      background: linear-gradient(135deg, var(--color-dark) 0%, #1a1a1a 100%);
+      color: var(--color-white);
+      position: relative;
+      overflow: hidden;
+    }
+    /* AI Scanner effect in background */
+    .diag-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 70%);
+      z-index: 1;
+    }
+    .diag-hero__content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .diag-hero__title {
+      font-family: var(--font-heading);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      margin-bottom: var(--space-md);
+      font-weight: 300;
+      background: linear-gradient(to right, var(--color-white), var(--color-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .diag-hero__desc {
+      font-size: var(--text-lg);
+      opacity: 0.8;
+      margin-bottom: var(--space-2xl);
+    }
+    
+    /* Scanner UI Mockup */
+    .scanner-ui {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+      height: 400px;
+      margin: 0 auto var(--space-2xl);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255,255,255,0.2);
+      overflow: hidden;
+      background: url('assets/images/diag-hero.png') center/cover;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .scanner-line {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 4px;
+      background: var(--color-accent);
+      box-shadow: 0 0 15px 2px var(--color-accent);
+      animation: scan 3s ease-in-out infinite alternate;
+    }
+    @keyframes scan {
+      0% { top: 0; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { top: calc(100% - 4px); opacity: 0; }
+    }
+    .scanner-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.6) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: var(--space-md);
+    }
+    .scanner-overlay p {
+      font-size: var(--text-sm);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin: 0;
+    }
+
+    /* Steps Section */
+    .diag-steps {
+      padding: var(--space-4xl) var(--space-md);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .diag-steps__title {
+      text-align: center;
+      font-family: var(--font-heading);
+      font-size: var(--text-3xl);
+      color: var(--color-dark);
+      margin-bottom: var(--space-3xl);
+    }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--space-xl);
+      text-align: center;
+    }
+    .step-card {
+      padding: var(--space-xl);
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+    }
+    .step-card__number {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 40px;
+      background: var(--color-dark);
+      color: var(--color-white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-size: var(--text-lg);
+      border: 4px solid var(--color-background);
+    }
+    .step-card__title {
+      font-family: var(--font-heading);
+      font-size: var(--text-xl);
+      margin: var(--space-md) 0 var(--space-sm);
+      color: var(--color-primary);
+    }
+    .step-card__text {
+      font-size: var(--text-sm);
+      color: var(--color-text-light);
+      line-height: var(--leading-relaxed);
+    }
+
+    .cta-wrapper {
+      text-align: center;
+      margin-top: var(--space-4xl);
+    }
+    .btn-glow {
+      background: var(--color-primary);
+      color: var(--color-white);
+      box-shadow: 0 0 20px rgba(181, 142, 107, 0.4);
+      border: none;
+      transition: all var(--transition-fast);
+    }
+    .btn-glow:hover {
+      background: var(--color-dark);
+      box-shadow: 0 0 25px rgba(26, 26, 26, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Aller au contenu principal</a>
+
+  <!-- REUSABLE HEADER -->
+  <header class="header" id="header">
+    <div class="header__inner">
+      <div class="header__top">
+        <div class="header__search">
+          <input type="text" placeholder="Rechercher" aria-label="Rechercher">
+          <button aria-label="Lancer la recherche">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </button>
+        </div>
+        <div class="header__logo">
+          <a href="index.html">
+            <img src="assets/images/K LOGO.png" alt="KATUISCIA" class="header__logo-img desktop-logo">
+            <img src="assets/images/K%20ICONE.png" alt="KATUISCIA" class="header__logo-img mobile-logo">
+          </a>
+        </div>
+        <div class="header__actions">
+          <a href="connexion.html" class="header__action-btn" aria-label="Mon compte"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
+          <button class="header__action-btn" aria-label="Messages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
+          <a href="panier.html" class="header__action-btn" aria-label="Panier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="header__cart-count">0</span></a>
+          <button class="header__hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+      </div>
+      <div class="header__bottom">
+        <nav class="header__nav-group header__nav-group--left" aria-label="Navigation gauche">
+          <a href="boutique.html" class="header__nav-link">SOINS</a>
+          <a href="maison.html" class="header__nav-link">MAISON</a>
+          <div class="header__dropdown">
+            <a href="#" class="header__nav-link">CONSEILS</a>
+            <div class="header__dropdown-content">
+              <a href="blog.html">Blog</a>
+              <a href="diagnostic.html">Diagnostic</a>
+            </div>
+          </div>
+          <a href="contact.html" class="header__nav-link">CONTACT</a>
+        </nav>
+        <nav class="header__nav-group header__nav-group--right" aria-label="Navigation droite">
+          <div class="header__dropdown">
+            <a href="#" class="header__nav-link">SERVICES &amp; BOUTIQUES</a>
+            <div class="header__dropdown-content">
+              <a href="formation.html">Formation</a>
+              <a href="grossiste.html">Devenir Grossiste</a>
+              <a href="avantage-en-ligne.html">Avantage en ligne</a>
+              <a href="contact.html">Où nous trouver ?</a>
+            </div>
+          </div>
+          <div class="header__dropdown">
+            <a href="#" class="header__nav-link">NOS VALEURS</a>
+            <div class="header__dropdown-content header__dropdown-content--mega">
+              <span class="dropdown-heading">Nos Engagements</span>
+              <a href="valeurs-beaute-responsable.html">À propos de la beauté responsable</a>
+              <a href="valeurs-emballage-durable.html">À propos de l'emballage durable</a>
+              <a href="valeurs-personne-biodiversite.html">À propos de la personne &amp; la biodiversité</a>
+              <div class="dropdown-divider"></div>
+              <span class="dropdown-heading">Notre Vision</span>
+              <a href="maison.html">Un avenir plus beau</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <div class="header__search" style="display: flex; margin-bottom: var(--space-xl);">
+      <input type="text" placeholder="Rechercher" aria-label="Rechercher">
+      <button aria-label="Lancer la recherche">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </button>
+    </div>
+    <a href="index.html" class="mobile-menu__link">Accueil</a>
+    <a href="boutique.html" class="mobile-menu__link">Soins</a>
+    <a href="maison.html" class="mobile-menu__link">Maison</a>
+    <div class="mobile-menu__dropdown-wrapper">
+      <span class="mobile-menu__link">Conseils</span>
+      <div class="mobile-menu__dropdown-content">
+        <a href="blog.html" class="mobile-dropdown-link">Blog</a>
+        <a href="diagnostic.html" class="mobile-dropdown-link">Diagnostic</a>
+      </div>
+    </div>
+    <div class="mobile-menu__dropdown-wrapper">
+      <span class="mobile-menu__link">Nos Valeurs</span>
+      <div class="mobile-menu__dropdown-content">
+        <span class="mobile-dropdown-heading">Nos Engagements</span>
+        <a href="valeurs-beaute-responsable.html" class="mobile-dropdown-link">À propos de la beauté responsable</a>
+        <a href="valeurs-emballage-durable.html" class="mobile-dropdown-link">À propos de l'emballage durable</a>
+        <a href="valeurs-personne-biodiversite.html" class="mobile-dropdown-link">À propos de la personne &amp; la biodiversité</a>
+        <span class="mobile-dropdown-heading">Notre Vision</span>
+        <a href="maison.html" class="mobile-dropdown-link">Un avenir plus beau</a>
+      </div>
+    </div>
+    <a href="contact.html" class="mobile-menu__link">Contact</a>
+    <div class="mobile-menu__dropdown-wrapper">
+      <span class="mobile-menu__link">Services &amp; Boutiques</span>
+      <div class="mobile-menu__dropdown-content">
+        <a href="formation.html" class="mobile-dropdown-link">Formation</a>
+        <a href="grossiste.html" class="mobile-dropdown-link">Devenir Grossiste</a>
+        <a href="avantage-en-ligne.html" class="mobile-dropdown-link">Avantage en ligne</a>
+        <a href="contact.html" class="mobile-dropdown-link">Où nous trouver ?</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+    
+    <section class="diag-hero">
+      <div class="diag-hero__content reveal">
+        <h1 class="diag-hero__title">L'Expertise Botanique Renforcée par l'IA</h1>
+        <p class="diag-hero__desc">Notre intelligence artificielle analyse votre peau pour vous conseiller une prescription beauté faite pour vous et des conseils professionnels sur-mesure.</p>
+        
+        <div class="scanner-ui">
+          <div class="scanner-line"></div>
+          <div class="scanner-overlay">
+            <p>Analyse faciale en cours...</p>
+          </div>
+        </div>
+
+        <button class="btn btn-glow"><span>Démarrer l'analyse</span></button>
+        <p style="margin-top: var(--space-sm); font-size: var(--text-xs); opacity: 0.6;">Pour de meilleurs résultats, utilisez votre smartphone.</p>
+      </div>
+    </section>
+
+    <section class="diag-steps">
+      <h2 class="diag-steps__title reveal">Votre diagnostic en 4 étapes</h2>
+      
+      <div class="steps-grid">
+        <div class="step-card reveal reveal-delay-1">
+          <div class="step-card__number">1</div>
+          <h3 class="step-card__title">Prenez un Selfie</h3>
+          <p class="step-card__text">Prenez une photo claire de votre visage pour démarrer l'analyse visuelle de votre épiderme par notre IA.</p>
+        </div>
+        <div class="step-card reveal reveal-delay-2">
+          <div class="step-card__number">2</div>
+          <h3 class="step-card__title">Questionnaire</h3>
+          <p class="step-card__text">Aidez-nous à comprendre votre environnement et votre mode de vie en répondant à quelques questions rapides.</p>
+        </div>
+        <div class="step-card reveal reveal-delay-3">
+          <div class="step-card__number">3</div>
+          <h3 class="step-card__title">Profil Beauté</h3>
+          <p class="step-card__text">Découvrez votre type de peau, ses besoins spécifiques et ses vulnérabilités face à la pollution ou au stress.</p>
+        </div>
+        <div class="step-card reveal reveal-delay-4">
+          <div class="step-card__number">4</div>
+          <h3 class="step-card__title">Routine Sur-Mesure</h3>
+          <p class="step-card__text">Obtenez votre prescription personnalisée de soins KATUISCIA pour atteindre vos objectifs beauté.</p>
+        </div>
+      </div>
+
+      <div class="cta-wrapper reveal">
+        <p style="color: var(--color-text-light); max-width: 600px; margin: 0 auto var(--space-lg);">Avec des décennies de développement de formules révolutionnaires à base de plantes, KATUISCIA a perfectionné les méthodes les plus efficaces pour traiter tous les types de problèmes de peau.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer" id="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <div class="footer__brand-name"><a href="index.html"><img src="assets/images/K LOGO.png" alt="KATUISCIA" class="footer__logo-img"></a></div>
+        <p class="footer__brand-desc">Élever le quotidien grâce à des rituels botaniques soignés et des formulations conscientes.</p>
+      </div>
+      <div class="footer__column">
+        <h4 class="footer__column-title">Explorer</h4>
+        <a href="boutique.html" class="footer__link">Boutique</a>
+        <a href="maison.html" class="footer__link">À propos</a>
+        <a href="contact.html" class="footer__link">Contact</a>
+      </div>
+      <div class="footer__column">
+        <h4 class="footer__column-title">Informations</h4>
+        <a href="valeurs-beaute-responsable.html" class="footer__link">Durabilité</a>
+        <a href="politique-expedition.html" class="footer__link">Expédition</a>
+        <a href="politique-remboursement.html" class="footer__link">Retours</a>
+      </div>
+      <div class="footer__column">
+        <h4 class="footer__column-title">Légal</h4>
+        <a href="mentions-legales.html" class="footer__link">Mentions légales</a>
+        <a href="politique-confidentialite.html" class="footer__link">Confidentialité</a>
+        <a href="contact.html" class="footer__link">Contact</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2026 KATUISCIA. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

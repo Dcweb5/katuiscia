@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retours & Échanges — KATUISCIA</title>
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="/js/auth.js"></script>
+  <script src="/js/auth-guard.js"></script>
+</head>
+<body class="dashboard-layout">
+  {{> user-sidebar }}
+
+  <main class="dashboard-main">
+    <header class="dashboard-header">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="mobile-toggle" id="mobileToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <span style="font-family:var(--font-heading); font-size:var(--text-lg); color:var(--color-dark);">Retours & Échanges</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-primary" onclick="document.getElementById('modal-retour').showModal()">+ Nouvelle demande</button>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <h1 class="page-title">Mes Retours & Échanges</h1>
+      <p class="page-subtitle">Gérez vos demandes de retour et suivez leur avancement. Vous avez 30 jours après livraison pour effectuer un retour.</p>
+
+      <!-- Retour en cours -->
+      <div class="card" style="margin-bottom:var(--space-lg); border-left:4px solid var(--color-warm);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-md); flex-wrap:wrap; gap:8px;">
+          <div>
+            <strong style="font-size:var(--text-lg);">Retour #RET-001</strong>
+            <span style="color:var(--color-text-muted); font-size:var(--text-sm); margin-left:8px;">Demandé le 4 Mai 2026</span>
+          </div>
+          <span class="status-badge status-badge--warning">En attente de retour</span>
+        </div>
+        <div style="display:flex; gap:var(--space-lg); align-items:center; padding:var(--space-md); background:var(--color-gray); border-radius:var(--radius-md); margin-bottom:var(--space-md);">
+          <img src="assets/images/product-4a.png" style="width:56px; height:56px; border-radius:8px; object-fit:cover;">
+          <div style="flex:1;">
+            <strong>Rouleau Quartz Rose</strong>
+            <p style="font-size:var(--text-sm); color:var(--color-text-muted);">Commande #KAT-10495 • 55,00 €</p>
+          </div>
+        </div>
+        <div style="background:rgba(196,150,122,0.08); border-radius:var(--radius-sm); padding:var(--space-md); margin-bottom:var(--space-md);">
+          <p style="font-size:var(--text-sm); margin-bottom:4px;"><strong>Motif :</strong> Produit endommagé à la réception</p>
+          <p style="font-size:var(--text-sm); color:var(--color-text-muted);"><strong>Type :</strong> Échange (même produit)</p>
+        </div>
+        <!-- Tracking retour -->
+        <div style="display:flex; align-items:center; gap:4px; margin-bottom:var(--space-sm);">
+          <div style="flex:1; height:4px; background:var(--color-warm); border-radius:2px;"></div>
+          <div style="flex:1; height:4px; background:var(--color-warm); border-radius:2px;"></div>
+          <div style="flex:1; height:4px; background:var(--color-border); border-radius:2px;"></div>
+          <div style="flex:1; height:4px; background:var(--color-border); border-radius:2px;"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--color-text-muted); margin-bottom:var(--space-md);">
+          <span>Demandé</span><span style="color:var(--color-warm); font-weight:600;">Approuvé</span><span>Colis reçu</span><span>Remboursé</span>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn-primary" style="padding:8px 16px; font-size:12px;">Imprimer l'étiquette retour</button>
+          <button style="padding:8px 16px; font-size:12px; border:1px solid var(--color-border); border-radius:var(--radius-sm); background:transparent; cursor:pointer; color:var(--color-error);">Annuler la demande</button>
+        </div>
+      </div>
+
+      <!-- Retour terminé -->
+      <div class="card" style="margin-bottom:var(--space-lg); opacity:0.75;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-md); flex-wrap:wrap; gap:8px;">
+          <div>
+            <strong style="font-size:var(--text-lg);">Retour #RET-000</strong>
+            <span style="color:var(--color-text-muted); font-size:var(--text-sm); margin-left:8px;">Demandé le 15 Sep 2025</span>
+          </div>
+          <span class="status-badge status-badge--success">Remboursé</span>
+        </div>
+        <div style="display:flex; gap:var(--space-lg); align-items:center; padding:var(--space-md); background:var(--color-gray); border-radius:var(--radius-md);">
+          <img src="assets/images/product-3a.png" style="width:56px; height:56px; border-radius:8px; object-fit:cover;">
+          <div style="flex:1;">
+            <strong>Gommage Terracotta</strong>
+            <p style="font-size:var(--text-sm); color:var(--color-text-muted);">Commande #KAT-08510 • Remboursé 85,00 € le 28 Sep</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: Demande de retour -->
+  <dialog id="modal-retour" class="admin-modal" style="max-width:580px;">
+    <div class="admin-modal__content">
+      <div class="admin-modal__header">
+        <h2 style="font-family:var(--font-heading); font-size:var(--text-xl);">Demande de Retour / Échange</h2>
+        <button onclick="document.getElementById('modal-retour').close()" class="admin-modal__close">&times;</button>
+      </div>
+      <form class="admin-modal__body">
+        <div class="admin-form-group">
+          <label class="admin-label">Commande concernée *</label>
+          <select class="admin-input" required>
+            <option value="">Sélectionnez une commande...</option>
+            <option>#KAT-10512 — Nectar Lumineux x2 (250 €) — 2 Mai 2026</option>
+            <option>#KAT-10495 — Sérum Botanique Éclat (110 €) — 20 Oct 2026</option>
+            <option>#KAT-09823 — Gommage Terracotta (85 €) — 12 Sep 2026</option>
+          </select>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Article à retourner *</label>
+          <select class="admin-input" required>
+            <option value="">Sélectionnez l'article...</option>
+            <option>Nectar Lumineux — 125 €</option>
+            <option>Sérum Botanique Éclat — 110 €</option>
+            <option>Gommage Terracotta — 85 €</option>
+          </select>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Type de demande *</label>
+          <select class="admin-input" required>
+            <option>Remboursement</option>
+            <option>Échange (même produit)</option>
+            <option>Échange (autre produit)</option>
+          </select>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Motif du retour *</label>
+          <select class="admin-input" required>
+            <option value="">Sélectionnez un motif...</option>
+            <option>Produit endommagé / défectueux</option>
+            <option>Produit non conforme à la description</option>
+            <option>Erreur de commande</option>
+            <option>Ne me convient pas</option>
+            <option>Allergie / réaction cutanée</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Commentaire</label>
+          <textarea class="admin-input" rows="3" placeholder="Décrivez votre problème en détail..." style="resize:vertical;"></textarea>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Photo (optionnel)</label>
+          <div style="border:2px dashed var(--color-border); border-radius:var(--radius-md); padding:var(--space-lg); text-align:center; cursor:pointer;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:24px; height:24px; color:var(--color-text-muted); margin:0 auto 4px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <p style="font-size:var(--text-sm); color:var(--color-text-muted);">Ajoutez une photo du produit <span style="color:var(--color-warm);">parcourir</span></p>
+          </div>
+        </div>
+        <div style="display:flex; gap:var(--space-sm); justify-content:flex-end; padding-top:var(--space-md); border-top:1px solid var(--color-border);">
+          <button type="button" onclick="document.getElementById('modal-retour').close()" style="padding:10px 20px; border:1px solid var(--color-border); border-radius:var(--radius-sm); background:transparent; cursor:pointer; font-size:var(--text-sm);">Annuler</button>
+          <button type="submit" class="btn-primary">Soumettre la demande</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <script src="/js/account.js"></script>
+  <script>
+    document.getElementById('mobileToggle')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+    document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'compte-retours') l.classList.add('active'); });
+  </script>
+</body>
+</html>

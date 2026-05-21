@@ -1,0 +1,372 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   KATUISCIA — Global Base Layer
+   ============================================ */
+@layer base {
+  *, *::before, *::after {
+    @apply box-border m-0 p-0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply min-h-screen font-body text-dark bg-cream antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  img, picture, video, canvas, svg {
+    @apply block max-w-full;
+  }
+
+  img {
+    @apply h-auto;
+  }
+
+  button {
+    @apply cursor-pointer bg-transparent border-none;
+  }
+
+  a {
+    @apply text-inherit no-underline;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply break-words;
+  }
+
+  /* Scrollbar styling */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ============================================
+   KATUISCIA — Reusable Components
+   ============================================ */
+@layer components {
+
+  /* ==== BUTTONS ==== */
+  .btn-katuiscia {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3
+           text-xs font-medium tracking-[0.2em] uppercase
+           border border-dark text-dark bg-transparent
+           rounded-full transition-all duration-300 ease-out-expo
+           hover:bg-dark hover:text-cream;
+  }
+
+  .btn-katuiscia-warm {
+    @apply btn-katuiscia border-warm text-warm hover:bg-warm hover:text-white;
+  }
+
+  .btn-katuiscia-filled {
+    @apply btn-katuiscia bg-dark text-cream border-dark hover:bg-warm hover:border-warm;
+  }
+
+  /* ==== SECTION HEADER ==== */
+  .section-heading {
+    @apply text-center mb-16;
+  }
+
+  .section-heading h2 {
+    @apply font-heading text-3xl lg:text-4xl font-normal text-dark mb-4;
+  }
+
+  .section-heading .divider-line {
+    @apply w-16 h-px bg-warm mx-auto my-6;
+  }
+
+  .section-heading p {
+    @apply text-base text-text-light max-w-lg mx-auto leading-relaxed;
+  }
+
+  /* ==== PRODUCT CARD ==== */
+  .product-card-k {
+    @apply relative flex flex-col rounded-xl overflow-hidden bg-white shadow-card
+           transition-all duration-300 ease-out-expo;
+  }
+
+  .product-card-k:hover {
+    @apply shadow-lg -translate-y-1;
+  }
+
+  .product-card-k .card-image {
+    @apply relative w-full aspect-[3/4] overflow-hidden bg-gray-k;
+  }
+
+  .product-card-k .card-image img {
+    @apply absolute inset-0 w-full h-full object-cover transition-all duration-500 ease-out-expo;
+  }
+
+  .product-card-k .card-image .img-primary {
+    @apply z-[2] opacity-100;
+  }
+
+  .product-card-k .card-image .img-secondary {
+    @apply z-[1] opacity-0 scale-[1.08];
+  }
+
+  .product-card-k:hover .card-image .img-primary {
+    @apply opacity-0 scale-105;
+  }
+
+  .product-card-k:hover .card-image .img-secondary {
+    @apply opacity-100 scale-100;
+  }
+
+  .product-card-k .card-badge {
+    @apply absolute top-4 left-4 z-[3] bg-peach text-dark
+           text-xs font-medium tracking-wide uppercase
+           px-3 py-1 rounded-full;
+  }
+
+  .product-card-k .card-quick-view {
+    @apply absolute bottom-4 left-1/2 -translate-x-1/2 translate-y-5 opacity-0
+           z-[3] bg-white text-dark text-xs font-medium tracking-wider uppercase
+           px-6 py-2.5 border border-dark cursor-pointer
+           transition-all duration-300 ease-out-expo
+           hover:bg-dark hover:text-cream;
+  }
+
+  .product-card-k:hover .card-quick-view {
+    @apply opacity-100 translate-y-0;
+  }
+
+  .product-card-k .card-cart-btn {
+    @apply absolute bottom-5 right-5 flex items-center justify-center
+           w-[42px] h-[42px] rounded-full
+           border border-white/40 bg-white/20 backdrop-blur-xl
+           text-white opacity-0 translate-y-2.5 z-[5]
+           transition-all duration-300 ease-out-expo
+           hover:bg-cream hover:text-dark hover:border-cream hover:scale-110;
+  }
+
+  .product-card-k:hover .card-cart-btn {
+    @apply opacity-100 translate-y-0;
+  }
+
+  .product-card-k .card-info {
+    @apply p-6 flex flex-col gap-1;
+  }
+
+  .product-card-k .card-category {
+    @apply text-xs font-medium tracking-wider uppercase text-text-muted;
+  }
+
+  .product-card-k .card-name {
+    @apply font-heading text-xl font-medium text-dark leading-snug;
+  }
+
+  .product-card-k .card-desc {
+    @apply text-sm text-text-light mt-0.5;
+  }
+
+  .product-card-k .card-price {
+    @apply font-body text-md font-medium text-dark mt-1;
+  }
+
+  /* ==== SCROLL REVEAL ==== */
+  .reveal-k, .reveal-k-k {
+    @apply opacity-0 translate-y-8 transition-all duration-700 ease-out-expo;
+  }
+
+  .reveal-k.revealed, .reveal-k-k.revealed {
+    @apply opacity-100 translate-y-0;
+  }
+
+  .reveal-k.delay-1, .reveal-k-k.delay-1 { transition-delay: 100ms; }
+  .reveal-k.delay-2, .reveal-k-k.delay-2 { transition-delay: 200ms; }
+  .reveal-k.delay-3, .reveal-k-k.delay-3 { transition-delay: 300ms; }
+  .reveal-k.delay-4, .reveal-k-k.delay-4 { transition-delay: 400ms; }
+
+  /* ==== BACK TO TOP ==== */
+  .back-to-top-k {
+    @apply fixed bottom-8 right-8 w-12 h-12 bg-dark text-cream
+           border-none rounded-full flex items-center justify-center
+           cursor-pointer z-[900] opacity-0 translate-y-5
+           transition-all duration-300 shadow-lg
+           hover:bg-warm;
+    visibility: hidden;
+  }
+
+  .back-to-top-k.visible {
+    @apply opacity-100 translate-y-0;
+    visibility: visible;
+  }
+
+  .back-to-top-k svg {
+    @apply w-6 h-6;
+  }
+
+  /* ==== HEADER STATES ==== */
+  .header-k.scrolled {
+    @apply bg-cream/95 backdrop-blur-xl shadow-sm;
+  }
+
+  .header-k.header-hidden {
+    @apply -translate-y-full;
+  }
+
+  /* ==== NAV LINKS ==== */
+  .nav-link-k {
+    @apply font-heading text-[23.4px] font-normal uppercase text-dark
+           relative py-1 leading-none cursor-pointer;
+  }
+
+  .nav-link-k::after {
+    content: '';
+    @apply absolute -bottom-1.5 left-0 w-0 h-[3px] bg-warm
+           transition-all duration-300 ease-out-expo;
+  }
+
+  .nav-link-k:hover::after, .nav-link-k--active::after {
+    @apply w-full;
+  }
+
+  /* ==== DROPDOWNS ==== */
+  .dropdown-panel-k {
+    @apply absolute top-full left-1/2 -translate-x-1/2 translate-y-3
+           bg-[rgba(255,255,255,0.92)] backdrop-blur-[20px] min-w-[230px]
+           shadow-[0_12px_40px_rgba(61,43,43,0.12),0_2px_8px_rgba(61,43,43,0.06)]
+           rounded-lg border border-border-k/50
+           py-4 opacity-0 pointer-events-none
+           transition-all duration-300 ease-out-expo z-10;
+    visibility: hidden;
+  }
+
+  .dropdown-panel-k::before {
+    content: '';
+    @apply absolute top-0 left-1/2 -translate-x-1/2 w-10 h-0.5
+           bg-gradient-to-r from-transparent via-warm to-transparent rounded-sm;
+  }
+
+  .dropdown-k:hover .dropdown-panel-k {
+    @apply opacity-100 translate-y-0 pointer-events-auto;
+    visibility: visible;
+  }
+
+  .dropdown-panel-k a {
+    @apply block px-8 py-2.5 font-body text-sm font-medium tracking-wide
+           text-dark relative transition-all duration-200 ease-out-expo;
+  }
+
+  .dropdown-panel-k a::before {
+    content: '';
+    @apply absolute left-4 top-1/2 -translate-y-1/2 w-[3px] h-4
+           bg-warm rounded-sm scale-x-0 transition-transform duration-200 ease-out-expo;
+  }
+
+  .dropdown-panel-k a:hover {
+    @apply bg-gradient-to-r from-peach/50 to-transparent pl-7;
+  }
+
+  .dropdown-panel-k a:hover::before {
+    @apply scale-x-100;
+  }
+
+  .dropdown-heading-k {
+    @apply block font-body text-[11px] font-semibold text-warm
+           uppercase tracking-[0.2em] px-8 py-2 my-1;
+  }
+
+  /* ==== MOBILE MENU ==== */
+  .mobile-menu-k.open {
+    @apply right-0;
+    right: 0 !important;
+  }
+
+  .mobile-link-k {
+    @apply font-heading text-3xl font-light text-dark
+           opacity-0 translate-x-10 transition-all duration-300 ease-out-expo
+           hover:text-warm;
+  }
+
+  .mobile-menu-k.open .mobile-link-k {
+    @apply opacity-100 translate-x-0;
+  }
+
+  .mobile-menu-k.open .mobile-link-k:nth-child(1) { transition-delay: 100ms; }
+  .mobile-menu-k.open .mobile-link-k:nth-child(2) { transition-delay: 180ms; }
+  .mobile-menu-k.open .mobile-link-k:nth-child(3) { transition-delay: 260ms; }
+  .mobile-menu-k.open .mobile-link-k:nth-child(4) { transition-delay: 340ms; }
+  .mobile-menu-k.open .mobile-link-k:nth-child(5) { transition-delay: 420ms; }
+
+  /* Hamburger animation */
+  .hamburger-k.active span:nth-child(1) {
+    @apply rotate-45 translate-x-0 translate-y-[7px];
+  }
+  .hamburger-k.active span:nth-child(2) {
+    @apply opacity-0;
+  }
+  .hamburger-k.active span:nth-child(3) {
+    @apply -rotate-45 translate-x-0 -translate-y-[7px];
+  }
+
+  /* ==== COOKIE POPUP ==== */
+  .cookie-popup-k.visible {
+    @apply translate-y-0;
+  }
+  .cookie-popup-k.hiding {
+    @apply translate-y-full;
+  }
+
+  /* ==== HERO SLIDESHOW ==== */
+  .hero-slide {
+    @apply absolute opacity-0 scale-[0.92] rotate-2
+           transition-all duration-700 ease-out-expo pointer-events-none;
+  }
+
+  .hero-slide.active {
+    @apply relative opacity-100 scale-100 rotate-2 pointer-events-auto;
+  }
+
+  .hero-slide.exiting {
+    @apply opacity-0 scale-95 -rotate-1;
+  }
+
+  .hero-slide.active:hover img {
+    @apply -rotate-2 scale-[1.03];
+  }
+
+  /* Hero Dots */
+  .hero-dot {
+    @apply w-2.5 h-2.5 rounded-full border-[1.5px] border-dark
+           bg-transparent cursor-pointer p-0
+           transition-all duration-200 ease-out-expo;
+  }
+
+  .hero-dot.active {
+    @apply bg-dark w-7 rounded-[5px];
+  }
+
+  /* Showcase Dots */
+  .showcase-dot {
+    @apply w-2 h-2 rounded-full bg-gray-med border-none cursor-pointer p-0
+           transition-all duration-300 ease-out-expo;
+  }
+
+  .showcase-dot.active {
+    @apply bg-dark w-6 rounded;
+  }
+}

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beauté Responsable — KATUISCIA | Nos Engagements</title>
+  <meta name="description" content="Découvrez nos engagements pour une beauté responsable. KATUISCIA prend soin des personnes et de la planète avec des formulations conscientes.">
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/about.css">
+  <style>
+    /* Specific styles for valeurs pages */
+    .valeurs-hero {
+      position: relative;
+      height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background-color: var(--color-dark);
+      color: var(--color-white);
+      text-align: center;
+    }
+    .valeurs-hero__bg {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: url('assets/images/beaute-resp-hero.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed; /* parallax effect */
+      opacity: 0.6;
+      z-index: 1;
+    }
+    .valeurs-hero__content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding: var(--space-xl);
+    }
+    .valeurs-hero__title {
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 6vw, 5rem);
+      margin-bottom: var(--space-md);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+    }
+    .valeurs-hero__subtitle {
+      font-size: var(--text-lg);
+      font-weight: 300;
+      opacity: 0.9;
+    }
+    .valeurs-section {
+      padding: var(--space-4xl) 0;
+      background-color: var(--color-light);
+    }
+    .valeurs-section--dark {
+      background-color: var(--color-dark);
+      color: var(--color-white);
+    }
+    .valeurs-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-2xl);
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .valeurs-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .valeurs-grid--reverse .valeurs-text {
+        order: -1;
+      }
+    }
+    .valeurs-text h2 {
+      font-family: var(--font-heading);
+      font-size: var(--text-3xl);
+      margin-bottom: var(--space-md);
+      color: inherit;
+    }
+    .valeurs-section:not(.valeurs-section--dark) .valeurs-text h2 {
+      color: var(--color-primary);
+    }
+    .valeurs-text p {
+      font-size: var(--text-base);
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-md);
+      opacity: 0.8;
+    }
+    .valeurs-image {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+    }
+    .valeurs-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-xl);
+      margin-top: var(--space-3xl);
+      text-align: center;
+    }
+    .stat-item__number {
+      display: block;
+      font-family: var(--font-heading);
+      font-size: 4rem;
+      color: var(--color-primary);
+      margin-bottom: var(--space-xs);
+    }
+    .valeurs-section--dark .stat-item__number {
+      color: var(--color-accent);
+    }
+    .stat-item__text {
+      font-size: var(--text-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Aller au contenu principal</a>
+
+  <header class="header" id="header">
+    <div class="header__inner">
+      <div class="header__top">
+        <div class="header__search">
+          <input type="text" placeholder="Rechercher" aria-label="Rechercher">
+          <button aria-label="Lancer la recherche">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </button>
+        </div>
+        <div class="header__logo">
+          <a href="index.html">
+            <img src="assets/images/K LOGO.png" alt="KATUISCIA" class="header__logo-img desktop-logo">
+            <img src="assets/images/K%20ICONE.png" alt="KATUISCIA" class="header__logo-img mobile-logo">
+          </a>
+        </div>
+        <div class="header__actions">
+          <a href="connexion.html" class="header__action-btn" aria-label="Mon compte"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
+          <button class="header__action-btn" aria-label="Messages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
+          <a href="panier.html" class="header__action-btn" aria-label="Panier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="header__cart-count">0</span></a>
+          <button class="header__hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+      </div>
+      <div class="header__bottom">
+        <nav class="header__nav-group header__nav-group--left" aria-label="Navigation gauche">
+          <a href="boutique.html" class="header__nav-link">SOINS</a>
+          <a href="maison.html" class="header__nav-link">MAISON</a>
+          <div class="header__dropdown">
+            <a href="#" class="header__nav-link">CONSEILS</a>
+            <div class="header__dropdown-content">
+              <a href="blog.html">Blog</a>
+              <a href="diagnostic.html">Diagnostic</a>
+            </div>
+          </div>
+          <a href="contact.html" class="header__nav-link">CONTACT</a>
+        </nav>
+        <nav class="header__nav-group header__nav-group--right" aria-label="Navigation droite">
+          <div class="header__dropdown">
+            <a href="#" class="header__nav-link">SERVICES &amp; BOUTIQUES</a>
+            <div class="header__dropdown-content">
+              <a href="formation.html">Formation</a>
+              <a href="grossiste.html">Devenir Grossiste</a>
+              <a href="avantage-en-ligne.html">Avantage en ligne</a>
+              <a href="contact.html">Où nous trouver ?</a>
+            </div>
+          </div>
+          <div class="header__dropdown">
+            <a href="#" class="header__nav-link">NOS VALEURS</a>
+            <div class="header__dropdown-content header__dropdown-content--mega">
+              <span class="dropdown-heading">Nos Engagements</span>
+              <a href="valeurs-beaute-responsable.html">À propos de la beauté responsable</a>
+              <a href="valeurs-emballage-durable.html">À propos de l'emballage durable</a>
+              <a href="valeurs-personne-biodiversite.html">À propos de la personne &amp; la biodiversité</a>
+              <div class="dropdown-divider"></div>
+              <span class="dropdown-heading">Notre Vision</span>
+              <a href="maison.html">Un avenir plus beau</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <div class="header__search" style="display: flex; margin-bottom: var(--space-xl);">
+      <input type="text" placeholder="Rechercher" aria-label="Rechercher">
+      <button aria-label="Lancer la recherche">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </button>
+    </div>
+    <a href="index.html" class="mobile-menu__link">Accueil</a>
+    <a href="boutique.html" class="mobile-menu__link">Soins</a>
+    <a href="maison.html" class="mobile-menu__link">Maison</a>
+    <div class="mobile-menu__dropdown-wrapper">
+      <span class="mobile-menu__link">Conseils</span>
+      <div class="mobile-menu__dropdown-content">
+        <a href="blog.html" class="mobile-dropdown-link">Blog</a>
+        <a href="diagnostic.html" class="mobile-dropdown-link">Diagnostic</a>
+      </div>
+    </div>
+    <div class="mobile-menu__dropdown-wrapper">
+      <span class="mobile-menu__link">Nos Valeurs</span>
+      <div class="mobile-menu__dropdown-content">
+        <span class="mobile-dropdown-heading">Nos Engagements</span>
+        <a href="valeurs-beaute-responsable.html" class="mobile-dropdown-link">À propos de la beauté responsable</a>
+        <a href="valeurs-emballage-durable.html" class="mobile-dropdown-link">À propos de l'emballage durable</a>
+        <a href="valeurs-personne-biodiversite.html" class="mobile-dropdown-link">À propos de la personne &amp; la biodiversité</a>
+        <span class="mobile-dropdown-heading">Notre Vision</span>
+        <a href="maison.html" class="mobile-dropdown-link">Un avenir plus beau</a>
+      </div>
+    </div>
+    <a href="contact.html" class="mobile-menu__link">Contact</a>
+    <div class="mobile-menu__dropdown-wrapper">
+      <span class="mobile-menu__link">Services &amp; Boutiques</span>
+      <div class="mobile-menu__dropdown-content">
+        <a href="formation.html" class="mobile-dropdown-link">Formation</a>
+        <a href="grossiste.html" class="mobile-dropdown-link">Devenir Grossiste</a>
+        <a href="avantage-en-ligne.html" class="mobile-dropdown-link">Avantage en ligne</a>
+        <a href="contact.html" class="mobile-dropdown-link">Où nous trouver ?</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+    
+    <section class="valeurs-hero">
+      <div class="valeurs-hero__bg"></div>
+      <div class="valeurs-hero__content reveal">
+        <h1 class="valeurs-hero__title">Beauté Responsable</h1>
+        <p class="valeurs-hero__subtitle">Pour vous et la planète, nous nous engageons toujours plus, toujours mieux. Pour une beauté toujours plus responsable et engagée.</p>
+      </div>
+    </section>
+
+    <section class="valeurs-section">
+      <div class="container">
+        <div class="valeurs-grid">
+          <div class="valeurs-text reveal">
+            <h2>Prendre soin des personnes</h2>
+            <p>L'écoute est au cœur de notre philosophie. KATUISCIA s'engage à vous orienter pour vous sentir bien dans votre corps et confiante dans votre beauté.</p>
+            <p><strong>Qualité & sécurité :</strong> Gage de qualité et de traçabilité, nos formules de soin sont conçues et fabriquées avec les plus hauts standards d'exigence, respectant votre peau et votre bien-être.</p>
+            <p><strong>Nos collaborateurs :</strong> Aujourd'hui comme hier, nos collaborateurs sont notre atout principal. Ils partagent cette quête collective de générosité et de perfection propre à notre marque.</p>
+          </div>
+          <div class="valeurs-img-wrapper reveal reveal-delay-1">
+            <img src="assets/images/biodiv-hero.png" alt="Femme appliquant un soin KATUISCIA" class="valeurs-image">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="valeurs-section valeurs-section--dark">
+      <div class="container">
+        <div class="valeurs-grid valeurs-grid--reverse">
+          <div class="valeurs-text reveal">
+            <h2>Prendre soin de la planète</h2>
+            <p>Prendre soin de la planète suppose avant tout de réduire l'impact environnemental de notre activité. KATUISCIA s'engage à réduire ses émissions carbone et à protéger notre environnement précieux.</p>
+            <p>Nous sélectionnons chaque ingrédient pour son efficacité et dans le respect de son écosystème d'origine. Notre objectif est de privilégier l'agriculture respectueuse de la nature, avec un maximum d'extraits de plantes bio.</p>
+          </div>
+          <div class="valeurs-img-wrapper reveal reveal-delay-1">
+            <img src="assets/images/emballage-hero.png" alt="Feuilles botaniques et nature" class="valeurs-image">
+          </div>
+        </div>
+
+        <div class="valeurs-stats reveal">
+          <div class="stat-item">
+            <span class="stat-item__number">40%</span>
+            <span class="stat-item__text">d'ingrédients d'origine bio ciblés</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-item__number">-30%</span>
+            <span class="stat-item__text">d'émissions carbone visées d'ici 2030</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-item__number">100%</span>
+            <span class="stat-item__text">de traçabilité sur nos actifs phares</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vision" id="vision">
+      <div class="vision__inner reveal">
+        <blockquote class="vision__quote">"L'agriculture durable est celle qui protège la nature et les femmes et les hommes qui la cultivent."</blockquote>
+        <a href="valeurs-emballage-durable.html" class="btn" style="margin-top: var(--space-xl);"><span>Découvrir l'emballage durable</span></a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer" id="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <div class="footer__brand-name"><a href="index.html"><img src="assets/images/K LOGO.png" alt="KATUISCIA" class="footer__logo-img"></a></div>
+        <p class="footer__brand-desc">Élever le quotidien grâce à des rituels botaniques soignés et des formulations conscientes.</p>
+      </div>
+      <div class="footer__column">
+        <h4 class="footer__column-title">Explorer</h4>
+        <a href="boutique.html" class="footer__link">Boutique</a>
+        <a href="maison.html" class="footer__link">À propos</a>
+        <a href="contact.html" class="footer__link">Contact</a>
+      </div>
+      <div class="footer__column">
+        <h4 class="footer__column-title">Informations</h4>
+        <a href="valeurs-beaute-responsable.html" class="footer__link">Durabilité</a>
+        <a href="politique-expedition.html" class="footer__link">Expédition</a>
+        <a href="politique-remboursement.html" class="footer__link">Retours</a>
+      </div>
+      <div class="footer__column">
+        <h4 class="footer__column-title">Légal</h4>
+        <a href="mentions-legales.html" class="footer__link">Mentions légales</a>
+        <a href="politique-confidentialite.html" class="footer__link">Confidentialité</a>
+        <a href="contact.html" class="footer__link">Contact</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2026 KATUISCIA. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

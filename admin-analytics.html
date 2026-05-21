@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics — KATUISCIA Admin</title>
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin-guard.js"></script>
+</head>
+<body class="dashboard-layout admin-dashboard">
+  {{> admin-sidebar }}
+  <main class="dashboard-main">
+    <header class="dashboard-header">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="mobile-toggle" id="mobileToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h2 style="font-family:var(--font-heading); font-size:var(--text-lg);">Analytics & Trafic</h2>
+      </div>
+      <div class="header-actions">
+        <select class="admin-input" style="width:auto; padding:8px 16px;"><option>7 derniers jours</option><option>30 derniers jours</option><option selected>Ce mois</option><option>Ce trimestre</option></select>
+        <div style="width:36px; height:36px; border-radius:50%; background:var(--color-dark); color:var(--color-white); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:bold;">AD</div>
+      </div>
+    </header>
+    <div class="dashboard-content">
+      <h1 class="page-title">Trafic & Comportement</h1>
+      <p class="page-subtitle" style="margin-bottom:var(--space-2xl);">Analysez le trafic de votre boutique et le comportement de vos visiteurs.</p>
+
+      <div class="stats-grid" style="grid-template-columns:repeat(4, 1fr); margin-bottom:var(--space-2xl);">
+        <div class="card stat-card"><span class="stat-title">Visiteurs Uniques</span><span class="stat-value">14 238</span><span class="stat-change positive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>+22% vs mois dernier</span></div>
+        <div class="card stat-card"><span class="stat-title">Pages Vues</span><span class="stat-value">52 410</span><span class="stat-change positive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>3.68 pages / session</span></div>
+        <div class="card stat-card"><span class="stat-title">Taux de Conversion</span><span class="stat-value">3.2%</span><span class="stat-change positive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>+0.4% vs mois dernier</span></div>
+        <div class="card stat-card"><span class="stat-title">Taux de Rebond</span><span class="stat-value">38%</span><span class="stat-change positive" style="color:#2e7d32;">↓ -5% (amélioration)</span></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:2fr 1fr; gap:var(--space-xl);">
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-lg);">
+            <h3 style="font-family:var(--font-heading); font-size:var(--text-xl);">Trafic Quotidien</h3>
+            <div class="admin-tabs" style="border:none; margin:0;">
+              <button class="admin-tab active" style="padding:6px 12px; font-size:11px;">Visiteurs</button>
+              <button class="admin-tab" style="padding:6px 12px; font-size:11px;">Pages vues</button>
+            </div>
+          </div>
+          <div class="chart-container">
+            <div class="bar" style="height:45%;"><span class="bar-value">450</span><span class="bar-label">Lun</span></div>
+            <div class="bar" style="height:52%;"><span class="bar-value">520</span><span class="bar-label">Mar</span></div>
+            <div class="bar highlight" style="height:75%;"><span class="bar-value">750</span><span class="bar-label">Mer</span></div>
+            <div class="bar" style="height:60%;"><span class="bar-value">600</span><span class="bar-label">Jeu</span></div>
+            <div class="bar highlight" style="height:85%;"><span class="bar-value">850</span><span class="bar-label">Ven</span></div>
+            <div class="bar" style="height:68%;"><span class="bar-value">680</span><span class="bar-label">Sam</span></div>
+            <div class="bar" style="height:40%;"><span class="bar-value">400</span><span class="bar-label">Dim</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-family:var(--font-heading); font-size:var(--text-xl); margin-bottom:var(--space-lg);">Pages les Plus Visitées</h3>
+          <ul class="admin-list">
+            <li><div class="admin-list-content"><div class="admin-list-title">/ (Accueil)</div><div class="admin-list-subtitle">12 450 vues • 42% du trafic</div></div></li>
+            <li><div class="admin-list-content"><div class="admin-list-title">/boutique</div><div class="admin-list-subtitle">8 340 vues • 28%</div></div></li>
+            <li><div class="admin-list-content"><div class="admin-list-title">/produit</div><div class="admin-list-subtitle">4 520 vues • 15%</div></div></li>
+            <li><div class="admin-list-content"><div class="admin-list-title">/maison</div><div class="admin-list-subtitle">2 100 vues • 7%</div></div></li>
+            <li><div class="admin-list-content"><div class="admin-list-title">/contact</div><div class="admin-list-subtitle">1 800 vues • 6%</div></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-xl); margin-top:var(--space-xl);">
+        <div class="card">
+          <h3 style="font-family:var(--font-heading); font-size:var(--text-xl); margin-bottom:var(--space-lg);">Sources de Trafic</h3>
+          <ul class="admin-list">
+            <li><div class="admin-list-icon" style="background:rgba(66,133,244,0.1);"><span style="font-weight:bold; font-size:11px; color:#1565c0;">42%</span></div><div class="admin-list-content"><div class="admin-list-title">Recherche Organique</div><div class="admin-list-subtitle">Google, Bing</div></div></li>
+            <li><div class="admin-list-icon" style="background:rgba(233,30,99,0.1);"><span style="font-weight:bold; font-size:11px; color:#c2185b;">28%</span></div><div class="admin-list-content"><div class="admin-list-title">Réseaux Sociaux</div><div class="admin-list-subtitle">Instagram, TikTok, Facebook</div></div></li>
+            <li><div class="admin-list-icon" style="background:rgba(196,150,122,0.15);"><span style="font-weight:bold; font-size:11px; color:var(--color-warm);">18%</span></div><div class="admin-list-content"><div class="admin-list-title">Accès Direct</div><div class="admin-list-subtitle">URL directe, favoris</div></div></li>
+            <li><div class="admin-list-icon" style="background:rgba(76,175,80,0.1);"><span style="font-weight:bold; font-size:11px; color:#2e7d32;">12%</span></div><div class="admin-list-content"><div class="admin-list-title">Campagnes Email</div><div class="admin-list-subtitle">Newsletter, promotions</div></div></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 style="font-family:var(--font-heading); font-size:var(--text-xl); margin-bottom:var(--space-lg);">Appareils</h3>
+          <ul class="admin-list">
+            <li><div class="admin-list-icon" style="background:var(--color-gray);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:16px; height:16px;"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div class="admin-list-content"><div class="admin-list-title">Mobile</div><div class="admin-list-subtitle">62% — 8 828 visiteurs</div></div></li>
+            <li><div class="admin-list-icon" style="background:var(--color-gray);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:16px; height:16px;"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div class="admin-list-content"><div class="admin-list-title">Desktop</div><div class="admin-list-subtitle">30% — 4 271 visiteurs</div></div></li>
+            <li><div class="admin-list-icon" style="background:var(--color-gray);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:16px; height:16px;"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div class="admin-list-content"><div class="admin-list-title">Tablette</div><div class="admin-list-subtitle">8% — 1 139 visiteurs</div></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script>
+    document.getElementById('mobileToggle')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+    document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'admin-analytics') l.classList.add('active'); });
+  </script>
+  <script src="/js/account.js"></script>
+</body>
+</html>

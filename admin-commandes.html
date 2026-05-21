@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commandes — KATUISCIA Admin</title>
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin-guard.js"></script>
+</head>
+<body class="dashboard-layout admin-dashboard">
+  {{> admin-sidebar }}
+
+  <main class="dashboard-main">
+    <header class="dashboard-header">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="mobile-toggle" id="mobileToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div class="header-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Rechercher une commande, un client..."></div>
+      </div>
+      <div class="header-actions">
+        <select class="admin-input" style="width:auto; padding:8px 16px;"><option>Ce mois</option><option>Cette semaine</option><option>Aujourd'hui</option></select>
+        <div style="width:36px; height:36px; border-radius:50%; background:var(--color-dark); color:var(--color-white); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:bold;">AD</div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <h1 class="page-title">Gestion des Commandes</h1>
+      <p class="page-subtitle">Suivez et gérez le cycle de vie complet de chaque commande.</p>
+
+      <!-- Stats -->
+      <div class="stats-grid" style="grid-template-columns:repeat(4, 1fr);">
+        <div class="card stat-card"><span class="stat-title">Total Commandes</span><span class="stat-value">324</span><span class="stat-change positive">+18 cette semaine</span></div>
+        <div class="card stat-card"><span class="stat-title">En Attente</span><span class="stat-value">12</span><span class="stat-change negative">À traiter</span></div>
+        <div class="card stat-card"><span class="stat-title">Expédiées</span><span class="stat-value">45</span><span class="stat-change" style="color:var(--color-text-muted);">En transit</span></div>
+        <div class="card stat-card"><span class="stat-title">Livrées ce mois</span><span class="stat-value">267</span><span class="stat-change positive">✓ Complétées</span></div>
+      </div>
+
+      <!-- Filtres -->
+      <div class="admin-tabs">
+        <button class="admin-tab active">Toutes (324)</button>
+        <button class="admin-tab">En attente (12)</button>
+        <button class="admin-tab">En préparation (8)</button>
+        <button class="admin-tab">Expédiées (45)</button>
+        <button class="admin-tab">Livrées (267)</button>
+        <button class="admin-tab">Retours (4)</button>
+      </div>
+
+      <!-- Tableau commandes -->
+      <div class="card" style="padding:0; overflow:hidden;">
+        <table class="admin-table">
+          <thead><tr><th>N° Commande</th><th>Client</th><th>Date</th><th>Articles</th><th>Total</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>#CMD-4281</strong></td>
+              <td><div style="display:flex; align-items:center; gap:8px;"><div style="width:32px; height:32px; border-radius:50%; background:var(--color-peach); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">SL</div>Sophie Lemaire</div></td>
+              <td style="color:var(--color-text-muted);">Aujourd'hui 14:30</td>
+              <td>2 articles</td>
+              <td><strong>185 €</strong></td>
+              <td><span class="status-badge status-badge--info">Nouvelle</span></td>
+              <td><div style="display:flex; gap:6px;">
+                <button class="action-btn" title="Voir détails"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                <button class="action-btn" title="Préparer" style="color:#2e7d32;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M20 6 9 17l-5-5"/></svg></button>
+              </div></td>
+            </tr>
+            <tr>
+              <td><strong>#CMD-4280</strong></td>
+              <td><div style="display:flex; align-items:center; gap:8px;"><div style="width:32px; height:32px; border-radius:50%; background:var(--color-mint); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">PM</div>Pierre Martin</div></td>
+              <td style="color:var(--color-text-muted);">Aujourd'hui 10:15</td>
+              <td>4 articles</td>
+              <td><strong>340 €</strong></td>
+              <td><span class="status-badge status-badge--warning">En préparation</span></td>
+              <td><div style="display:flex; gap:6px;">
+                <button class="action-btn" title="Voir détails"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                <button class="action-btn" title="Marquer expédiée" style="color:#1565c0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></button>
+              </div></td>
+            </tr>
+            <tr>
+              <td><strong>#CMD-4279</strong></td>
+              <td><div style="display:flex; align-items:center; gap:8px;"><div style="width:32px; height:32px; border-radius:50%; background:var(--color-gray-medium); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">CD</div>Clara Dupont</div></td>
+              <td style="color:var(--color-text-muted);">Hier 18:42</td>
+              <td>1 article</td>
+              <td><strong>95 €</strong></td>
+              <td><span class="status-badge status-badge--success">Expédiée</span></td>
+              <td><div style="display:flex; gap:6px;">
+                <button class="action-btn" title="Voir détails"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                <button class="action-btn" title="Suivi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+              </div></td>
+            </tr>
+            <tr>
+              <td><strong>#CMD-4275</strong></td>
+              <td><div style="display:flex; align-items:center; gap:8px;"><div style="width:32px; height:32px; border-radius:50%; background:var(--color-peach); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">AK</div>Amadou Keita</div></td>
+              <td style="color:var(--color-text-muted);">3 Mai 2026</td>
+              <td>3 articles</td>
+              <td><strong>275 €</strong></td>
+              <td><span class="status-badge status-badge--success">Livrée</span></td>
+              <td><button class="action-btn" title="Voir détails"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+            </tr>
+            <tr>
+              <td><strong>#CMD-4268</strong></td>
+              <td><div style="display:flex; align-items:center; gap:8px;"><div style="width:32px; height:32px; border-radius:50%; background:rgba(199,80,80,0.1); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--color-error);">JP</div>Julie Petit</div></td>
+              <td style="color:var(--color-text-muted);">1 Mai 2026</td>
+              <td>1 article</td>
+              <td><strong>85 €</strong></td>
+              <td><span class="status-badge status-badge--danger">Retour demandé</span></td>
+              <td><div style="display:flex; gap:6px;">
+                <button class="action-btn" title="Voir détails"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                <button class="action-btn" title="Traiter retour" style="color:var(--color-error);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></button>
+              </div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('mobileToggle')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+    document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'admin-commandes') l.classList.add('active'); });
+  </script>
+  <script src="/js/account.js"></script>
+</body>
+</html>

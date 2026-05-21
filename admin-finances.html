@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finances — KATUISCIA Admin</title>
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin-guard.js"></script>
+</head>
+<body class="dashboard-layout admin-dashboard">
+  {{> admin-sidebar }}
+  <main class="dashboard-main">
+    <header class="dashboard-header">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="mobile-toggle" id="mobileToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <h2 style="font-family:var(--font-heading); font-size:var(--text-lg);">Vue Financière</h2>
+      </div>
+      <div class="header-actions">
+        <select class="admin-input" style="width:auto; padding:8px 16px;"><option>Ce mois</option><option>Ce trimestre</option><option>Cette année</option></select>
+        <div style="width:36px; height:36px; border-radius:50%; background:var(--color-dark); color:var(--color-white); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:bold;">AD</div>
+      </div>
+    </header>
+    <div class="dashboard-content">
+      <h1 class="page-title">Rapport Financier</h1>
+      <p class="page-subtitle" style="margin-bottom:var(--space-2xl);">Vue d'ensemble de la performance financière de votre boutique.</p>
+
+      <div class="stats-grid" style="grid-template-columns:repeat(4, 1fr); margin-bottom:var(--space-2xl);">
+        <div class="card stat-card"><span class="stat-title">Chiffre d'Affaires</span><span class="stat-value">428 750 €</span><span class="stat-change positive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>+18.3% vs mois dernier</span></div>
+        <div class="card stat-card"><span class="stat-title">Marge Brute</span><span class="stat-value">257 250 €</span><span class="stat-change positive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Marge: 60%</span></div>
+        <div class="card stat-card"><span class="stat-title">Panier Moyen</span><span class="stat-value">142 €</span><span class="stat-change" style="color:var(--color-text-muted);">+5 € vs mois dernier</span></div>
+        <div class="card stat-card"><span class="stat-title">Remboursements</span><span class="stat-value">3 850 €</span><span class="stat-change negative">12 remboursements ce mois</span></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:2fr 1fr; gap:var(--space-xl);">
+        <div class="card">
+          <h3 style="font-family:var(--font-heading); font-size:var(--text-xl); margin-bottom:var(--space-xl);">Évolution Mensuelle</h3>
+          <div class="chart-container">
+            <div class="bar" style="height:35%;"><span class="bar-value">35k</span><span class="bar-label">Jan</span></div>
+            <div class="bar" style="height:42%;"><span class="bar-value">42k</span><span class="bar-label">Fév</span></div>
+            <div class="bar" style="height:38%;"><span class="bar-value">38k</span><span class="bar-label">Mar</span></div>
+            <div class="bar highlight" style="height:55%;"><span class="bar-value">55k</span><span class="bar-label">Avr</span></div>
+            <div class="bar highlight" style="height:70%;"><span class="bar-value">70k</span><span class="bar-label">Mai</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-family:var(--font-heading); font-size:var(--text-xl); margin-bottom:var(--space-lg);">Top Produits (CA)</h3>
+          <ul class="admin-list">
+            <li><div class="admin-list-icon" style="background:rgba(196,150,122,0.15);"><span style="font-weight:bold; font-size:12px; color:var(--color-warm);">1</span></div><div class="admin-list-content"><div class="admin-list-title">Nectar Lumineux</div><div class="admin-list-subtitle">42 500 € — 340 ventes</div></div></li>
+            <li><div class="admin-list-icon" style="background:rgba(196,150,122,0.1);"><span style="font-weight:bold; font-size:12px; color:var(--color-warm);">2</span></div><div class="admin-list-content"><div class="admin-list-title">Sérum Éclat</div><div class="admin-list-subtitle">38 200 € — 347 ventes</div></div></li>
+            <li><div class="admin-list-icon" style="background:rgba(196,150,122,0.1);"><span style="font-weight:bold; font-size:12px; color:var(--color-warm);">3</span></div><div class="admin-list-content"><div class="admin-list-title">Pack Rituel Complet</div><div class="admin-list-subtitle">35 400 € — 120 ventes</div></div></li>
+            <li><div class="admin-list-icon" style="background:rgba(196,150,122,0.05);"><span style="font-weight:bold; font-size:12px; color:var(--color-warm);">4</span></div><div class="admin-list-content"><div class="admin-list-title">Crème Douce</div><div class="admin-list-subtitle">28 500 € — 300 ventes</div></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script>
+    document.getElementById('mobileToggle')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+    document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'admin-finances') l.classList.add('active'); });
+  </script>
+  <script src="/js/account.js"></script>
+</body>
+</html>

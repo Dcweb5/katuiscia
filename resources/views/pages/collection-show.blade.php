@@ -1,0 +1,158 @@
+@extends('layouts.public')
+@section('title', $collection->name . ' — KATUISCIA')
+
+@section('head')
+<style>
+.collection-hero {
+  position:relative;padding:10rem 1.5rem 3rem;
+  background:linear-gradient(180deg, #faf7f2 0%, #fff 100%);
+  text-align:center;
+}
+.collection-hero__badge {
+  display:inline-block;padding:6px 18px;border-radius:99px;
+  font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;
+  background:#ede4db;color:#8b6f5a;margin-bottom:1rem;
+}
+.collection-hero__title {
+  font-family:var(--font-heading);font-size:clamp(2rem,5vw,3rem);
+  font-weight:300;color:#2d2117;line-height:1.25;
+  max-width:700px;margin:0 auto 1rem;
+}
+.collection-hero__desc {
+  max-width:600px;margin:0 auto;font-size:1.1rem;line-height:1.6;color:#6b5d53;
+}
+.collection-body { max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem; }
+.collection-cover {
+  width:100%;max-height:420px;object-fit:cover;border-radius:16px;
+  margin-bottom:2.5rem;box-shadow:0 4px 24px rgba(0,0,0,0.06);
+}
+.collection-products { display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin-bottom:2.5rem; }
+.collection-product {
+  display:flex;align-items:center;gap:1rem;padding:1rem;
+  border:1px solid #ede4db;border-radius:12px;background:#fff;
+  text-decoration:none;color:inherit;transition:all 0.2s;
+}
+.collection-product:hover { border-color:#c4967a;box-shadow:0 4px 16px rgba(0,0,0,0.04); }
+.collection-product__img { width:56px;height:56px;border-radius:8px;object-fit:cover;flex-shrink:0; }
+.collection-product__placeholder { width:56px;height:56px;border-radius:8px;background:var(--color-peach);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0; }
+.collection-product__name { font-weight:500;font-size:14px;margin-bottom:0.25rem; }
+.collection-product__qty { font-size:12px;color:var(--color-text-muted); }
+.collection-pricing {
+  background:#faf7f2;border-radius:16px;padding:2rem;text-align:center;
+  margin-bottom:2rem;border:1px solid #ede4db;
+}
+.collection-pricing__original {
+  font-size:1.1rem;text-decoration:line-through;color:#a39688;
+}
+.collection-pricing__price {
+  font-family:var(--font-display);font-size:2.5rem;color:#2d2117;
+}
+.collection-pricing__save {
+  font-size:14px;color:var(--color-success);font-weight:600;margin-top:0.25rem;
+}
+.collection-cta {
+  display:inline-flex;align-items:center;gap:0.75rem;
+  padding:14px 32px;background:var(--color-dark);color:#fff;
+  border-radius:99px;font-size:16px;font-weight:500;text-decoration:none;
+  transition:all 0.2s;border:none;cursor:pointer;
+}
+.collection-cta:hover { background:#3d2b24;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,0.1); }
+.collection-back {
+  display:inline-flex;align-items:center;gap:0.5rem;color:#8b7b6e;
+  font-size:14px;text-decoration:none;margin-top:1.5rem;
+}
+.collection-back:hover { color:#2d2117; }
+@media (max-width:768px) {
+  .collection-hero { padding:7rem 1rem 2rem; }
+  .collection-products { grid-template-columns:1fr; }
+}
+</style>
+@endsection
+
+@section('content')
+<main id="main-content">
+
+  <header class="collection-hero reveal-k-k">
+    <span class="collection-hero__badge">Collection</span>
+    <h1 class="collection-hero__title">{{ $collection->name }}</h1>
+    @if($collection->description)
+    <p class="collection-hero__desc">{{ $collection->description }}</p>
+    @endif
+  </header>
+
+  <div class="collection-body reveal-k-k delay-1">
+    @if($collection->image_url)
+    <img src="{{ $collection->image_url }}" alt="{{ $collection->name }}" class="collection-cover">
+    @endif
+
+    {{-- Pricing --}}
+    <div class="collection-pricing">
+      @if($collection->original_price && $collection->original_price > $collection->price)
+      <div class="collection-pricing__original">{{ number_format($collection->original_price, 0, ',', ' ') }} €</div>
+      @endif
+      <div class="collection-pricing__price">{{ number_format($collection->price, 0, ',', ' ') }} €</div>
+      @if($collection->discount_percent > 0)
+      <div class="collection-pricing__save">Vous économisez {{ $collection->discount_percent }}% ({{ number_format($collection->original_price - $collection->price, 0, ',', ' ') }} €)</div>
+      @endif
+    </div>
+
+    {{-- Products in collection --}}
+    <h2 style="font-family:var(--font-heading);font-size:1.25rem;font-weight:400;color:#2d2117;margin-bottom:1rem;text-align:center;">
+      {{ $collection->products->count() }} produit(s) inclus
+    </h2>
+    <div class="collection-products">
+      @foreach($collection->products as $product)
+      <a href="{{ url('produit/'.$product->slug) }}" class="collection-product">
+        @if($product->image_primary)
+        <img src="{{ Storage::url($product->image_primary) }}" alt="{{ $product->name }}" class="collection-product__img">
+        @else
+        <div class="collection-product__placeholder">📦</div>
+        @endif
+        <div>
+          <div class="collection-product__name">{{ $product->name }}</div>
+          <div class="collection-product__qty">Qté : {{ $product->pivot->quantity ?? 1 }}</div>
+        </div>
+      </a>
+      @endforeach
+    </div>
+
+    {{-- CTA --}}
+    <div style="text-align:center;margin-bottom:2rem;">
+      <button class="collection-cta" onclick="addCollectionToCart({{ $collection->id }})">
+        🛒 Ajouter le pack au panier
+      </button>
+    </div>
+
+    <div style="text-align:center;">
+      <a href="{{ url('boutique') }}" class="collection-back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Retour à la boutique
+      </a>
+    </div>
+  </div>
+
+</main>
+@endsection
+
+@section('scripts')
+<script type="module" src="{{ asset('js/main.js') }}"></script>
+<script>
+function addCollectionToCart(collectionId) {
+  var products = @json($collection->products->pluck('id'));
+  var promises = products.map(function(pid) {
+    return fetch('{{ url('panier/ajouter') }}', {
+      method: 'POST',
+      headers: {'Content-Type':'application/x-www-form-urlencoded','X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]')?.content||''},
+      body: 'product_id='+pid+'&quantity=1'
+    });
+  });
+  Promise.all(promises).then(function() {
+    fetch('{{ url('panier/count') }}').then(r=>r.json()).then(d=>{
+      var badge = document.getElementById('cart-badge');
+      if (badge) badge.textContent = d.count;
+    });
+    alert('Pack ajouté au panier !');
+  }).catch(function() { alert('Erreur lors de l\'ajout au panier.'); });
+}
+</script>
+@endsection

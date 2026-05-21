@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luminosité Nocturne — KATUISCIA</title>
+  <meta name="description" content="Découvrez Luminosité Nocturne, une émulsion de récupération nocturne intensive.">
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body class="bg-cream text-dark font-body antialiased">
+
+  {{> header }}
+
+  <main id="main-content">
+
+    <!-- PRODUCT DETAIL -->
+    <section class="pt-[calc(190px+2rem)] pb-16 max-w-site mx-auto px-4 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+
+      <!-- Gallery -->
+      <div class="reveal-k-k">
+        <div class="relative rounded-2xl overflow-hidden bg-gray-k aspect-square">
+          <span class="absolute top-4 left-4 z-10 bg-warm text-white text-xs font-semibold tracking-wider uppercase px-4 py-1.5 rounded-full">OFFRE SPÉCIALE</span>
+          <img src="assets/images/product-7a.png" alt="Luminosité Nocturne" class="w-full h-full object-cover transition-opacity duration-500" id="main-product-image">
+        </div>
+        <div class="flex gap-3 mt-4">
+          <button class="w-20 h-20 rounded-lg overflow-hidden border-2 border-dark opacity-100 transition-all product-thumb active" data-src="assets/images/product-7a.png">
+            <img src="assets/images/product-7a.png" alt="" class="w-full h-full object-cover">
+          </button>
+          <button class="w-20 h-20 rounded-lg overflow-hidden border-2 border-transparent opacity-60 hover:opacity-100 transition-all product-thumb" data-src="assets/images/product-7b.png">
+            <img src="assets/images/product-7b.png" alt="" class="w-full h-full object-cover">
+          </button>
+          <button class="w-20 h-20 rounded-lg overflow-hidden border-2 border-transparent opacity-60 hover:opacity-100 transition-all product-thumb" data-src="assets/images/product-2a.png">
+            <img src="assets/images/product-2a.png" alt="" class="w-full h-full object-cover">
+          </button>
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="reveal-k-k delay-1">
+        <nav class="flex items-center gap-2 text-xs text-text-muted tracking-wider uppercase mb-6" aria-label="Fil d'ariane">
+          <a href="boutique" class="hover:text-dark transition-colors">RITUELS</a>
+          <span>/</span>
+          <span class="text-dark">HYDRATATION</span>
+        </nav>
+
+        <h1 class="font-heading text-4xl lg:text-5xl font-light text-dark leading-tight mb-6">Luminosité<br>Nocturne</h1>
+
+        <div class="flex items-baseline gap-4 mb-6">
+          <span class="text-3xl font-semibold text-dark">185 €</span>
+          <span class="text-lg text-text-muted line-through">245 €</span>
+        </div>
+
+        <!-- Countdown -->
+        <div class="bg-white rounded-xl p-4 mb-6 shadow-sm">
+          <p class="text-xs text-text-muted tracking-wider uppercase mb-3">L'offre se termine dans...</p>
+          <div class="flex gap-4" id="countdown">
+            <div class="text-center"><span class="text-2xl font-semibold text-dark block" id="days">02</span><span class="text-[10px] text-text-muted tracking-wider uppercase">JOURS</span></div>
+            <div class="text-center"><span class="text-2xl font-semibold text-dark block" id="hours">14</span><span class="text-[10px] text-text-muted tracking-wider uppercase">HEURES</span></div>
+            <div class="text-center"><span class="text-2xl font-semibold text-dark block" id="minutes">45</span><span class="text-[10px] text-text-muted tracking-wider uppercase">MIN</span></div>
+            <div class="text-center"><span class="text-2xl font-semibold text-dark block" id="seconds">22</span><span class="text-[10px] text-text-muted tracking-wider uppercase">SEC</span></div>
+          </div>
+        </div>
+
+        <p class="text-base text-text-light leading-relaxed mb-8">Une émulsion de récupération nocturne intensive conçue pour reconstituer l'hydratation profonde et restaurer la barrière lipidique naturelle de la peau pendant votre sommeil.</p>
+
+        <!-- Quantity & Actions -->
+        <div class="space-y-4 mb-8">
+          <div class="flex items-center gap-4">
+            <span class="text-xs font-semibold tracking-wider uppercase text-dark">QUANTITÉ:</span>
+            <div class="join border border-border-k rounded-lg">
+              <button class="join-item btn btn-sm btn-ghost" id="qty-minus">-</button>
+              <input type="number" class="join-item w-12 text-center bg-transparent text-sm border-x border-border-k outline-none" id="qty-input" value="1" min="1" max="10">
+              <button class="join-item btn btn-sm btn-ghost" id="qty-plus">+</button>
+            </div>
+          </div>
+          <a href="panier" class="btn-katuiscia-filled w-full !justify-center">AJOUTER AU PANIER</a>
+          <a href="paiement" class="btn-katuiscia-warm w-full !justify-center">ACHETER MAINTENANT</a>
+          <button class="btn-katuiscia w-full !justify-center gap-2">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            WHATSAPP
+          </button>
+        </div>
+
+        <!-- Features -->
+        <div class="flex gap-6 text-sm text-text-light mb-8">
+          <span class="flex items-center gap-2"><svg class="w-4 h-4 text-warm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> Livraison Gratuite</span>
+          <span class="flex items-center gap-2"><svg class="w-4 h-4 text-warm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Authenticité Garantie</span>
+        </div>
+
+        <!-- Accordion -->
+        <div class="space-y-0 border-t border-border-k">
+          <details class="group border-b border-border-k">
+            <summary class="flex items-center justify-between py-4 cursor-pointer text-sm font-semibold tracking-wide uppercase text-dark">
+              <span>Ingrédients Clés</span>
+              <svg class="w-4 h-4 text-text-muted transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <div class="pb-4 text-sm text-text-light leading-relaxed">Complexe tri-peptidique exclusif, Huile de graine d'églantier, Extrait de lotus sacré, Acide hyaluronique végétal.</div>
+          </details>
+          <details class="group border-b border-border-k">
+            <summary class="flex items-center justify-between py-4 cursor-pointer text-sm font-semibold tracking-wide uppercase text-dark">
+              <span>Rituel d'Application</span>
+              <svg class="w-4 h-4 text-text-muted transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <div class="pb-4 text-sm text-text-light leading-relaxed">Appliquez chaque soir sur une peau propre et tonifiée. Massez délicatement sur le visage et le cou avec des mouvements ascendants.</div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- UPSELL -->
+    <section class="py-20 bg-white">
+      <div class="max-w-site mx-auto px-4 lg:px-8">
+        <div class="flex items-center justify-between mb-12 reveal-k-k">
+          <h2 class="font-heading text-3xl font-normal text-dark">Complétez Votre Rituel</h2>
+          <a href="boutique" class="text-xs font-medium tracking-wider uppercase text-text-muted hover:text-dark transition-colors hidden lg:block">VOIR TOUTES LES COLLECTIONS</a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <a href="#" class="group block rounded-xl overflow-hidden bg-cream shadow-card hover:shadow-lg transition-all hover:-translate-y-1 reveal-k-k">
+            <div class="h-[260px] bg-mint flex items-center justify-center p-6"><img src="assets/images/product-4a.png" alt="Purifiant Doux" class="max-h-full object-contain transition-transform duration-500 group-hover:scale-110" loading="lazy"></div>
+            <div class="p-5"><h3 class="font-heading text-lg font-medium text-dark">Purifiant Doux</h3><p class="text-sm text-text-light">Nettoyant Moussant Doux</p><span class="text-md font-semibold text-dark mt-2 block">85 €</span></div>
+          </a>
+          <a href="#" class="group block rounded-xl overflow-hidden bg-cream shadow-card hover:shadow-lg transition-all hover:-translate-y-1 reveal-k-k delay-1">
+            <div class="h-[260px] bg-dark flex items-center justify-center p-6"><img src="assets/images/product-2a.png" alt="Élixir de Vie" class="max-h-full object-contain transition-transform duration-500 group-hover:scale-110" loading="lazy"></div>
+            <div class="p-5"><h3 class="font-heading text-lg font-medium text-dark">Élixir de Vie</h3><p class="text-sm text-text-light">Sérum Revitalisant</p><span class="text-md font-semibold text-dark mt-2 block">180 €</span></div>
+          </a>
+          <a href="#" class="group block rounded-xl overflow-hidden bg-cream shadow-card hover:shadow-lg transition-all hover:-translate-y-1 reveal-k-k delay-2">
+            <div class="h-[260px] bg-peach flex items-center justify-center p-6"><img src="assets/images/editorial-accent.png" alt="Regard Éveillé" class="max-h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy"></div>
+            <div class="p-5"><h3 class="font-heading text-lg font-medium text-dark">Regard Éveillé</h3><p class="text-sm text-text-light">Contour des Yeux Éveil</p><span class="text-md font-semibold text-dark mt-2 block">120 €</span></div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {{> footer }}
+
+  <script type="module" src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Gallery Thumbnails
+      const mainImg = document.getElementById('main-product-image');
+      document.querySelectorAll('.product-thumb').forEach(thumb => {
+        thumb.addEventListener('click', () => {
+          document.querySelectorAll('.product-thumb').forEach(t => { t.classList.remove('active'); t.classList.add('opacity-60'); t.style.borderColor = 'transparent'; });
+          thumb.classList.add('active'); thumb.classList.remove('opacity-60'); thumb.style.borderColor = '#3D2B2B';
+          mainImg.style.opacity = '0';
+          setTimeout(() => { mainImg.src = thumb.dataset.src; mainImg.style.opacity = '1'; }, 200);
+        });
+      });
+      // Quantity
+      const qtyInput = document.getElementById('qty-input');
+      document.getElementById('qty-minus')?.addEventListener('click', () => { let v = parseInt(qtyInput.value); if (v > 1) qtyInput.value = v - 1; });
+      document.getElementById('qty-plus')?.addEventListener('click', () => { let v = parseInt(qtyInput.value); if (v < 10) qtyInput.value = v + 1; });
+      // Countdown
+      let sec = 22, min = 45;
+      setInterval(() => { sec--; if (sec < 0) { sec = 59; min--; } document.getElementById('seconds').textContent = sec.toString().padStart(2,'0'); document.getElementById('minutes').textContent = min.toString().padStart(2,'0'); }, 1000);
+    });
+  </script>
+</body>
+</html>

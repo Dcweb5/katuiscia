@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes Récompenses — KATUISCIA</title>
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="/js/auth.js"></script>
+  <script src="/js/auth-guard.js"></script>
+</head>
+<body class="dashboard-layout">
+  {{> user-sidebar }}
+
+  <main class="dashboard-main">
+    <header class="dashboard-header">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="mobile-toggle" id="mobileToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <span style="font-family:var(--font-heading); font-size:var(--text-lg); color:var(--color-dark);">Club Privilège</span>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <h1 class="page-title">Mes Récompenses</h1>
+      <p class="page-subtitle">Vos points de fidélité et récompenses exclusives.</p>
+
+      <!-- Solde de points Hero -->
+      <div class="card" style="background:linear-gradient(135deg, var(--color-dark) 0%, var(--color-warm) 100%); color:white; text-align:center; padding:var(--space-3xl); margin-bottom:var(--space-2xl);">
+        <p style="font-size:var(--text-sm); text-transform:uppercase; letter-spacing:2px; opacity:0.8; margin-bottom:var(--space-sm);">Votre solde</p>
+        <p style="font-size:4rem; font-family:var(--font-display); line-height:1; margin-bottom:var(--space-sm);">1 450</p>
+        <p style="font-size:var(--text-md); opacity:0.9;">points de fidélité</p>
+        <div style="margin-top:var(--space-xl); max-width:400px; margin-left:auto; margin-right:auto;">
+          <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px; opacity:0.8;">
+            <span>✨ Statut Or</span>
+            <span>👑 Cercle d'Or</span>
+          </div>
+          <div style="width:100%; height:6px; background:rgba(255,255,255,0.25); border-radius:3px;">
+            <div style="width:96%; height:100%; background:white; border-radius:3px;"></div>
+          </div>
+          <p style="font-size:11px; margin-top:4px; opacity:0.8;">Plus que 50 pts pour le statut Platine !</p>
+        </div>
+      </div>
+
+      <!-- Comment gagner -->
+      <h3 style="font-family:var(--font-heading); font-size:var(--text-lg); margin-bottom:var(--space-md);">Comment gagner des points</h3>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:var(--space-md); margin-bottom:var(--space-2xl);">
+        <div class="card" style="text-align:center; padding:var(--space-lg);">
+          <div style="font-size:28px; margin-bottom:8px;">🛒</div>
+          <strong style="font-size:var(--text-sm);">1€ = 1 point</strong>
+          <p style="font-size:12px; color:var(--color-text-muted); margin-top:4px;">Sur chaque achat</p>
+        </div>
+        <div class="card" style="text-align:center; padding:var(--space-lg);">
+          <div style="font-size:28px; margin-bottom:8px;">⭐</div>
+          <strong style="font-size:var(--text-sm);">+50 pts</strong>
+          <p style="font-size:12px; color:var(--color-text-muted); margin-top:4px;">Par avis publié</p>
+        </div>
+        <div class="card" style="text-align:center; padding:var(--space-lg);">
+          <div style="font-size:28px; margin-bottom:8px;">🎂</div>
+          <strong style="font-size:var(--text-sm);">+100 pts</strong>
+          <p style="font-size:12px; color:var(--color-text-muted); margin-top:4px;">Le jour de votre anniversaire</p>
+        </div>
+        <div class="card" style="text-align:center; padding:var(--space-lg);">
+          <div style="font-size:28px; margin-bottom:8px;">👥</div>
+          <strong style="font-size:var(--text-sm);">+200 pts</strong>
+          <p style="font-size:12px; color:var(--color-text-muted); margin-top:4px;">Par parrainage</p>
+        </div>
+      </div>
+
+      <!-- Récompenses disponibles -->
+      <h3 style="font-family:var(--font-heading); font-size:var(--text-lg); margin-bottom:var(--space-md);">Récompenses à échanger</h3>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:var(--space-lg); margin-bottom:var(--space-2xl);">
+        <div class="card" style="border:2px solid var(--color-warm);">
+          <div style="font-size:var(--text-xl); font-weight:700; color:var(--color-warm); margin-bottom:var(--space-sm);">10 € offerts</div>
+          <p style="color:var(--color-text-muted); font-size:var(--text-sm); margin-bottom:var(--space-lg);">Valable sur toute la boutique dès 50 € d'achats.</p>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:var(--text-sm); font-weight:600;">1 000 pts</span>
+            <button class="btn-primary" style="padding:8px 16px; font-size:12px;">Échanger</button>
+          </div>
+        </div>
+        <div class="card" style="border:2px solid var(--color-border);">
+          <div style="font-size:var(--text-xl); font-weight:700; color:var(--color-dark); margin-bottom:var(--space-sm);">Livraison Gratuite</div>
+          <p style="color:var(--color-text-muted); font-size:var(--text-sm); margin-bottom:var(--space-lg);">Livraison standard offerte en France métropolitaine.</p>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:var(--text-sm); font-weight:600;">500 pts</span>
+            <button class="btn-primary" style="padding:8px 16px; font-size:12px;">Échanger</button>
+          </div>
+        </div>
+        <div class="card" style="border:2px solid var(--color-border); opacity:0.6;">
+          <div style="font-size:var(--text-xl); font-weight:700; color:var(--color-dark); margin-bottom:var(--space-sm);">Sérum Voyage offert</div>
+          <p style="color:var(--color-text-muted); font-size:var(--text-sm); margin-bottom:var(--space-lg);">Format découverte 15ml offert pour tout achat.</p>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:var(--text-sm); font-weight:600;">2 000 pts</span>
+            <button class="btn-primary" style="padding:8px 16px; font-size:12px; opacity:0.5; cursor:not-allowed;" disabled>Insuffisant</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Historique des points -->
+      <h3 style="font-family:var(--font-heading); font-size:var(--text-lg); margin-bottom:var(--space-md);">Historique des points</h3>
+      <div class="card" style="padding:0; overflow:hidden;">
+        <table class="admin-table">
+          <thead><tr><th>Date</th><th>Description</th><th>Points</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--color-text-muted);">2 Mai 2026</td><td>Commande #KAT-10512</td><td style="color:var(--color-success); font-weight:600;">+250</td></tr>
+            <tr><td style="color:var(--color-text-muted);">25 Sep 2026</td><td>Avis publié — Gommage Terracotta</td><td style="color:var(--color-success); font-weight:600;">+50</td></tr>
+            <tr><td style="color:var(--color-text-muted);">20 Oct 2026</td><td>Commande #KAT-10495</td><td style="color:var(--color-success); font-weight:600;">+110</td></tr>
+            <tr><td style="color:var(--color-text-muted);">1 Nov 2025</td><td>Avis publié — Rouleau Quartz Rose</td><td style="color:var(--color-success); font-weight:600;">+50</td></tr>
+            <tr><td style="color:var(--color-text-muted);">15 Mar 2026</td><td>Échange récompense — Livraison gratuite</td><td style="color:var(--color-error); font-weight:600;">-500</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/account.js"></script>
+  <script>
+    document.getElementById('mobileToggle')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+    document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'compte-recompenses') l.classList.add('active'); });
+  </script>
+</body>
+</html>

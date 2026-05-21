@@ -1,0 +1,338 @@
+@section('title', 'Formation — Maîtrisez l'Art du Soin')
+
+@section('head')
+<link rel="stylesheet" href="<?php echo e(asset('css/about.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('css/landing.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('css/booking.css')); ?>">
+@endsection
+
+<?php $__env->startSection('content'); ?>
+<main id="main-content">
+
+    <!-- ============ HERO ============ -->
+    <section class="page-header page-header--with-bg">
+      <img src="<?php echo e(asset('assets/images/hero-slide-3.jpg')); ?>" alt="" class="page-header__bg" aria-hidden="true">
+      <div class="container reveal-k">
+        <span class="landing-hero__badge" style="margin-bottom: 15px;">KATUISCIA ACADEMY</span>
+        <h1 class="page-header__title">L'Art &amp; La Transmission</h1>
+        <p class="page-header__description">Former pour perpétuer notre sens de l'écoute, notre savoir-faire et notre vision. Découvrez nos programmes pour devenir un véritable ambassadeur de la beauté botanique.</p>
+        <div style="margin-top: 30px; display: flex; gap: 15px;">
+          <a href="#booking" class="btn" style="background:var(--color-cream); color:var(--color-dark); border-color:var(--color-cream);"><span>Rejoindre l'Academy</span></a>
+          <a href="#video" class="btn" style="background:transparent; color:var(--color-cream); border-color:rgba(255,255,255,0.4);"><span>Notre philosophie</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STATS ============ -->
+    <div class="landing-stats">
+      <div class="landing-stat">
+        <span class="landing-stat__number">15</span>
+        <span class="landing-stat__label">Années d'expertise</span>
+      </div>
+      <div class="landing-stat">
+        <span class="landing-stat__number">500+</span>
+        <span class="landing-stat__label">Praticiens certifiés</span>
+      </div>
+      <div class="landing-stat">
+        <span class="landing-stat__number">100%</span>
+        <span class="landing-stat__label">Transmission manuelle</span>
+      </div>
+    </div>
+
+    <!-- ============ FEATURES ============ -->
+    <section class="landing-section">
+      <div class="landing-section__header">
+        <p class="landing-section__eyebrow">Notre philosophie de formation</p>
+        <h2 class="landing-section__title">Former des Ambassadeurs</h2>
+        <p class="landing-section__desc">Parce que vous êtes le lien le plus précieux entre notre marque et nos clients, nous nous assurons que l'expérience vécue en institut se prolonge au-delà. Apprenez en continu sur nos produits, la cérémonie de soin et l'expertise du toucher.</p>
+      </div>
+
+      <div class="landing-features">
+        <div class="landing-feature">
+          <div class="landing-feature__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a5 5 0 0 1 5 5c0 3-2.5 5-5 8-2.5-3-5-5-5-8a5 5 0 0 1 5-5z"/><circle cx="12" cy="7" r="1"/><path d="M7 17h10M9 21h6"/></svg>
+          </div>
+          <h3 class="landing-feature__title">L'Expertise du Toucher</h3>
+          <p class="landing-feature__desc">L'outil le plus précieux reste la main. Nos formations se concentrent sur la gestuelle manuelle de précision, les points de pression et le modelage drainant.</p>
+        </div>
+        <div class="landing-feature">
+          <div class="landing-feature__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M2 12h20"/><path d="m12 12 4-4m-4 4-4-4m4 4 4 4m-4-4-4 4"/></svg>
+          </div>
+          <h3 class="landing-feature__title">La Science des Plantes</h3>
+          <p class="landing-feature__desc">Devenez incollable sur la phyto-chimie de nos formulations. Comprenez comment chaque actif botanique agit en symbiose avec la peau de vos clients.</p>
+        </div>
+        <div class="landing-feature">
+          <div class="landing-feature__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <h3 class="landing-feature__title">La Cérémonie de Vente</h3>
+          <p class="landing-feature__desc">Apprenez à offrir une consultation experte et personnalisée. L'écoute et le diagnostic sur-mesure sont au cœur de l'approche KATUISCIA.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============ VIDEO ============ -->
+    <section class="landing-section landing-section--alt" id="video">
+      <div class="landing-section__header">
+        <p class="landing-section__eyebrow">Découvrez en images</p>
+        <h2 class="landing-section__title">Une Immersion dans Notre Univers</h2>
+      </div>
+
+      <div class="landing-video">
+        <div class="landing-video__wrapper" id="video-container">
+          <!-- Replace src with actual thumbnail or video poster -->
+          <img src="<?php echo e(asset('assets/images/hero-slide-3.jpg')); ?>" alt="Vidéo de formation KATUISCIA" class="landing-video__placeholder">
+          <div class="landing-video__play">
+            <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+        </div>
+        <p class="landing-video__caption">Découvrez l'univers de nos formations — 2:30 min</p>
+      </div>
+    </section>
+
+    <!-- ============ PROCESS ============ -->
+    <section class="landing-section">
+      <div class="landing-section__header">
+        <p class="landing-section__eyebrow">Comment ça marche</p>
+        <h2 class="landing-section__title">3 Étapes Simples</h2>
+      </div>
+
+      <div class="landing-steps">
+        <div class="landing-step">
+          <h3 class="landing-step__title">Choisissez votre date</h3>
+          <p class="landing-step__desc">Sélectionnez un créneau qui vous convient dans notre calendrier de disponibilités.</p>
+        </div>
+        <div class="landing-step">
+          <h3 class="landing-step__title">Confirmez votre place</h3>
+          <p class="landing-step__desc">Remplissez le formulaire et recevez une confirmation instantanée par email.</p>
+        </div>
+        <div class="landing-step">
+          <h3 class="landing-step__title">Vivez l'expérience</h3>
+          <p class="landing-step__desc">Rejoignez-nous en studio ou en visio et repartez avec une expertise concrète.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BOOKING ============ -->
+    <section class="landing-section landing-section--alt" id="booking">
+      <div class="landing-section__header">
+        <p class="landing-section__eyebrow">Réservation</p>
+        <h2 class="landing-section__title">Réservez Votre Session</h2>
+        <p class="landing-section__desc">Choisissez une date et un créneau, puis remplissez vos informations. Nous confirmons sous 24h.</p>
+      </div>
+
+      <div class="landing-booking">
+        <!-- Calendar -->
+        <div class="calendar-wrapper">
+          <div class="calendar">
+            <div class="calendar__header">
+              <button class="calendar__nav-btn">&larr;</button>
+              <div class="calendar__month">Mai 2026</div>
+              <button class="calendar__nav-btn">&rarr;</button>
+            </div>
+            <div class="calendar__grid">
+              <div class="calendar__day-name">Lu</div><div class="calendar__day-name">Ma</div><div class="calendar__day-name">Me</div><div class="calendar__day-name">Je</div><div class="calendar__day-name">Ve</div><div class="calendar__day-name">Sa</div><div class="calendar__day-name">Di</div>
+              <div class="calendar__day calendar__day--disabled">27</div><div class="calendar__day calendar__day--disabled">28</div><div class="calendar__day calendar__day--disabled">29</div><div class="calendar__day calendar__day--disabled">30</div>
+              <div class="calendar__day">1</div><div class="calendar__day">2</div><div class="calendar__day">3</div>
+              <div class="calendar__day">4</div><div class="calendar__day">5</div><div class="calendar__day">6</div><div class="calendar__day">7</div><div class="calendar__day">8</div><div class="calendar__day">9</div><div class="calendar__day">10</div>
+              <div class="calendar__day">11</div><div class="calendar__day calendar__day--active">12</div><div class="calendar__day">13</div><div class="calendar__day">14</div><div class="calendar__day">15</div><div class="calendar__day">16</div><div class="calendar__day">17</div>
+              <div class="calendar__day">18</div><div class="calendar__day">19</div><div class="calendar__day">20</div><div class="calendar__day">21</div><div class="calendar__day">22</div><div class="calendar__day">23</div><div class="calendar__day">24</div>
+              <div class="calendar__day">25</div><div class="calendar__day">26</div><div class="calendar__day">27</div><div class="calendar__day">28</div><div class="calendar__day">29</div><div class="calendar__day">30</div><div class="calendar__day">31</div>
+            </div>
+          </div>
+          <div class="time-slots">
+            <h3 class="time-slots__title">Créneaux disponibles le 12 Mai</h3>
+            <div class="time-slots__grid">
+              <button class="time-slot">09:00</button>
+              <button class="time-slot">10:30</button>
+              <button class="time-slot">14:00</button>
+              <button class="time-slot time-slot--active">15:30</button>
+              <button class="time-slot">17:00</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="form-wrapper">
+          <?php if(session('success')): ?>
+            <div class="booking-success" style="background:#e8f5e9;color:#2e7d32;padding:1.5rem;border-radius:12px;margin-bottom:1rem;font-weight:500;"><?php echo e(session('success')); ?></div>
+          <?php endif; ?>
+          <form method="POST" action="<?php echo e(route('appointment.store')); ?>" class="booking-form">
+            <?php echo csrf_field(); ?>
+            <input type="hidden" name="source" value="<?php echo e($source ?? 'formation'); ?>">
+            <input type="hidden" name="preferred_date" id="formation-date" value="2026-05-12">
+            <input type="hidden" name="preferred_time" id="formation-time" value="15:30">
+            <div class="booking-selected">
+              Session sélectionnée : <span id="formation-display">2026-05-12 à 15:30</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Vous êtes</label>
+              <div style="display:flex;gap:1rem;margin-bottom:0.5rem;">
+                <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+                  <input type="radio" name="type" value="individu" checked onchange="toggleSiretF()"> Particulier
+                </label>
+                <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+                  <input type="radio" name="type" value="entreprise" onchange="toggleSiretF()"> Entreprise
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Nom complet *</label>
+              <input type="text" name="name" class="form-input" value="<?php echo e(old('name')); ?>" required>
+              <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="form-error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+            </div>
+
+            <div id="siret-fields-f" style="display:none;">
+              <div class="form-group">
+                <label class="form-label">Nom de l'entreprise *</label>
+                <input type="text" name="company_name" class="form-input" value="<?php echo e(old('company_name')); ?>">
+                <?php $__errorArgs = ['company_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="form-error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+              </div>
+              <div class="form-group">
+                <label class="form-label">N° SIRET *</label>
+                <input type="text" name="siret" class="form-input" placeholder="14 chiffres" value="<?php echo e(old('siret')); ?>">
+                <?php $__errorArgs = ['siret'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="form-error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Adresse E-mail *</label>
+              <input type="email" name="email" class="form-input" value="<?php echo e(old('email')); ?>" required>
+              <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="form-error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Téléphone</label>
+              <input type="tel" name="phone" class="form-input" value="<?php echo e(old('phone')); ?>">
+              <?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="form-error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Message (optionnel)</label>
+              <textarea name="message" class="form-textarea" placeholder="Qu'attendez-vous de cette formation ?"><?php echo e(old('message')); ?></textarea>
+              <?php $__errorArgs = ['message'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="form-error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+            </div>
+            <button type="submit" class="landing-cta landing-cta--primary" style="width:100%; justify-content:center;">
+              <span>Confirmer la réservation</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FINAL CTA ============ -->
+    <section class="landing-cta-banner">
+      <h2 class="landing-cta-banner__title">Prêt(e) à transformer votre expertise ?</h2>
+      <p class="landing-cta-banner__desc">Rejoignez les 350+ professionnels qui ont déjà fait confiance à KATUISCIA pour élever leur savoir-faire.</p>
+      <a href="#booking" class="landing-cta landing-cta--primary">
+        <span>Réserver maintenant</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <script>
+    // Calendar & time slot interactions
+    document.querySelectorAll('.calendar__day:not(.calendar__day--disabled)').forEach(day => {
+      day.addEventListener('click', e => {
+        document.querySelectorAll('.calendar__day').forEach(d => d.classList.remove('calendar__day--active'));
+        e.target.classList.add('calendar__day--active');
+        document.querySelector('.time-slots__title').textContent = `Créneaux disponibles le ${e.target.textContent} Mai`;
+      });
+    });
+    document.querySelectorAll('.time-slot').forEach(slot => {
+      slot.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('time-slot--active'));
+        e.target.classList.add('time-slot--active');
+        const activeDay = document.querySelector('.calendar__day--active').textContent;
+        document.querySelector('.booking-selected span').textContent = `Mai ${activeDay} à ${e.target.textContent}`;
+      });
+    });
+  </script>
+</body>
+</html>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+<script type="module" src="<?php echo e(asset('js/main.js')); ?>"></script>
+<script>
+    function toggleSiretF() {
+      const isEntreprise = document.querySelector('input[name="type"]:checked')?.value === 'entreprise';
+      var el = document.getElementById('siret-fields-f'); if (el) el.style.display = isEntreprise ? '' : 'none';
+    }
+    document.querySelectorAll('.calendar__day:not(.calendar__day--disabled)').forEach(day => {
+      day.addEventListener('click', e => {
+        document.querySelectorAll('.calendar__day').forEach(d => d.classList.remove('calendar__day--active'));
+        e.target.classList.add('calendar__day--active');
+        document.querySelector('.time-slots__title').textContent = `Créneaux disponibles le ${e.target.textContent} Mai`;
+        const dayVal = e.target.textContent.padStart(2, '0');
+        document.getElementById('formation-date').value = '2026-05-' + dayVal;
+        updateDisplayF();
+      });
+    });
+    document.querySelectorAll('.time-slot').forEach(slot => {
+      slot.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('time-slot--active'));
+        e.target.classList.add('time-slot--active');
+        document.getElementById('formation-time').value = e.target.textContent;
+        updateDisplayF();
+      });
+    });
+    function updateDisplayF() {
+      var d = document.getElementById('formation-date').value;
+      var t = document.getElementById('formation-time').value;
+      document.getElementById('formation-display').textContent = d + ' à ' + t;
+    }
+  </script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.public', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH E:\mes sites web\KATUISCIA LARAVEL\resources\views\pages\formation.blade.php ENDPATH**/ ?>

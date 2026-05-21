@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beauté Responsable — KATUISCIA | Nos Engagements</title>
+  <meta name="description" content="Découvrez nos engagements pour une beauté responsable. KATUISCIA prend soin des personnes et de la planète avec des formulations conscientes.">
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/about.css">
+</head>
+<body class="bg-cream text-dark font-body antialiased">
+
+  {{> header }}
+
+  <main id="main-content">
+    
+    <!-- Hero Section -->
+    <section class="relative h-[70vh] flex items-center justify-center overflow-hidden bg-dark text-white text-center">
+      <div class="absolute inset-0 w-full h-full bg-[url('assets/images/beaute-resp-hero.png')] bg-cover bg-center bg-fixed opacity-60 z-0"></div>
+      <div class="relative z-10 max-w-4xl px-8 reveal-k-k">
+        <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl mb-6 font-light tracking-tight">Beauté Responsable</h1>
+        <p class="text-lg md:text-xl font-light opacity-90 leading-relaxed max-w-2xl mx-auto">Pour vous et la planète, nous nous engageons toujours plus, toujours mieux. Pour une beauté toujours plus responsable et engagée.</p>
+      </div>
+    </section>
+
+    <!-- Section: Personnes -->
+    <section class="py-24 bg-cream">
+      <div class="max-w-site mx-auto px-4 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div class="reveal-k-k space-y-6">
+            <h2 class="font-heading text-3xl md:text-4xl text-warm">Prendre soin des personnes</h2>
+            <p class="text-lg text-text-light leading-relaxed">L'écoute est au cœur de notre philosophie. KATUISCIA s'engage à vous orienter pour vous sentir bien dans votre corps et confiante dans votre beauté.</p>
+            <p class="text-lg text-text-light leading-relaxed"><strong class="text-dark font-semibold">Qualité & sécurité :</strong> Gage de qualité et de traçabilité, nos formules de soin sont conçues et fabriquées avec les plus hauts standards d'exigence, respectant votre peau et votre bien-être.</p>
+            <p class="text-lg text-text-light leading-relaxed"><strong class="text-dark font-semibold">Nos collaborateurs :</strong> Aujourd'hui comme hier, nos collaborateurs sont notre atout principal. Ils partagent cette quête collective de générosité et de perfection propre à notre marque.</p>
+          </div>
+          <div class="reveal-k-k delay-1">
+            <img src="assets/images/biodiv-hero.png" alt="Femme appliquant un soin KATUISCIA" class="w-full h-[400px] md:h-[500px] object-cover rounded-2xl shadow-xl">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Planète -->
+    <section class="py-24 bg-dark text-white">
+      <div class="max-w-site mx-auto px-4 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-20">
+          <div class="reveal-k-k space-y-6 md:order-last">
+            <h2 class="font-heading text-3xl md:text-4xl">Prendre soin de la planète</h2>
+            <p class="text-lg text-gray-300 leading-relaxed">Prendre soin de la planète suppose avant tout de réduire l'impact environnemental de notre activité. KATUISCIA s'engage à réduire ses émissions carbone et à protéger notre environnement précieux.</p>
+            <p class="text-lg text-gray-300 leading-relaxed">Nous sélectionnons chaque ingrédient pour son efficacité et dans le respect de son écosystème d'origine. Notre objectif est de privilégier l'agriculture respectueuse de la nature, avec un maximum d'extraits de plantes bio.</p>
+          </div>
+          <div class="reveal-k-k delay-1">
+            <img src="assets/images/emballage-hero.png" alt="Feuilles botaniques et nature" class="w-full h-[400px] md:h-[500px] object-cover rounded-2xl shadow-xl">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-12 text-center reveal-k-k">
+          <div class="space-y-4">
+            <span class="block font-heading text-6xl text-warm">40%</span>
+            <span class="block text-sm uppercase tracking-widest text-gray-300 font-semibold">d'ingrédients d'origine bio ciblés</span>
+          </div>
+          <div class="space-y-4">
+            <span class="block font-heading text-6xl text-warm">-30%</span>
+            <span class="block text-sm uppercase tracking-widest text-gray-300 font-semibold">d'émissions carbone visées d'ici 2030</span>
+          </div>
+          <div class="space-y-4">
+            <span class="block font-heading text-6xl text-warm">100%</span>
+            <span class="block text-sm uppercase tracking-widest text-gray-300 font-semibold">de traçabilité sur nos actifs phares</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vision Section -->
+    <section class="py-32 bg-peach flex flex-col items-center justify-center text-center px-4">
+      <div class="max-w-4xl mx-auto reveal-k-k space-y-10">
+        <blockquote class="font-heading text-3xl md:text-4xl italic text-dark leading-relaxed">"L'agriculture durable est celle qui protège la nature et les femmes et les hommes qui la cultivent."</blockquote>
+        <a href="valeurs-emballage-durable" class="btn-katuiscia-filled inline-block py-4 px-10 text-sm tracking-widest uppercase font-semibold">Découvrir l'emballage durable</a>
+      </div>
+    </section>
+
+  </main>
+
+  {{> footer }}
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes Commandes — KATUISCIA</title>
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="/js/auth.js"></script>
+  <script src="/js/auth-guard.js"></script>
+</head>
+<body class="dashboard-layout">
+  {{> user-sidebar }}
+
+  <main class="dashboard-main">
+    <header class="dashboard-header">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="mobile-toggle" id="mobileToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <span style="font-family:var(--font-heading); font-size:var(--text-lg); color:var(--color-dark);">Mes Commandes</span>
+      </div>
+      <div class="header-actions">
+        <a href="boutique" class="btn-primary" style="text-decoration:none;">Continuer mes achats</a>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <h1 class="page-title">Historique de Commandes</h1>
+      <p class="page-subtitle">Suivez l'état de vos commandes, téléchargez vos factures et accédez aux détails.</p>
+
+      <!-- Tabs -->
+      <div class="admin-tabs">
+        <button class="admin-tab active">Toutes (5)</button>
+        <button class="admin-tab">En cours (1)</button>
+        <button class="admin-tab">Livrées (3)</button>
+        <button class="admin-tab">Retournées (1)</button>
+      </div>
+
+      <!-- Commande 1 — En transit -->
+      <div class="card" style="margin-bottom:var(--space-lg);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-md); flex-wrap:wrap; gap:8px;">
+          <div>
+            <strong style="font-size:var(--text-lg);">#KAT-10512</strong>
+            <span style="color:var(--color-text-muted); font-size:var(--text-sm); margin-left:8px;">Passée le 2 Mai 2026</span>
+          </div>
+          <span class="status-badge status-badge--info">En transit</span>
+        </div>
+        <div style="display:flex; gap:var(--space-lg); align-items:center; padding:var(--space-md); background:var(--color-gray); border-radius:var(--radius-md); margin-bottom:var(--space-md);">
+          <img src="assets/images/product-1a.png" style="width:64px; height:64px; border-radius:8px; object-fit:cover;">
+          <div style="flex:1;">
+            <strong>Nectar Lumineux x2</strong>
+            <p style="font-size:var(--text-sm); color:var(--color-text-muted);">Sérum visage 30ml</p>
+          </div>
+          <strong>250,00 €</strong>
+        </div>
+        <!-- Tracking bar -->
+        <div style="display:flex; align-items:center; gap:4px; margin-bottom:var(--space-md);">
+          <div style="flex:1; height:4px; background:var(--color-warm); border-radius:2px;"></div>
+          <div style="flex:1; height:4px; background:var(--color-warm); border-radius:2px;"></div>
+          <div style="flex:1; height:4px; background:var(--color-warm); border-radius:2px;"></div>
+          <div style="flex:1; height:4px; background:var(--color-border); border-radius:2px;"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--color-text-muted); margin-bottom:var(--space-md);">
+          <span>Confirmée</span><span>Préparée</span><span style="color:var(--color-warm); font-weight:600;">En transit</span><span>Livrée</span>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn-primary" style="padding:8px 16px; font-size:12px;">Suivre le colis</button>
+          <button style="padding:8px 16px; font-size:12px; border:1px solid var(--color-border); border-radius:var(--radius-sm); background:transparent; cursor:pointer;">Détails de la commande</button>
+        </div>
+      </div>
+
+      <!-- Commande 2 — Livrée -->
+      <div class="card" style="margin-bottom:var(--space-lg);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-md); flex-wrap:wrap; gap:8px;">
+          <div>
+            <strong style="font-size:var(--text-lg);">#KAT-10495</strong>
+            <span style="color:var(--color-text-muted); font-size:var(--text-sm); margin-left:8px;">Passée le 20 Oct 2026</span>
+          </div>
+          <span class="status-badge status-badge--success">Livrée</span>
+        </div>
+        <div style="display:flex; gap:var(--space-lg); align-items:center; padding:var(--space-md); background:var(--color-gray); border-radius:var(--radius-md); margin-bottom:var(--space-md);">
+          <img src="assets/images/product-6a.png" style="width:64px; height:64px; border-radius:8px; object-fit:cover;">
+          <div style="flex:1;">
+            <strong>Sérum Botanique Éclat</strong>
+            <p style="font-size:var(--text-sm); color:var(--color-text-muted);">Soin concentré 50ml</p>
+          </div>
+          <strong>110,00 €</strong>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn-primary" style="padding:8px 16px; font-size:12px;">Laisser un avis (+50 pts)</button>
+          <button style="padding:8px 16px; font-size:12px; border:1px solid var(--color-border); border-radius:var(--radius-sm); background:transparent; cursor:pointer;">Demander un retour</button>
+          <button style="padding:8px 16px; font-size:12px; border:1px solid var(--color-border); border-radius:var(--radius-sm); background:transparent; cursor:pointer;">Télécharger facture</button>
+          <button style="padding:8px 16px; font-size:12px; border:1px solid var(--color-border); border-radius:var(--radius-sm); background:transparent; cursor:pointer;">Racheter</button>
+        </div>
+      </div>
+
+      <!-- Commande 3 — Livrée -->
+      <div class="card" style="margin-bottom:var(--space-lg);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-md); flex-wrap:wrap; gap:8px;">
+          <div>
+            <strong style="font-size:var(--text-lg);">#KAT-09823</strong>
+            <span style="color:var(--color-text-muted); font-size:var(--text-sm); margin-left:8px;">Passée le 12 Sep 2026</span>
+          </div>
+          <span class="status-badge status-badge--success">Livrée</span>
+        </div>
+        <div style="display:flex; gap:var(--space-lg); align-items:center; padding:var(--space-md); background:var(--color-gray); border-radius:var(--radius-md);">
+          <img src="assets/images/product-3a.png" style="width:64px; height:64px; border-radius:8px; object-fit:cover;">
+          <div style="flex:1;">
+            <strong>Gommage Terracotta</strong>
+            <p style="font-size:var(--text-sm); color:var(--color-text-muted);">Exfoliant doux 100ml</p>
+          </div>
+          <strong>85,00 €</strong>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/account.js"></script>
+  <script>
+    document.getElementById('mobileToggle')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+    document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'compte-commandes') l.classList.add('active'); });
+  </script>
+</body>
+</html>

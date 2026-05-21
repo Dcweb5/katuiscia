@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boutique — KATUISCIA</title>
+  <meta name="description" content="Découvrez notre gamme complète d'essentiels KATUISCIA. Soins visage, corps, parfums et outils de rituel.">
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body class="bg-cream text-dark font-body antialiased">
+
+  {{> header }}
+
+  <main id="main-content">
+    <!-- PAGE HEADER -->
+    <div class="pt-[calc(190px+3rem)] pb-8 max-w-site mx-auto px-4 lg:px-8 reveal-k-k">
+      <h1 class="font-heading text-4xl font-normal text-dark mb-4">Les Collections</h1>
+      <p class="text-md text-text-light max-w-lg leading-relaxed">Des formulations soignées conçues pour élever votre rituel quotidien. Découvrez notre gamme complète d'essentiels Katuiscia.</p>
+    </div>
+
+    <!-- BOUTIQUE LAYOUT -->
+    <div class="max-w-site mx-auto px-4 lg:px-8 pb-24 flex flex-col lg:flex-row gap-8">
+
+      <!-- FILTERS SIDEBAR -->
+      <aside class="lg:w-[260px] flex-shrink-0 reveal-k-k" id="filters">
+        <button class="lg:hidden flex items-center gap-2 w-full py-3 px-4 border border-border-k rounded-lg text-sm font-medium mb-4" id="filters-toggle" aria-expanded="false">
+          <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 21V14M4 10V3M12 21V12M12 8V3M20 21V16M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
+          Filtres
+        </button>
+
+        <div class="hidden lg:block space-y-8" id="filters-panel">
+          <!-- Catégorie -->
+          <div>
+            <h3 class="text-xs font-semibold tracking-[0.15em] uppercase text-dark mb-4">Catégorie</h3>
+            <div class="space-y-3">
+              <label class="flex items-center gap-3 cursor-pointer text-sm text-text-light hover:text-dark transition-colors">
+                <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" data-filter-category="soin-peau"> Soin de la peau
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer text-sm text-text-light hover:text-dark transition-colors">
+                <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" data-filter-category="parfum"> Parfum
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer text-sm text-text-light hover:text-dark transition-colors">
+                <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" data-filter-category="corps"> Corps
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer text-sm text-text-light hover:text-dark transition-colors">
+                <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" data-filter-category="routine-capillaires"> Routine capillaires
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer text-sm text-text-light hover:text-dark transition-colors">
+                <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" data-filter-category="outils"> Outils de Rituel
+              </label>
+            </div>
+          </div>
+
+          <!-- Besoin -->
+          <div>
+            <h3 class="text-xs font-semibold tracking-[0.15em] uppercase text-dark mb-4">Besoin de la peau</h3>
+            <div class="space-y-3">
+              <label class="flex items-center gap-3 cursor-pointer text-sm text-text-light hover:text-dark transition-colors">
+                <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" data-filter-need="hydratation"> Hydratation
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer text-sm text-text-light hover:text-dark transition-colors">
+                <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" data-filter-need="eclat"> Éclat
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer text-sm text-text-light hover:text-dark transition-colors">
+                <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" data-filter-need="restauration"> Restauration
+              </label>
+            </div>
+          </div>
+
+          <!-- Prix -->
+          <div>
+            <h3 class="text-xs font-semibold tracking-[0.15em] uppercase text-dark mb-4">Gamme de prix</h3>
+            <div class="flex items-center gap-3">
+              <input type="number" class="input input-bordered input-sm w-24 bg-transparent text-sm" placeholder="Min" data-price-min>
+              <span class="text-text-muted">—</span>
+              <input type="number" class="input input-bordered input-sm w-24 bg-transparent text-sm" placeholder="Max" data-price-max>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <div class="flex-1">
+        <!-- Top bar -->
+        <div class="flex items-center justify-between mb-8 reveal-k-k delay-1">
+          <div class="flex flex-wrap gap-2" id="filter-tags"></div>
+          <div class="flex items-center gap-3">
+            <label class="text-xs text-text-muted tracking-wide uppercase" for="sort-select">Trier par</label>
+            <select class="select select-bordered select-sm bg-transparent font-body text-sm min-w-[160px]" id="sort-select">
+              <option value="featured">En vedette</option>
+              <option value="price-asc">Prix croissant</option>
+              <option value="price-desc">Prix décroissant</option>
+              <option value="name">Nom A-Z</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Products Grid (rendered by JS) -->
+        <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6" id="products-grid">
+          <!-- Placeholder cards while JS loads -->
+          <div class="product-card-k reveal-k-k delay-1">
+            <div class="card-image"><a href="produit" class="block w-full h-full">
+              <img src="assets/images/product-1a.png" alt="Nectar Lumineux" class="img-primary" loading="lazy">
+              <img src="assets/images/product-1b.png" alt="" class="img-secondary" loading="lazy">
+            </a><span class="card-badge">Best-seller</span>
+            <a href="panier" class="card-cart-btn" aria-label="Ajouter"><svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></a></div>
+            <div class="card-info"><a href="produit" class="no-underline text-inherit"><span class="card-category">Soin de la peau</span><h3 class="card-name">Nectar Lumineux</h3><p class="card-desc">Huile Visage Réparatrice</p><span class="card-price">125 €</span></a></div>
+          </div>
+          <div class="product-card-k reveal-k-k delay-2">
+            <div class="card-image"><a href="produit" class="block w-full h-full">
+              <img src="assets/images/product-6a.png" alt="Sérum Éclat" class="img-primary" loading="lazy">
+              <img src="assets/images/product-6b.png" alt="" class="img-secondary" loading="lazy">
+            </a><span class="card-badge">Best-seller</span>
+            <a href="panier" class="card-cart-btn" aria-label="Ajouter"><svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></a></div>
+            <div class="card-info"><a href="produit" class="no-underline text-inherit"><span class="card-category">Soin de la peau</span><h3 class="card-name">Sérum Éclat</h3><p class="card-desc">Concentré Vitamine C</p><span class="card-price">110 €</span></a></div>
+          </div>
+          <div class="product-card-k reveal-k-k delay-3">
+            <div class="card-image"><a href="produit" class="block w-full h-full">
+              <img src="assets/images/product-3a.png" alt="Gommage Terracotta" class="img-primary" loading="lazy">
+              <img src="assets/images/product-3b.png" alt="" class="img-secondary" loading="lazy">
+            </a><span class="card-badge">Nouveau</span>
+            <a href="panier" class="card-cart-btn" aria-label="Ajouter"><svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></a></div>
+            <div class="card-info"><a href="produit" class="no-underline text-inherit"><span class="card-category">Soin de la peau</span><h3 class="card-name">Gommage Terracotta</h3><p class="card-desc">Masque Purifiant</p><span class="card-price">85 €</span></a></div>
+          </div>
+          <div class="product-card-k reveal-k-k delay-1">
+            <div class="card-image"><a href="produit" class="block w-full h-full">
+              <img src="assets/images/product-8a.png" alt="Lait Céleste" class="img-primary" loading="lazy">
+              <img src="assets/images/product-8b.png" alt="" class="img-secondary" loading="lazy">
+            </a><span class="card-badge">Nouveau</span>
+            <a href="panier" class="card-cart-btn" aria-label="Ajouter"><svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></a></div>
+            <div class="card-info"><a href="produit" class="no-underline text-inherit"><span class="card-category">Soin de la peau</span><h3 class="card-name">Lait Céleste</h3><p class="card-desc">Démaquillant Doux</p><span class="card-price">65 €</span></a></div>
+          </div>
+          <div class="product-card-k reveal-k-k delay-2">
+            <div class="card-image"><a href="produit" class="block w-full h-full">
+              <img src="assets/images/product-4a.png" alt="Crème Douce" class="img-primary" loading="lazy">
+              <img src="assets/images/product-4b.png" alt="" class="img-secondary" loading="lazy">
+            </a>
+            <a href="panier" class="card-cart-btn" aria-label="Ajouter"><svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></a></div>
+            <div class="card-info"><a href="produit" class="no-underline text-inherit"><span class="card-category">Corps</span><h3 class="card-name">Crème Douce</h3><p class="card-desc">Hydratant Corporel</p><span class="card-price">95 €</span></a></div>
+          </div>
+          <div class="product-card-k reveal-k-k delay-3">
+            <div class="card-image"><a href="produit" class="block w-full h-full">
+              <img src="assets/images/product-5a.png" alt="Émulsion Soyeuse" class="img-primary" loading="lazy">
+              <img src="assets/images/product-5b.png" alt="" class="img-secondary" loading="lazy">
+            </a>
+            <a href="panier" class="card-cart-btn" aria-label="Ajouter"><svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></a></div>
+            <div class="card-info"><a href="produit" class="no-underline text-inherit"><span class="card-category">Soin Corps</span><h3 class="card-name">Émulsion Soyeuse</h3><p class="card-desc">Baume Hydratant</p><span class="card-price">95 €</span></a></div>
+          </div>
+        </div>
+
+        <div class="text-center mt-12">
+          <a href="#" class="btn-katuiscia">Découvrir plus</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  {{> footer }}
+
+  <script type="module" src="/js/main.js"></script>
+  <script>
+    // Toggle mobile filters
+    document.getElementById('filters-toggle')?.addEventListener('click', function() {
+      const panel = document.getElementById('filters-panel');
+      panel.classList.toggle('hidden');
+      this.setAttribute('aria-expanded', panel.classList.contains('hidden') ? 'false' : 'true');
+    });
+  </script>
+</body>
+</html>

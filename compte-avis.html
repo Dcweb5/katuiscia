@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes Avis — KATUISCIA</title>
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="/js/auth.js"></script>
+  <script src="/js/auth-guard.js"></script>
+</head>
+<body class="dashboard-layout">
+  {{> user-sidebar }}
+
+  <main class="dashboard-main">
+    <header class="dashboard-header">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="mobile-toggle" id="mobileToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <span style="font-family:var(--font-heading); font-size:var(--text-lg); color:var(--color-dark);">Mes Avis</span>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <h1 class="page-title">Mes Avis</h1>
+      <p class="page-subtitle">Partagez votre expérience et gagnez des points fidélité. Chaque avis vous rapporte <strong>50 points</strong> !</p>
+
+      <!-- Avis en attente -->
+      <h3 style="font-family:var(--font-heading); font-size:var(--text-lg); margin-bottom:var(--space-md); display:flex; align-items:center; gap:8px;">
+        <span style="width:8px; height:8px; background:var(--color-warm); border-radius:50%; display:inline-block;"></span>
+        Avis en attente (2)
+      </h3>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:var(--space-md); margin-bottom:var(--space-2xl);">
+        <!-- Produit 1 -->
+        <div class="card" style="border:2px solid var(--color-peach);">
+          <div style="display:flex; gap:var(--space-md); align-items:center; margin-bottom:var(--space-md);">
+            <img src="assets/images/product-1a.png" style="width:64px; height:64px; border-radius:8px; object-fit:cover;">
+            <div>
+              <strong>Nectar Lumineux</strong>
+              <p style="font-size:var(--text-sm); color:var(--color-text-muted);">Acheté le 2 Mai 2026</p>
+            </div>
+          </div>
+          <button class="btn-primary" style="width:100%;" onclick="document.getElementById('modal-avis').showModal()">Donner mon avis (+50 pts)</button>
+        </div>
+        <!-- Produit 2 -->
+        <div class="card" style="border:2px solid var(--color-peach);">
+          <div style="display:flex; gap:var(--space-md); align-items:center; margin-bottom:var(--space-md);">
+            <img src="assets/images/product-6a.png" style="width:64px; height:64px; border-radius:8px; object-fit:cover;">
+            <div>
+              <strong>Sérum Botanique Éclat</strong>
+              <p style="font-size:var(--text-sm); color:var(--color-text-muted);">Acheté le 20 Oct 2026</p>
+            </div>
+          </div>
+          <button class="btn-primary" style="width:100%;" onclick="document.getElementById('modal-avis').showModal()">Donner mon avis (+50 pts)</button>
+        </div>
+      </div>
+
+      <!-- Avis publiés -->
+      <h3 style="font-family:var(--font-heading); font-size:var(--text-lg); margin-bottom:var(--space-md);">Mes avis publiés (2)</h3>
+      
+      <!-- Avis 1 -->
+      <div class="card" style="margin-bottom:var(--space-lg);">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:var(--space-md); flex-wrap:wrap; gap:8px;">
+          <div style="display:flex; gap:var(--space-md); align-items:center;">
+            <img src="assets/images/product-3a.png" style="width:48px; height:48px; border-radius:8px; object-fit:cover;">
+            <div>
+              <strong>Gommage Terracotta</strong>
+              <div style="color:var(--color-warm); font-size:var(--text-sm);">★★★★★</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button class="action-btn" title="Modifier" onclick="document.getElementById('modal-edit-avis').showModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="action-btn action-btn--danger" title="Supprimer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+          </div>
+        </div>
+        <h4 style="font-size:var(--text-base); margin-bottom:4px;">Un gommage divin pour ma peau</h4>
+        <p style="font-size:var(--text-sm); color:var(--color-text-light); line-height:1.6; margin-bottom:var(--space-sm);">Ce gommage est tout simplement parfait. La texture est fine et douce, les grains de terracotta exfolient en douceur sans irriter. Ma peau est plus douce et lumineuse après chaque utilisation. Je recommande à 100% !</p>
+        <span style="font-size:11px; color:var(--color-text-muted);">Publié le 25 Sep 2026 • +50 pts gagnés</span>
+      </div>
+
+      <!-- Avis 2 -->
+      <div class="card" style="margin-bottom:var(--space-lg);">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:var(--space-md); flex-wrap:wrap; gap:8px;">
+          <div style="display:flex; gap:var(--space-md); align-items:center;">
+            <img src="assets/images/product-4a.png" style="width:48px; height:48px; border-radius:8px; object-fit:cover;">
+            <div>
+              <strong>Rouleau Quartz Rose</strong>
+              <div style="color:var(--color-warm); font-size:var(--text-sm);">★★★★☆</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button class="action-btn" title="Modifier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="action-btn action-btn--danger" title="Supprimer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px; height:14px;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+          </div>
+        </div>
+        <h4 style="font-size:var(--text-base); margin-bottom:4px;">Bon produit mais le manche est fragile</h4>
+        <p style="font-size:var(--text-sm); color:var(--color-text-light); line-height:1.6; margin-bottom:var(--space-sm);">Le rouleau est très agréable à utiliser, la pierre est de bonne qualité. Seul petit bémol : le manche me semble un peu fragile, à manipuler avec soin.</p>
+        <span style="font-size:11px; color:var(--color-text-muted);">Publié le 1 Nov 2025 • +50 pts gagnés</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: Écrire un avis -->
+  <dialog id="modal-avis" class="admin-modal" style="max-width:520px;">
+    <div class="admin-modal__content">
+      <div class="admin-modal__header">
+        <h2 style="font-family:var(--font-heading); font-size:var(--text-xl);">Donner mon avis</h2>
+        <button onclick="document.getElementById('modal-avis').close()" class="admin-modal__close">&times;</button>
+      </div>
+      <form class="admin-modal__body">
+        <div style="text-align:center; margin-bottom:var(--space-lg);">
+          <img src="assets/images/product-1a.png" style="width:80px; height:80px; border-radius:12px; object-fit:cover; margin-bottom:8px;">
+          <h4>Nectar Lumineux</h4>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Note *</label>
+          <div style="display:flex; gap:8px; font-size:28px; color:var(--color-border); cursor:pointer;" id="star-rating">
+            <span data-star="1" onclick="setStars(1)" style="transition:color 0.2s;">★</span>
+            <span data-star="2" onclick="setStars(2)" style="transition:color 0.2s;">★</span>
+            <span data-star="3" onclick="setStars(3)" style="transition:color 0.2s;">★</span>
+            <span data-star="4" onclick="setStars(4)" style="transition:color 0.2s;">★</span>
+            <span data-star="5" onclick="setStars(5)" style="transition:color 0.2s;">★</span>
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Titre de votre avis *</label>
+          <input type="text" class="admin-input" placeholder="Ex: Un sérum miraculeux !" required>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Votre avis *</label>
+          <textarea class="admin-input" rows="4" placeholder="Décrivez votre expérience avec ce produit..." style="resize:vertical;" required></textarea>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Photo (optionnel)</label>
+          <div style="border:2px dashed var(--color-border); border-radius:var(--radius-md); padding:var(--space-md); text-align:center; cursor:pointer;">
+            <p style="font-size:var(--text-sm); color:var(--color-text-muted);">📷 Ajoutez une photo • <span style="color:var(--color-warm);">Parcourir</span></p>
+          </div>
+        </div>
+        <div style="background:var(--color-peach); padding:var(--space-md); border-radius:var(--radius-sm); text-align:center; margin-bottom:var(--space-md);">
+          <span style="font-size:var(--text-sm);">🎁 Vous gagnerez <strong>50 points</strong> en publiant cet avis !</span>
+        </div>
+        <div style="display:flex; gap:var(--space-sm); justify-content:flex-end;">
+          <button type="button" onclick="document.getElementById('modal-avis').close()" style="padding:10px 20px; border:1px solid var(--color-border); border-radius:var(--radius-sm); background:transparent; cursor:pointer; font-size:var(--text-sm);">Annuler</button>
+          <button type="submit" class="btn-primary">Publier mon avis</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- MODAL: Modifier un avis -->
+  <dialog id="modal-edit-avis" class="admin-modal" style="max-width:520px;">
+    <div class="admin-modal__content">
+      <div class="admin-modal__header">
+        <h2 style="font-family:var(--font-heading); font-size:var(--text-xl);">Modifier mon avis</h2>
+        <button onclick="document.getElementById('modal-edit-avis').close()" class="admin-modal__close">&times;</button>
+      </div>
+      <form class="admin-modal__body">
+        <div class="admin-form-group">
+          <label class="admin-label">Note</label>
+          <div style="display:flex; gap:8px; font-size:28px; color:var(--color-warm); cursor:pointer;">
+            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Titre</label>
+          <input type="text" class="admin-input" value="Un gommage divin pour ma peau">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Votre avis</label>
+          <textarea class="admin-input" rows="4" style="resize:vertical;">Ce gommage est tout simplement parfait. La texture est fine et douce, les grains de terracotta exfolient en douceur sans irriter. Ma peau est plus douce et lumineuse après chaque utilisation. Je recommande à 100% !</textarea>
+        </div>
+        <div style="display:flex; gap:var(--space-sm); justify-content:flex-end;">
+          <button type="button" onclick="document.getElementById('modal-edit-avis').close()" style="padding:10px 20px; border:1px solid var(--color-border); border-radius:var(--radius-sm); background:transparent; cursor:pointer; font-size:var(--text-sm);">Annuler</button>
+          <button type="submit" class="btn-primary">Sauvegarder</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <script src="/js/account.js"></script>
+  <script>
+    document.getElementById('mobileToggle')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+    document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'compte-avis') l.classList.add('active'); });
+  </script>
+</body>
+</html>

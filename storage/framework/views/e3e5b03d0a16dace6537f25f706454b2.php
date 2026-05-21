@@ -1,0 +1,53 @@
+<?php $__env->startSection('title', 'Mentions Légales — KATUISCIA'); ?>
+
+<?php $__env->startSection('head'); ?>
+
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+<main id="main-content">
+    <div class="pt-[calc(160px+3rem)] pb-12 px-4 text-center reveal-k-k">
+      <h1 class="font-heading text-4xl font-normal text-dark mb-4">Mentions Légales</h1>
+    </div>
+
+    <section class="max-w-3xl mx-auto px-4 pb-24 reveal-k-k delay-1">
+      <div class="space-y-8">
+        <div>
+          <h2 class="font-heading text-2xl font-medium text-dark mb-4">Éditeur du site</h2>
+          <p class="text-text-light leading-relaxed">KATUISCIA<br>9 bis route de Corbeil<br>91360 Villemoisson-sur-Orge, France<br>Email : contact@katuiscia.com</p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl font-medium text-dark mb-4">Hébergement</h2>
+          <p class="text-text-light leading-relaxed">Le site est hébergé par [Hébergeur à définir].</p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl font-medium text-dark mb-4">Propriété intellectuelle</h2>
+          <p class="text-text-light leading-relaxed">L'ensemble du contenu de ce site (textes, images, logos, graphismes) est la propriété exclusive de KATUISCIA. Toute reproduction, même partielle, est interdite sans autorisation préalable.</p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl font-medium text-dark mb-4">Données personnelles</h2>
+          <p class="text-text-light leading-relaxed">KATUISCIA s'engage à protéger vos données personnelles conformément au RGPD. Les données collectées via le formulaire de contact sont utilisées uniquement pour répondre à vos demandes et ne sont jamais cédées à des tiers.</p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl font-medium text-dark mb-4">Cookies</h2>
+          <p class="text-text-light leading-relaxed">Ce site utilise des cookies pour améliorer votre expérience de navigation. Vous pouvez configurer vos préférences via le bandeau cookies affiché lors de votre première visite.</p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl font-medium text-dark mb-4">Crédits</h2>
+          <p class="text-text-light leading-relaxed">Design et développement : KSP Digital<br>Photographies produits : KATUISCIA</p>
+        </div>
+      </div>
+    </section>
+  </main>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+<script type="module" src="<?php echo e(asset('js/main.js')); ?>"></script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.public', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH E:\mes sites web\KATUISCIA LARAVEL\resources\views\pages\mentions-legales.blade.php ENDPATH**/ ?>

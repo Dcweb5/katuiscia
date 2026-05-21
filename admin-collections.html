@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="katuiscia">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collections — KATUISCIA Admin</title>
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin-guard.js"></script>
+</head>
+<body class="dashboard-layout admin-dashboard">
+  {{> admin-sidebar }}
+  <main class="dashboard-main">
+    <header class="dashboard-header">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="mobile-toggle" id="mobileToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div class="header-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Rechercher une collection..."></div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-primary" onclick="document.getElementById('modal-collection').showModal()">+ Nouvelle Collection</button>
+        <div style="width:36px; height:36px; border-radius:50%; background:var(--color-dark); color:var(--color-white); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:bold;">AD</div>
+      </div>
+    </header>
+    <div class="dashboard-content">
+      <h1 class="page-title">Collections & Packs</h1>
+      <p class="page-subtitle" style="margin-bottom:var(--space-2xl);">Créez des collections thématiques en regroupant plusieurs produits.</p>
+
+      <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap:var(--space-lg);">
+        <!-- Collection 1 -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:var(--space-md);">
+            <div>
+              <span class="status-badge status-badge--success" style="margin-bottom:8px;">Active</span>
+              <h3 style="font-family:var(--font-heading); font-size:var(--text-lg);">Pack Rituel Complet</h3>
+              <span style="font-size:var(--text-xs); color:var(--color-text-muted);">3 produits • 295 € (au lieu de 340 €)</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="action-btn" title="Modifier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:16px; height:16px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+              <button class="action-btn action-btn--danger" title="Supprimer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:16px; height:16px;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+          <p style="font-size:var(--text-sm); color:var(--color-text-light); margin-bottom:var(--space-md);">L'essentiel pour démarrer votre rituel KATUISCIA : nettoyant, sérum et crème.</p>
+          <div style="display:flex; gap:8px;">
+            <img src="assets/images/product-4a.png" style="width:48px; height:48px; border-radius:8px; object-fit:cover; border:1px solid var(--color-gray-medium);">
+            <img src="assets/images/product-6a.png" style="width:48px; height:48px; border-radius:8px; object-fit:cover; border:1px solid var(--color-gray-medium);">
+            <img src="assets/images/product-1a.png" style="width:48px; height:48px; border-radius:8px; object-fit:cover; border:1px solid var(--color-gray-medium);">
+          </div>
+        </div>
+
+        <!-- Collection 2 -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:var(--space-md);">
+            <div>
+              <span class="status-badge status-badge--muted" style="margin-bottom:8px;">Brouillon</span>
+              <h3 style="font-family:var(--font-heading); font-size:var(--text-lg);">Coffret Éclat d'Été</h3>
+              <span style="font-size:var(--text-xs); color:var(--color-text-muted);">4 produits • 380 €</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="action-btn" title="Modifier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:16px; height:16px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+              <button class="action-btn action-btn--danger" title="Supprimer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:16px; height:16px;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+          <p style="font-size:var(--text-sm); color:var(--color-text-light); margin-bottom:var(--space-md);">Un coffret estival lumineux pour préparer et protéger votre peau.</p>
+          <div style="display:flex; gap:8px;">
+            <img src="assets/images/product-3a.png" style="width:48px; height:48px; border-radius:8px; object-fit:cover; border:1px solid var(--color-gray-medium);">
+            <img src="assets/images/product-5a.png" style="width:48px; height:48px; border-radius:8px; object-fit:cover; border:1px solid var(--color-gray-medium);">
+            <img src="assets/images/product-8a.png" style="width:48px; height:48px; border-radius:8px; object-fit:cover; border:1px solid var(--color-gray-medium);">
+            <img src="assets/images/product-2a.png" style="width:48px; height:48px; border-radius:8px; object-fit:cover; border:1px solid var(--color-gray-medium);">
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <dialog id="modal-collection" class="admin-modal" style="max-width:640px;">
+    <div class="admin-modal__content">
+      <div class="admin-modal__header">
+        <h2 style="font-family:var(--font-heading); font-size:var(--text-xl);">Nouvelle Collection</h2>
+        <button onclick="document.getElementById('modal-collection').close()" class="admin-modal__close">&times;</button>
+      </div>
+      <form class="admin-modal__body">
+        <div class="admin-form-group">
+          <label class="admin-label">Nom de la collection *</label>
+          <input type="text" class="admin-input" placeholder="Ex: Pack Rituel Complet" required>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Description</label>
+          <textarea class="admin-input" rows="3" placeholder="Décrivez cette collection..." style="resize:vertical;"></textarea>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Prix de la collection (€)</label>
+          <input type="number" class="admin-input" placeholder="295" step="0.01">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Produits inclus</label>
+          <p style="font-size:var(--text-xs); color:var(--color-text-muted); margin-bottom:8px;">Sélectionnez les produits à inclure dans cette collection.</p>
+          <div style="display:flex; flex-direction:column; gap:8px; max-height:200px; overflow-y:auto; border:1px solid var(--color-border); border-radius:var(--radius-sm); padding:12px;">
+            <label style="display:flex; align-items:center; gap:10px; font-size:var(--text-sm); cursor:pointer;"><input type="checkbox"> Nectar Lumineux — 125 €</label>
+            <label style="display:flex; align-items:center; gap:10px; font-size:var(--text-sm); cursor:pointer;"><input type="checkbox"> Sérum Éclat — 110 €</label>
+            <label style="display:flex; align-items:center; gap:10px; font-size:var(--text-sm); cursor:pointer;"><input type="checkbox"> Gommage Terracotta — 85 €</label>
+            <label style="display:flex; align-items:center; gap:10px; font-size:var(--text-sm); cursor:pointer;"><input type="checkbox"> Crème Douce — 95 €</label>
+            <label style="display:flex; align-items:center; gap:10px; font-size:var(--text-sm); cursor:pointer;"><input type="checkbox"> Émulsion Soyeuse — 95 €</label>
+            <label style="display:flex; align-items:center; gap:10px; font-size:var(--text-sm); cursor:pointer;"><input type="checkbox"> Luminosité Nocturne — 185 €</label>
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Image de couverture</label>
+          <div style="border:2px dashed var(--color-border); border-radius:var(--radius-md); padding:var(--space-xl); text-align:center; cursor:pointer;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:32px; height:32px; color:var(--color-text-muted); margin:0 auto 8px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <p style="font-size:var(--text-sm); color:var(--color-text-muted);">Glissez une image ou <span style="color:var(--color-warm); font-weight:500;">parcourir</span></p>
+            <small style="color:var(--color-text-muted);">Image de couverture de la collection (format carré recommandé)</small>
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Statut</label>
+          <select class="admin-input"><option>Active</option><option>Brouillon</option></select>
+        </div>
+        <div style="display:flex; gap:var(--space-sm); justify-content:flex-end; padding-top:var(--space-md);">
+          <button type="button" onclick="document.getElementById('modal-collection').close()" style="padding:10px 20px; border:1px solid var(--color-border); border-radius:var(--radius-sm); background:transparent; cursor:pointer; font-size:var(--text-sm);">Annuler</button>
+          <button type="submit" class="btn-primary">Créer la collection</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <script>
+    document.getElementById('mobileToggle')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+    document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'admin-collections') l.classList.add('active'); });
+  </script>
+  <script src="/js/account.js"></script>
+</body>
+</html>

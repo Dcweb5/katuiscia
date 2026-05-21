@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avantage en Ligne — KATUISCIA | Le Club</title>
+  <meta name="description" content="Entrez dans un monde de privilèges avec le Club KATUISCIA. Découvrez notre programme de fidélité 100% digital.">
+  <link rel="icon" type="image/png" href="assets/images/K ICONE.png">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    /* Hero Avantage */
+    .club-hero {
+      position: relative;
+      padding: calc(var(--header-height) + var(--space-4xl)) var(--space-md) var(--space-4xl);
+      text-align: center;
+      background: var(--color-dark);
+      color: var(--color-white);
+      overflow: hidden;
+    }
+    .club-hero__bg {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: url('assets/images/club-hero.png') center/cover;
+      opacity: 0.3;
+      z-index: 1;
+    }
+    .club-hero__content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .club-hero__title {
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 6vw, 4.5rem);
+      color: var(--color-accent);
+      margin-bottom: var(--space-md);
+      font-weight: 300;
+    }
+    .club-hero__desc {
+      font-size: var(--text-lg);
+      margin-bottom: var(--space-2xl);
+      line-height: var(--leading-relaxed);
+    }
+    .points-highlight {
+      display: inline-block;
+      padding: var(--space-md) var(--space-2xl);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(181, 142, 107, 0.3);
+      border-radius: var(--radius-full);
+      backdrop-filter: blur(10px);
+      margin-bottom: var(--space-2xl);
+    }
+    .points-highlight strong {
+      font-family: var(--font-heading);
+      font-size: var(--text-2xl);
+      color: var(--color-accent);
+      font-weight: normal;
+    }
+
+    /* Benefits Grid */
+    .benefits-section {
+      padding: var(--space-4xl) var(--space-md);
+      background: var(--color-background);
+    }
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-2xl);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .benefit-card {
+      background: var(--color-white);
+      padding: var(--space-2xl);
+      border-radius: var(--radius-lg);
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition-bounce), box-shadow var(--transition-fast);
+      position: relative;
+      overflow: hidden;
+    }
+    .benefit-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 4px;
+      background: var(--color-accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition-fast);
+    }
+    .benefit-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+    .benefit-card:hover::before {
+      transform: scaleX(1);
+    }
+    .benefit-icon {
+      font-size: 2.5rem;
+      margin-bottom: var(--space-md);
+    }
+    .benefit-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-xl);
+      margin-bottom: var(--space-sm);
+      color: var(--color-dark);
+    }
+    .benefit-text {
+      color: var(--color-text-light);
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+    }
+
+    /* Paliers */
+    .tiers-section {
+      padding: var(--space-4xl) var(--space-md);
+      background: var(--color-light);
+    }
+    .tiers-header {
+      text-align: center;
+      margin-bottom: var(--space-3xl);
+    }
+    .tiers-header h2 {
+      font-family: var(--font-heading);
+      font-size: var(--text-3xl);
+      color: var(--color-primary);
+    }
+    .tiers-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--space-xl);
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .tier-card {
+      flex: 1;
+      min-width: 250px;
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: var(--radius-lg);
+      padding: var(--space-2xl);
+      text-align: center;
+      position: relative;
+    }
+    .tier-card--premium {
+      background: var(--color-dark);
+      color: var(--color-white);
+      border-color: var(--color-dark);
+      transform: scale(1.05);
+      z-index: 2;
+      box-shadow: var(--shadow-xl);
+    }
+    .tier-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-2xl);
+      margin-bottom: var(--space-xs);
+    }
+    .tier-card--premium .tier-title {
+      color: var(--color-accent);
+    }
+    .tier-points {
+      font-size: var(--text-sm);
+      color: var(--color-text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--space-xl);
+      display: block;
+    }
+    .tier-card--premium .tier-points {
+      color: rgba(255,255,255,0.7);
+    }
+    .tier-list {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+    }
+    .tier-list li {
+      margin-bottom: var(--space-sm);
+      padding-left: var(--space-lg);
+      position: relative;
+      font-size: var(--text-sm);
+    }
+    .tier-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--color-accent);
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Aller au contenu principal</a>
+
+  <!-- REUSABLE HEADER -->
+  <header class="header" id="header">
+    <div class="header__inner">
+      <div class="header__top">
+        <div class="header__search">
+          <input type="text" placeholder="Rechercher" aria-label="Rechercher">
+          <button aria-label="Lancer la recherche">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </button>
+        </div>
+        <div class="header__logo">
+          <a href="index.html">
+            <img src="assets/images/K LOGO.png" alt="KATUISCIA" class="header__logo-img desktop-logo">
+            <img src="assets/images/K%20ICONE.png" alt="KATUISCIA" class="header__logo-img mobile-logo">
+          </a>
+        </div>
+        <div class="header__actions">
+          <a href="connexion.html" class="header__action-btn" aria-label="Mon compte"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
+          <button class="header__action-btn" aria-label="Messages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
+          <a href="panier.html" class="header__action-btn" aria-label="Panier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="header__cart-count">0</span></a>
+          <button class="header__hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+      </div>
+      <div class="header__bottom">
+        <nav class="header__nav-group header__nav-group--left" aria-label="Navigation gauche">
+          <a href="boutique.html" class="header__nav-link">SOINS</a>
+          <a href="maison.html" class="header__nav-link">MAISON</a>
+          <div class="header__dropdown">
+            <a href="#" class="header__nav-link">CONSEILS</a>
+            <div class="header__dropdown-content">
+              <a href="blog.html">Blog</a>
+              <a href="diagnostic.html">Diagnostic</a>
+            </div>
+          </div>
+          <a href="contact.html" class="header__nav-link">CONTACT</a>
+        </nav>
+        <nav class="header__nav-group header__nav-group--right" aria-label="Navigation droite">
+          <div class="header__dropdown">
+            <a href="#" class="header__nav-link">SERVICES &amp; BOUTIQUES</a>
+            <div class="header__dropdown-content">
+              <a href="formation.html">Formation</a>
+              <a href="grossiste.html">Devenir Grossiste</a>
+              <a href="avantage-en-ligne.html">Avantage en ligne</a>
+              <a href="contact.html">Où nous trouver ?</a>
+            </div>
+          </div>
+          <div class="header__dropdown">
+            <a href="#" class="header__nav-link">NOS VALEURS</a>
+            <div class="header__dropdown-content header__dropdown-content--mega">
+              <span class="dropdown-heading">Nos Engagements</span>
+              <a href="valeurs-beaute-responsable.html">À propos de la beauté responsable</a>
+              <a href="valeurs-emballage-durable.html">À propos de l'emballage durable</a>
+              <a href="valeurs-personne-biodiversite.html">À propos de la personne &amp; la biodiversité</a>
+              <div class="dropdown-divider"></div>
+              <span class="dropdown-heading">Notre Vision</span>
+              <a href="maison.html">Un avenir plus beau</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <div class="header__search" style="display: flex; margin-bottom: var(--space-xl);">
+      <input type="text" placeholder="Rechercher" aria-label="Rechercher">
+      <button aria-label="Lancer la recherche">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </button>
+    </div>
+    <a href="index.html" class="mobile-menu__link">Accueil</a>
+    <a href="boutique.html" class="mobile-menu__link">Soins</a>
+    <a href="maison.html" class="mobile-menu__link">Maison</a>
+    <div class="mobile-menu__dropdown-wrapper">
+      <span class="mobile-menu__link">Conseils</span>
+      <div class="mobile-menu__dropdown-content">
+        <a href="blog.html" class="mobile-dropdown-link">Blog</a>
+        <a href="diagnostic.html" class="mobile-dropdown-link">Diagnostic</a>
+      </div>
+    </div>
+    <div class="mobile-menu__dropdown-wrapper">
+      <span class="mobile-menu__link">Nos Valeurs</span>
+      <div class="mobile-menu__dropdown-content">
+        <span class="mobile-dropdown-heading">Nos Engagements</span>
+        <a href="valeurs-beaute-responsable.html" class="mobile-dropdown-link">À propos de la beauté responsable</a>
+        <a href="valeurs-emballage-durable.html" class="mobile-dropdown-link">À propos de l'emballage durable</a>
+        <a href="valeurs-personne-biodiversite.html" class="mobile-dropdown-link">À propos de la personne &amp; la biodiversité</a>
+        <span class="mobile-dropdown-heading">Notre Vision</span>
+        <a href="maison.html" class="mobile-dropdown-link">Un avenir plus beau</a>
+      </div>
+    </div>
+    <a href="contact.html" class="mobile-menu__link">Contact</a>
+    <div class="mobile-menu__dropdown-wrapper">
+      <span class="mobile-menu__link">Services &amp; Boutiques</span>
+      <div class="mobile-menu__dropdown-content">
+        <a href="formation.html" class="mobile-dropdown-link">Formation</a>
+        <a href="grossiste.html" class="mobile-dropdown-link">Devenir Grossiste</a>
+        <a href="avantage-en-ligne.html" class="mobile-dropdown-link">Avantage en ligne</a>
+        <a href="contact.html" class="mobile-dropdown-link">Où nous trouver ?</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+    
+    <section class="club-hero">
+      <div class="club-hero__bg"></div>
+      <div class="club-hero__content reveal">
+        <h1 class="club-hero__title">Le Club KATUISCIA</h1>
+        <p class="club-hero__desc">Entrez dans un monde de privilèges exclusifs. En tant que marque 100% digitale, nous récompensons votre fidélité en ligne avec des avantages uniques et des cadeaux en format vente.</p>
+        
+        <div class="points-highlight">
+          <strong>1€ dépensé = 10 points fidélité</strong>
+        </div>
+        <br>
+        <button class="btn btn--warm" style="border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent);"><span>Je rejoins le Club</span></button>
+      </div>
+    </section>
+
+    <section class="benefits-section">
+      <div class="benefits-grid">
+        <div class="benefit-card reveal">
+          <div class="benefit-icon">🎁</div>
+          <h3 class="benefit-title">Cadeaux Format Vente</h3>
+          <p class="benefit-text">Échangez vos points contre vos soins favoris en taille réelle directement depuis notre catalogue de récompenses.</p>
+        </div>
+        <div class="benefit-card reveal reveal-delay-1">
+          <div class="benefit-icon">🚚</div>
+          <h3 class="benefit-title">Livraison Offerte</h3>
+          <p class="benefit-text">Profitez de la livraison offerte sur toutes vos commandes, sans minimum d'achat, dès le palier Privilège.</p>
+        </div>
+        <div class="benefit-card reveal reveal-delay-2">
+          <div class="benefit-icon">✨</div>
+          <h3 class="benefit-title">Bonus de Bienvenue</h3>
+          <p class="benefit-text">Le Club KATUISCIA vous gâte dès votre inscription ! Recevez 200 points bonus immédiatement après la création de votre compte.</p>
+        </div>
+        <div class="benefit-card reveal reveal-delay-3">
+          <div class="benefit-icon">📅</div>
+          <h3 class="benefit-title">Surprise d'Anniversaire</h3>
+          <p class="benefit-text">Chaque année, recevez un cadeau exclusif et des points doublés sur votre commande d'anniversaire.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="tiers-section">
+      <div class="tiers-header reveal">
+        <h2>Vos Paliers de Fidélité</h2>
+        <p style="color: var(--color-text-light);">Cumulez des points et débloquez des avantages toujours plus généreux.</p>
+      </div>
+      
+      <div class="tiers-grid">
+        <div class="tier-card reveal reveal-delay-1">
+          <h3 class="tier-title">Essentiel</h3>
+          <span class="tier-points">Dès l'inscription</span>
+          <ul class="tier-list">
+            <li>200 points offerts à l'inscription</li>
+            <li>3 échantillons au choix à chaque commande</li>
+            <li>Accès au diagnostic IA avancé</li>
+            <li>Cadeau d'anniversaire</li>
+          </ul>
+        </div>
+        
+        <div class="tier-card tier-card--premium reveal reveal-delay-2">
+          <h3 class="tier-title">Privilège</h3>
+          <span class="tier-points">Dès 1 500 points</span>
+          <ul class="tier-list">
+            <li>Tous les avantages Essentiel</li>
+            <li>Livraison offerte sans minimum d'achat</li>
+            <li>Accès en avant-première aux nouveautés</li>
+            <li>Invitation aux masterclass digitales</li>
+            <li>1 produit format vente offert</li>
+          </ul>
+          <button class="btn btn--sm" style="margin-top: var(--space-xl); width: 100%;"><span>Découvrir</span></button>
+        </div>
+        
+        <div class="tier-card reveal reveal-delay-3">
+          <h3 class="tier-title">Prestige</h3>
+          <span class="tier-points">Dès 4 500 points</span>
+          <ul class="tier-list">
+            <li>Tous les avantages Privilège</li>
+            <li>Service client prioritaire dédié</li>
+            <li>Cadeaux exclusifs non vendus sur le site</li>
+            <li>Consultation beauté vidéo avec nos experts</li>
+            <li>3 produits format vente offerts au choix</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer" id="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <div class="footer__brand-name"><a href="index.html"><img src="assets/images/K LOGO.png" alt="KATUISCIA" class="footer__logo-img"></a></div>
+        <p class="footer__brand-desc">Élever le quotidien grâce à des rituels botaniques soignés et des formulations conscientes.</p>
+      </div>
+      <div class="footer__column">
+        <h4 class="footer__column-title">Explorer</h4>
+        <a href="boutique.html" class="footer__link">Boutique</a>
+        <a href="maison.html" class="footer__link">À propos</a>
+        <a href="contact.html" class="footer__link">Contact</a>
+      </div>
+      <div class="footer__column">
+        <h4 class="footer__column-title">Informations</h4>
+        <a href="valeurs-beaute-responsable.html" class="footer__link">Durabilité</a>
+        <a href="politique-expedition.html" class="footer__link">Expédition</a>
+        <a href="politique-remboursement.html" class="footer__link">Retours</a>
+      </div>
+      <div class="footer__column">
+        <h4 class="footer__column-title">Légal</h4>
+        <a href="mentions-legales.html" class="footer__link">Mentions légales</a>
+        <a href="politique-confidentialite.html" class="footer__link">Confidentialité</a>
+        <a href="contact.html" class="footer__link">Contact</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">© 2026 KATUISCIA. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
