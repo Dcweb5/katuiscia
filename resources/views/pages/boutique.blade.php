@@ -110,7 +110,7 @@
           data-order="{{ $loop->index }}">
           <div class="product-card__image-wrapper">
             <a href="{{ url('produit/' . $product->slug) }}" style="display:block; width:100%; height:100%;">
-              <img src="{{ asset($product->image_primary) }}" alt="{{ $product->name }}"
+              <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                    class="product-card__image product-card__image--primary" loading="lazy" width="400" height="533"
                    onerror="this.src='{{ asset('assets/images/K ICONE.png') }}'">
               <img src="{{ asset($product->image_secondary ?? $product->image_primary) }}" alt="{{ $product->name }}"

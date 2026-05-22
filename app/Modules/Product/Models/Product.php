@@ -94,6 +94,24 @@ class Product extends Model
         return $query->active()->where('is_active', true)->latest()->limit($limit);
     }
 
+    public function getImageUrlAttribute(): string
+    {
+        $path = $this->image_primary;
+        if (!$path) {
+            return asset('assets/images/K ICONE.webp');
+        }
+        if (str_starts_with($path, 'http')) {
+            return $path;
+        }
+        if (str_starts_with($path, 'assets/')) {
+            return asset($path);
+        }
+        if (str_starts_with($path, '/storage/')) {
+            return asset(ltrim($path, '/'));
+        }
+        return asset('storage/' . $path);
+    }
+
     public function getDisplayPriceAttribute(): string
     {
         return number_format($this->sale_price ?? $this->price, 0, ',', ' ') . ' €';

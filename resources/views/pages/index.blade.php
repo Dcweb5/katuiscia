@@ -37,7 +37,7 @@
     <div class="relative flex justify-center items-center min-h-[500px] reveal-k-k delay-2" id="hero-slideshow">
       @foreach($heroProducts as $i => $product)
       <a href="{{ url('produit/'.$product->slug) }}" class="hero-slide {{ $i === 0 ? 'active' : '' }}" data-name="{{ $product->name }}" data-price="{{ number_format($product->sale_price ?? $product->price, 0, ',', ' ') }} €">
-        <img src="{{ asset($product->image_primary ? 'storage/'.$product->image_primary : 'assets/images/K ICONE.webp') }}" alt="{{ $product->name }}"
+        <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
              class="max-w-[380px] w-full rounded-2xl shadow-xl transition-transform duration-500 ease-out-expo" loading="eager" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
       </a>
       @endforeach
@@ -49,11 +49,11 @@
       </div>
 
       @if($heroProducts->count() > 2)
-      <img src="{{ asset($heroProducts->get(2)->image_primary ? 'storage/'.$heroProducts->get(2)->image_primary : 'assets/images/K ICONE.webp') }}" alt=""
+      <img src="{{ $heroProducts->get(2)->image_url }}" alt=""
            class="absolute top-0 -right-8 w-[130px] rounded-xl shadow-lg z-20 hidden lg:block animate-float" aria-hidden="true" data-parallax="-0.05" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
       @endif
       @if($heroProducts->count() > 3)
-      <img src="{{ asset($heroProducts->get(3)->image_primary ? 'storage/'.$heroProducts->get(3)->image_primary : 'assets/images/K ICONE.webp') }}" alt=""
+      <img src="{{ $heroProducts->get(3)->image_url }}" alt=""
            class="absolute bottom-8 -left-10 w-[110px] rounded-xl shadow-lg z-20 hidden lg:block animate-float-delayed" aria-hidden="true" data-parallax="-0.08" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
       @endif
     </div>
@@ -72,7 +72,7 @@
     @foreach($bestsellers as $product)
     <a href="{{ url('produit/'.$product->slug) }}" class="showcase-item group flex-none w-[280px] lg:w-[320px] snap-center relative flex flex-col items-center text-center transition-transform duration-300 ease-out-expo hover:-translate-y-2 reveal-k-k @if($loop->iteration > 1) delay-{{ $loop->iteration - 1 }} @endif">
       <div class="w-full h-[350px] lg:h-[400px] bg-gray-med rounded-2xl flex items-center justify-center p-8 transition-colors group-hover:bg-[#E2DFD9]">
-        <img src="{{ asset($product->image_primary ? 'storage/'.$product->image_primary : 'assets/images/K ICONE.webp') }}" alt="{{ $product->name }}"
+        <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
              class="max-h-full object-contain drop-shadow-xl transition-transform duration-500 group-hover:scale-110" loading="lazy" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
       </div>
       <div class="absolute -bottom-5 bg-white px-8 py-3 rounded-xl shadow-md flex flex-col min-w-[220px]">
@@ -84,7 +84,7 @@
     @if($latestProduct)
     <a href="{{ url('produit/'.$latestProduct->slug) }}" class="showcase-item group flex-none w-[280px] lg:w-[320px] snap-center relative flex flex-col items-center text-center transition-transform duration-300 ease-out-expo hover:-translate-y-2 reveal-k-k delay-3">
       <div class="w-full h-[350px] lg:h-[400px] bg-gray-med rounded-2xl flex items-center justify-center p-8 transition-colors group-hover:bg-[#E2DFD9]">
-        <img src="{{ asset($latestProduct->image_primary ? 'storage/'.$latestProduct->image_primary : 'assets/images/K ICONE.webp') }}" alt="{{ $latestProduct->name }}"
+        <img src="{{ $latestProduct->image_url }}" alt="{{ $latestProduct->name }}"
              class="max-h-full object-contain drop-shadow-xl transition-transform duration-500 group-hover:scale-110" loading="lazy" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
       </div>
       <div class="absolute -bottom-5 bg-white px-8 py-3 rounded-xl shadow-md flex flex-col min-w-[220px]">
@@ -115,7 +115,7 @@
     {{-- Large card (most sold) --}}
     <div class="lg:row-span-2 relative rounded-xl overflow-hidden bg-white shadow-card group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 reveal-k-k">
       <div class="w-full h-full overflow-hidden"><a href="{{ url('produit/'.$selectionLarge->slug) }}" class="block w-full h-full">
-        <img src="{{ asset($selectionLarge->image_primary ? 'storage/'.$selectionLarge->image_primary : 'assets/images/K ICONE.webp') }}" alt="{{ $selectionLarge->name }}"
+        <img src="{{ $selectionLarge->image_url }}" alt="{{ $selectionLarge->name }}"
              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 min-h-[400px]" loading="lazy" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
       </a></div>
       <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-dark/60 to-transparent text-white">
@@ -129,7 +129,7 @@
     @foreach($selectionSmall as $product)
     <div class="relative rounded-xl overflow-hidden bg-white shadow-card group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 reveal-k-k delay-{{ $loop->iteration }}">
       <a href="{{ url('produit/'.$product->slug) }}" class="block w-full h-[220px] overflow-hidden">
-        <img src="{{ asset($product->image_primary ? 'storage/'.$product->image_primary : 'assets/images/K ICONE.webp') }}" alt="{{ $product->name }}"
+        <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
       </a>
       <div class="p-4 flex flex-col gap-1">
@@ -157,7 +157,7 @@
     <div class="product-card-k reveal-k-k delay-{{ $loop->iteration }}">
       <div class="card-image">
         <a href="{{ url('produit/'.$product->slug) }}" class="block w-full h-full">
-          <img src="{{ asset($product->image_primary ? 'storage/'.$product->image_primary : 'assets/images/K ICONE.webp') }}" alt="{{ $product->name }}" class="img-primary" loading="lazy" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+          <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="img-primary" loading="lazy" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
         </a>
         @if($product->badge)<span class="card-badge">{{ $product->badge }}</span>@endif
         <button class="card-quick-view">Aperçu rapide</button>

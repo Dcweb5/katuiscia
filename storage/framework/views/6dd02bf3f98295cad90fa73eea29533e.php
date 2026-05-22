@@ -109,7 +109,7 @@
           data-order="<?php echo e($loop->index); ?>">
           <div class="product-card__image-wrapper">
             <a href="<?php echo e(url('produit/' . $product->slug)); ?>" style="display:block; width:100%; height:100%;">
-              <img src="<?php echo e(asset($product->image_primary)); ?>" alt="<?php echo e($product->name); ?>"
+              <img src="<?php echo e($product->image_url); ?>" alt="<?php echo e($product->name); ?>"
                    class="product-card__image product-card__image--primary" loading="lazy" width="400" height="533"
                    onerror="this.src='<?php echo e(asset('assets/images/K ICONE.png')); ?>'">
               <img src="<?php echo e(asset($product->image_secondary ?? $product->image_primary)); ?>" alt="<?php echo e($product->name); ?>"
