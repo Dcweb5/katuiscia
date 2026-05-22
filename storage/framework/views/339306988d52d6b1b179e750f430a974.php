@@ -12,8 +12,6 @@
     <button class="btn-primary" onclick="openCreateModal()">+ Nouvel Article</button>
   </div>
 
-  
-
   <div class="stats-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:var(--space-xl);">
     <div class="card stat-card"><span class="stat-title">Publiés</span><span class="stat-value"><?php echo e($published); ?></span></div>
     <div class="card stat-card"><span class="stat-title">Brouillons</span><span class="stat-value"><?php echo e($drafts); ?></span></div>
@@ -35,8 +33,116 @@
               <img src="<?php echo e($post->image_url); ?>" style="width:48px;height:36px;border-radius:6px;object-fit:cover;">
               <?php else: ?>
               <div style="width:48px;height:36px;border-radius:6px;background:var(--color-peach);"></div>
-  <?php endif; ?>
-</script>
+              <?php endif; ?>
+              <strong><?php echo e($post->title); ?></strong>
+            </div>
+          </td>
+          <td><?php echo e($post->category); ?></td>
+          <td style="color:var(--color-text-muted);"><?php echo e($post->created_at->format('d/m/Y')); ?></td>
+          <td>
+            <span style="font-size:11px;font-weight:600;color:#fff;padding:3px 10px;border-radius:var(--radius-full);background:<?php echo e($post->status === 'published' ? 'var(--color-success)' : 'var(--color-text-muted)'); ?>;"><?php echo e($post->status === 'published' ? 'Publié' : 'Brouillon'); ?></span>
+          </td>
+          <td>
+            <div style="display:flex;gap:4px;">
+              <button class="action-btn" title="Modifier" onclick="openEditModal(<?php echo e($post->id); ?>)">✏️</button>
+              <form method="POST" action="<?php echo e(route('admin.blog.destroy', $post)); ?>" style="display:inline;" onsubmit="return confirm('Supprimer cet article ?')">
+                <?php echo csrf_field(); ?> <?php echo method_field('DELETE'); ?>
+                <button type="submit" class="action-btn" title="Supprimer">🗑</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+        <tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--color-text-muted);">Aucun article.</td></tr>
+        <?php endif; ?>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<dialog id="post-modal" class="fs-modal">
+  <div class="fs-modal__content">
+    <div class="fs-modal__header">
+      <h2 id="modal-title" style="font-family:var(--font-heading);font-size:1.3rem;margin:0;">Nouvel Article</h2>
+      <button onclick="closeModal()" class="fs-modal__close">&times;</button>
+    </div>
+    <form id="post-form" method="POST" action="<?php echo e(route('admin.blog.store')); ?>" enctype="multipart/form-data" class="fs-modal__body" novalidate>
+      <?php echo csrf_field(); ?>
+      <input type="hidden" name="_method" id="form-method" value="POST">
+
+      <div id="form-errors" style="display:none;background:#ffebee;color:#c62828;padding:12px 16px;border-radius:8px;margin-bottom:1rem;font-size:14px;border:1px solid #ef9a9a;"></div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
+        <div class="admin-form-group">
+          <label class="admin-label">Titre *</label>
+          <input type="text" name="title" id="input-title" class="admin-input" required>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Catégorie *</label>
+          <select name="category" id="input-category" class="admin-input" required>
+            <option value="">Choisir...</option>
+            <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <option value="<?php echo e($cat); ?>"><?php echo e($cat); ?></option>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+          </select>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Statut</label>
+          <select name="status" id="input-status" class="admin-input">
+            <option value="draft">Brouillon</option>
+            <option value="published">Publié</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="admin-form-group">
+        <label class="admin-label">Image de couverture</label>
+        <input type="file" name="image" id="input-image" class="admin-input" accept="image/*">
+        <div id="current-image" style="display:none;margin-top:0.5rem;"></div>
+      </div>
+
+      <div class="admin-form-group">
+        <label class="admin-label">Extrait (aperçu) *</label>
+        <textarea name="excerpt" id="input-excerpt" class="admin-input" rows="2" required style="resize:vertical;"></textarea>
+      </div>
+
+      <div class="admin-form-group" style="flex:1;display:flex;flex-direction:column;min-height:0;">
+        <label class="admin-label">Contenu *</label>
+        <div id="editor-container" style="flex:1;min-height:300px;"></div>
+        <textarea name="content" id="input-content" style="display:none;"></textarea>
+      </div>
+
+      <div class="admin-form-group">
+        <label class="admin-label">Tags (séparés par des virgules)</label>
+        <input type="text" name="tags" id="input-tags" class="admin-input" placeholder="cheveux, karité, routine">
+      </div>
+
+      <div style="display:flex;gap:0.75rem;justify-content:flex-end;padding-top:1rem;border-top:1px solid var(--color-border);">
+        <button type="button" onclick="closeModal()" class="action-btn" style="padding:0.5rem 1rem;">Annuler</button>
+        <button type="submit" name="action" value="draft" class="btn-primary" style="background:transparent;color:var(--color-text);border:1px solid var(--color-border);">Sauvegarder brouillon</button>
+        <button type="submit" name="action" value="published" class="btn-primary">Publier</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<style>
+.fs-modal { border:none;border-radius:0;padding:0;margin:0;width:100%;height:100%;max-width:100%;max-height:100%;background:transparent; }
+.fs-modal::backdrop { background:rgba(0,0,0,0.4); }
+.fs-modal__content { background:#fff;border-radius:0;width:100%;height:100%;display:flex;flex-direction:column; }
+.fs-modal__header { display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;border-bottom:1px solid var(--color-border);background:#fafafa;flex-shrink:0; }
+.fs-modal__close { background:none;border:none;font-size:1.8rem;cursor:pointer;color:var(--color-text-muted);line-height:1;padding:0 4px; }
+.fs-modal__body { padding:1.5rem 2rem;overflow-y:auto;flex:1;display:flex;flex-direction:column; }
+.ql-toolbar.ql-snow { border:2px solid #d1d5db;border-bottom:none;border-radius:8px 8px 0 0;background:#fafafa;padding:8px 12px; }
+.ql-container.ql-snow { border:2px solid #d1d5db;border-top:none;border-radius:0 0 8px 8px;font-size:15px;font-family:inherit;background:#fff;min-height:250px; }
+.ql-editor { min-height:250px;line-height:1.7; }
+.ql-editor.ql-blank::before { color:#9ca3af;font-style:normal; }
+.ql-snow .ql-tooltip { z-index:99999 !important; }
+</style>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
 <script>
 var postsData = <?php echo json_encode($posts, 15, 512) ?>;
 var quill = null;
@@ -54,68 +160,35 @@ function initQuill() {
     quill = new Quill('#editor-container', {
       theme: 'snow',
       placeholder: 'Rédigez votre article...',
-      modules: {
-        toolbar: [
-          [{ header: [1, 2, 3, false] }],
-          ['bold', 'italic', 'underline', 'strike'],
-          ['link', 'image', 'blockquote', 'code-block'],
-          [{ list: 'ordered' }, { list: 'bullet' }],
-          [{ align: [] }],
-          ['clean']
-        ]
-      }
+      modules: { toolbar: [ [{ header: [1, 2, 3, false] }], ['bold','italic','underline','strike'], ['link','image','blockquote','code-block'], [{ list:'ordered' }, { list:'bullet' }], [{ align:[] }], ['clean'] ] }
     });
     quillReady = true;
-
     quill.getModule('toolbar').addHandler('image', function() {
       var input = document.createElement('input');
-      input.setAttribute('type', 'file');
-      input.setAttribute('accept', 'image/*');
-      input.click();
+      input.setAttribute('type','file'); input.setAttribute('accept','image/*'); input.click();
       input.onchange = function() {
-        var file = input.files[0];
-        if (!file) return;
-        var formData = new FormData();
-        formData.append('file', file);
-        formData.append('_token', document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || document.querySelector('input[name="_token"]')?.value || '');
-        fetch('<?php echo e(route('admin.blog.upload-image')); ?>', { method:'POST', body:formData, credentials:'same-origin' })
-          .then(r => r.json())
-          .then(data => {
-            var range = quill.getSelection(true);
-            quill.insertEmbed(range.index, 'image', data.location);
-          })
-          .catch(function(err) { console.error('Upload failed:', err); alert('Erreur lors du téléchargement de l\'image.'); });
+        var file = input.files[0]; if (!file) return;
+        var fd = new FormData(); fd.append('file', file);
+        fd.append('_token', document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '');
+        fetch('<?php echo e(route("admin.blog.upload-image")); ?>', { method:'POST', body:fd, credentials:'same-origin' })
+          .then(r => r.json()).then(data => { var r = quill.getSelection(true); quill.insertEmbed(r.index, 'image', data.location); })
+          .catch(function() { console.error('Upload failed'); });
       };
     });
-  } catch(e) {
-    console.error('Quill init failed:', e);
-    document.getElementById('input-content').style.display = '';
-    document.getElementById('editor-container').style.display = 'none';
-    quillReady = false;
-  }
+  } catch(e) { console.error('Quill init failed:', e); document.getElementById('input-content').style.display = ''; document.getElementById('editor-container').style.display = 'none'; quillReady = false; }
 }
 
-// Form errors
 function showErrors(errors) {
   var el = document.getElementById('form-errors');
   if (Object.keys(errors).length === 0) { el.style.display = 'none'; return; }
-  el.style.display = '';
-  el.innerHTML = Object.values(errors).flat().map(e => '<div style="margin-bottom:4px;">• ' + e + '</div>').join('');
-}
-
-// Store & Update helpers
-function submitForm(actionUrl, method) {
-  document.getElementById('post-form').action = actionUrl;
-  document.getElementById('form-method').value = method;
-  if (quill && quillReady) {
-    document.getElementById('input-content').value = quill.root.innerHTML;
-  }
+  el.style.display = ''; el.innerHTML = Object.values(errors).flat().map(e => '<div style="margin-bottom:4px;">• ' + e + '</div>').join('');
 }
 
 function openCreateModal() {
   initQuill();
   document.getElementById('modal-title').textContent = 'Nouvel Article';
-  submitForm('<?php echo e(route('admin.blog.store')); ?>', 'POST');
+  document.getElementById('post-form').action = '<?php echo e(route('admin.blog.store')); ?>';
+  document.getElementById('form-method').value = 'POST';
   document.getElementById('input-title').value = '';
   document.getElementById('input-category').value = '';
   document.getElementById('input-status').value = 'draft';
@@ -131,10 +204,11 @@ function openCreateModal() {
 
 function openEditModal(id) {
   initQuill();
-  var post = postsData.find(p => p.id === id);
+  var post = postsData.find(function(p){ return p.id === id; });
   if (!post) return;
   document.getElementById('modal-title').textContent = 'Modifier : ' + post.title;
-  submitForm('<?php echo e(url('admin/blog')); ?>/' + post.id, 'PUT');
+  document.getElementById('post-form').action = '<?php echo e(url('admin/blog')); ?>/' + post.id;
+  document.getElementById('form-method').value = 'PUT';
   document.getElementById('input-title').value = post.title;
   document.getElementById('input-category').value = post.category;
   document.getElementById('input-status').value = post.status;
@@ -145,38 +219,24 @@ function openEditModal(id) {
   if (post.image_url) {
     document.getElementById('current-image').style.display = '';
     document.getElementById('current-image').innerHTML = '<img src="'+post.image_url+'" style="max-height:80px;border-radius:6px;"> <small style="color:var(--color-text-muted);margin-left:0.5rem;">Image actuelle</small>';
-  } else {
-    document.getElementById('current-image').style.display = 'none';
-  }
+  } else { document.getElementById('current-image').style.display = 'none'; }
   if (quill && quillReady) { quill.root.innerHTML = post.content || ''; quill.setSelection(0); }
   else { document.getElementById('input-content').value = post.content || ''; }
   document.getElementById('post-modal').showModal();
 }
 
-function closeModal() {
-  document.getElementById('post-modal').close();
-}
+function closeModal() { document.getElementById('post-modal').close(); }
 
-// Handle form submit
 document.getElementById('post-form').addEventListener('submit', function(e) {
-  if (quill && quillReady) {
-    document.getElementById('input-content').value = quill.root.innerHTML;
-  }
-
+  if (quill && quillReady) { document.getElementById('input-content').value = quill.root.innerHTML; }
   var clicked = e.submitter;
-  if (clicked && clicked.name === 'action') {
-    document.getElementById('input-status').value = clicked.value;
-  }
-
+  if (clicked && clicked.name === 'action') { document.getElementById('input-status').value = clicked.value; }
   var content = document.getElementById('input-content').value;
   if (!content.trim() && (!quill || !quillReady || !quill.getText().trim())) {
-    e.preventDefault();
-    showErrors({content: ['Le contenu de l\'article est requis.']});
-    return false;
+    e.preventDefault(); showErrors({content: ['Le contenu de l\'article est requis.']}); return false;
   }
 });
 
-// Show validation errors if present on page load
 document.addEventListener('DOMContentLoaded', function() {
   <?php if($errors->any()): ?>
     initQuill();
@@ -190,15 +250,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('input-tags').value = <?php echo json_encode(old('tags', ''), 512) ?>;
     try { document.getElementById('post-modal').showModal(); } catch(ex) {}
   <?php endif; ?>
-
-  <?php if(session('success')): ?>
-    showToast(<?php echo json_encode(session('success'), 15, 512) ?>);
-  <?php endif; ?>
 });
 
-document.querySelectorAll('.sidebar-link[data-page]').forEach(function(l) {
-  if(l.dataset.page === 'admin-blog') l.classList.add('active');
-});
+document.querySelectorAll('.sidebar-link[data-page]').forEach(function(l) { if(l.dataset.page === 'admin-blog') l.classList.add('active'); });
 </script>
 <?php $__env->stopSection(); ?>
 

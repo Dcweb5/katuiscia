@@ -36,7 +36,7 @@
     <table class="admin-table">
       <thead><tr><th>Code</th><th>Type</th><th>Valeur</th><th>Min. commande</th><th>Utilisations</th><th>Dernière util.</th><th>Expire le</th><th>Statut</th><th>Actions</th></tr></thead>
       <tbody>
-        <?php $__empty_2 = true; $__currentLoopData = $coupons; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
+        <?php $__empty_1 = true; $__currentLoopData = $coupons; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <tr>
           <td><strong style="font-family:monospace;font-size:var(--text-md);"><?php echo e($c->code); ?></strong></td>
           <td><?php echo e($c->type === 'percentage' ? '%' : ($c->type === 'fixed' ? '€' : '🚚')); ?></td>
@@ -56,7 +56,7 @@
             </div>
           </td>
         </tr>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
         <tr><td colspan="9" style="text-align:center;padding:3rem;color:var(--color-text-muted);">Aucun coupon. <a href="<?php echo e(route('admin.coupons.create')); ?>" style="color:var(--color-warm);">Créer le premier</a>.</td></tr>
         <?php endif; ?>
       </tbody>

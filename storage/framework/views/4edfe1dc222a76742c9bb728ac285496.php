@@ -39,7 +39,7 @@
         </tr>
       </thead>
       <tbody>
-        <?php $__empty_2 = true; $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
+        <?php $__empty_1 = true; $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <tr data-id="<?php echo e($product->id); ?>">
           <td><input type="checkbox"></td>
           <td>
@@ -84,7 +84,7 @@
             </div>
           </td>
         </tr>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
         <tr><td colspan="9" style="text-align:center; padding:2rem; color:var(--color-text-muted);">Aucun produit trouvé.</td></tr>
         <?php endif; ?>
       </tbody>

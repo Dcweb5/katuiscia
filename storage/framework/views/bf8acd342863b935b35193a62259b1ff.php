@@ -31,7 +31,7 @@
     <table class="admin-table">
       <thead><tr><th>Nº</th><th>Client</th><th>Date</th><th>Articles</th><th>Total</th><th>Statut</th><th>Actions</th></tr></thead>
       <tbody>
-        <?php $__empty_2 = true; $__currentLoopData = $orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $o): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
+        <?php $__empty_1 = true; $__currentLoopData = $orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $o): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <tr>
           <td><strong style="font-family:monospace;"><?php echo e($o->order_number); ?></strong></td>
           <td><?php echo e($o->firstname); ?> <?php echo e($o->lastname); ?><br><small style="color:var(--color-text-muted);"><?php echo e($o->email); ?></small></td>
@@ -44,7 +44,7 @@
           </td>
           <td><a href="<?php echo e(route('admin.orders.show', $o)); ?>" class="action-btn" title="Voir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px;height:14px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></a></td>
         </tr>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
         <tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--color-text-muted);">Aucune commande.</td></tr>
         <?php endif; ?>
       </tbody>

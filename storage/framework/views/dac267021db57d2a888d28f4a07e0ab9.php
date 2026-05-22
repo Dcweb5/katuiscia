@@ -23,7 +23,7 @@
         <tr><th>Collection</th><th>Produits</th><th>Prix</th><th>Catégorie</th><th>Statut</th><th style="width:150px;">Actions</th></tr>
       </thead>
       <tbody>
-        <?php $__empty_2 = true; $__currentLoopData = $collections; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $collection): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
+        <?php $__empty_1 = true; $__currentLoopData = $collections; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $collection): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <tr>
           <td>
             <div style="display:flex;align-items:center;gap:12px;">
@@ -65,7 +65,7 @@
             </div>
           </td>
         </tr>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
         <tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--color-text-muted);">Aucune collection.</td></tr>
         <?php endif; ?>
       </tbody>

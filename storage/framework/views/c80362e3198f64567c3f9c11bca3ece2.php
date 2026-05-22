@@ -24,7 +24,7 @@
   <?php endif; ?>
 
   <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:var(--space-lg);">
-    <?php $__empty_2 = true; $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
+    <?php $__empty_1 = true; $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
     <div class="card" style="position:relative; overflow:hidden;">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:var(--space-md);">
         <div>
@@ -53,7 +53,7 @@
       <span class="status-badge" style="position:absolute; top:12px; right:12px; background:var(--color-gray-medium); color:var(--color-text-muted); font-size:10px;">Inactive</span>
       <?php endif; ?>
     </div>
-    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
     <div style="grid-column:1/-1; text-align:center; padding:4rem; color:var(--color-text-muted);">
       Aucune catégorie. <a href="<?php echo e(route('admin.categories.create')); ?>" style="color:var(--color-warm);">Créer la première</a>.
     </div>

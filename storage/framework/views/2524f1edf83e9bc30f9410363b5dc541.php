@@ -80,7 +80,7 @@
         </tr>
       </thead>
       <tbody>
-        <?php $__empty_2 = true; $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
+        <?php $__empty_1 = true; $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <tr>
           <td>
             <div style="display:flex;align-items:center;gap:12px;">
@@ -146,7 +146,7 @@
             </div>
           </td>
         </tr>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
         <tr><td colspan="8" style="text-align:center;padding:3rem;color:var(--color-text-muted);">Aucun utilisateur trouvé.</td></tr>
         <?php endif; ?>
       </tbody>

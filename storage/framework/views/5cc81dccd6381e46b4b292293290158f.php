@@ -53,13 +53,13 @@
     <table class="admin-table">
       <thead><tr><th>Produit</th><th>Quantité vendue</th><th>Revenu généré</th></tr></thead>
       <tbody>
-        <?php $__empty_2 = true; $__currentLoopData = $topProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
+        <?php $__empty_1 = true; $__currentLoopData = $topProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <tr>
           <td style="font-weight:500;"><?php echo e($p->product_name); ?></td>
           <td><?php echo e($p->qty); ?></td>
           <td style="font-family:var(--font-display);"><?php echo e(number_format($p->revenue, 0, ',', ' ')); ?> €</td>
         </tr>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
         <tr><td colspan="3" style="text-align:center;padding:3rem;color:var(--color-text-muted);">Aucune vente sur cette période.</td></tr>
         <?php endif; ?>
       </tbody>

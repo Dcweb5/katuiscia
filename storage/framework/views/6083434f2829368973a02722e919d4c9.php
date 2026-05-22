@@ -10,7 +10,7 @@
     <table class="admin-table">
       <thead><tr><th>Produit</th><th>Client</th><th>Note</th><th>Titre</th><th>Date</th><th>Statut</th><th>Actions</th></tr></thead>
       <tbody>
-        <?php $__empty_2 = true; $__currentLoopData = $reviews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $r): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
+        <?php $__empty_1 = true; $__currentLoopData = $reviews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $r): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <tr style="cursor:pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'':'none'">
           <td style="font-size:var(--text-sm);"><?php echo e($r->product->name ?? '—'); ?></td>
           <td style="font-size:var(--text-sm);"><?php echo e($r->user->firstname ?? '—'); ?> <?php echo e($r->user->lastname ?? ''); ?></td>
@@ -48,7 +48,7 @@
             </div>
           </td>
         </tr>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
         <tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--color-text-muted);">Aucun avis.</td></tr>
         <?php endif; ?>
       </tbody>

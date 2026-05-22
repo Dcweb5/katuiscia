@@ -18,7 +18,7 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <?php $__empty_2 = true; $__currentLoopData = $posts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $post): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
+        <?php $__empty_1 = true; $__currentLoopData = $posts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $post): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <a href="<?php echo e(route('blog.show', $post->slug)); ?>" class="article-card reveal-k-k">
           <div class="article-card__img-wrapper">
             <span class="article-card__tag"><?php echo e($post->category); ?></span>
@@ -35,7 +35,7 @@
             <span class="article-card__read-more">Lire l'article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
           </div>
         </a>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
         <div class="col-span-3 text-center py-16">
           <p style="font-size:3rem;">📝</p>
           <p class="text-text-muted">Aucun article pour le moment. Revenez bientôt !</p>

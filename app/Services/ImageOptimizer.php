@@ -17,26 +17,20 @@ class ImageOptimizer
             mkdir($path, 0755, true);
         }
 
-        $img = Image::read($file);
+        $img = Image::decode($file->getRealPath());
 
         // Redimensionner si plus large que le max
         if ($img->width() > $maxWidth) {
-            $img->resize($maxWidth, null, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
+            $img->resize($maxWidth, null);
         }
 
         // Convertir en WebP qualité 80%
         $img->toWebp(80)->save($path . '/' . $filename);
 
         // Générer miniature 300px pour les listings
-        $thumb = Image::read($file);
+        $thumb = Image::decode($file->getRealPath());
         if ($thumb->width() > 300) {
-            $thumb->resize(300, null, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
+            $thumb->resize(300, null);
         }
         $thumbPath = $path . '/thumb_' . $filename;
         $thumb->toWebp(75)->save($thumbPath);

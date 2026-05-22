@@ -23,7 +23,7 @@
         </tr>
       </thead>
       <tbody>
-        <?php $__empty_2 = true; $__currentLoopData = $messages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $m): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
+        <?php $__empty_1 = true; $__currentLoopData = $messages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $m): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <tr class="msg-row <?php echo e($m->is_read ? '' : 'msg-unread'); ?>" data-id="<?php echo e($m->id); ?>">
           <td><input type="checkbox" class="msg-check" value="<?php echo e($m->id); ?>" onchange="updateBulkBtn()"></td>
           <td><?php echo e($m->name); ?></td>
@@ -45,7 +45,7 @@
             </div>
           </td>
         </tr>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
         <tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--color-text-muted);">Aucun message.</td></tr>
         <?php endif; ?>
       </tbody>
