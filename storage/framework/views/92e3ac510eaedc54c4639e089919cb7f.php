@@ -49,8 +49,41 @@
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
         <div>
           <h3 style="font-family:var(--font-heading);font-size:var(--text-lg);margin:0 0 0.25rem;">📐 Sélection Organisée</h3>
-          <p style="font-size:var(--text-sm);color:var(--color-text-muted);">Gauche = plus vendu (auto). Droite = 4 produits ou collections au choix.</p>
+          <p style="font-size:var(--text-sm);color:var(--color-text-muted);">Configurez la grande carte de gauche et les 4 petites de droite.</p>
         </div>
+      </div>
+
+      
+      <div style="margin-bottom:1.5rem;padding:1rem;background:var(--color-bg);border-radius:10px;">
+        <strong style="font-size:14px;">Carte principale (gauche) :</strong>
+        <div style="display:flex;gap:1rem;margin-top:0.75rem;align-items:center;flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:0.35rem;cursor:pointer;">
+            <input type="radio" name="large_type" value="auto" <?php if(!($sections->get('selection')?->large_type) || $sections->get('selection')?->large_type === 'auto'): echo 'checked'; endif; ?>> 🔥 Plus vendu (auto)
+          </label>
+          <label style="display:flex;align-items:center;gap:0.35rem;cursor:pointer;">
+            <input type="radio" name="large_type" value="product" <?php if($sections->get('selection')?->large_type === 'product'): echo 'checked'; endif; ?>> 📦 Produit :
+          </label>
+          <select name="large_product_id" style="padding:6px 10px;border:1px solid var(--color-border);border-radius:6px;font-size:13px;" onchange="this.form.large_type[1].checked=true">
+            <option value="">Choisir...</option>
+            <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <option value="<?php echo e($p->id); ?>" <?php if($sections->get('selection')?->large_product_id == $p->id): echo 'selected'; endif; ?>><?php echo e($p->name); ?></option>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+          </select>
+          <label style="display:flex;align-items:center;gap:0.35rem;cursor:pointer;">
+            <input type="radio" name="large_type" value="collection" <?php if($sections->get('selection')?->large_type === 'collection'): echo 'checked'; endif; ?>> 📚 Collection :
+          </label>
+          <select name="large_collection_id" style="padding:6px 10px;border:1px solid var(--color-border);border-radius:6px;font-size:13px;" onchange="this.form.large_type[2].checked=true">
+            <option value="">Choisir...</option>
+            <?php $__currentLoopData = $collections; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <option value="<?php echo e($c->id); ?>" <?php if($sections->get('selection')?->large_collection_id == $c->id): echo 'selected'; endif; ?>><?php echo e($c->name); ?></option>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+          </select>
+        </div>
+      </div>
+
+      
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+        <span style="font-size:14px;font-weight:500;">Cartes de droite (max 4) :</span>
         <div style="display:flex;gap:0;">
           <button type="button" onclick="switchTab('products')" id="tab-products" class="tab-btn tab-btn--active">📦 Produits</button>
           <button type="button" onclick="switchTab('collections')" id="tab-collections" class="tab-btn">📚 Collections</button>

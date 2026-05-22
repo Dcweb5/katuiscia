@@ -112,17 +112,35 @@
   </div>
 
   <div class="max-w-[1200px] mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.3fr_0.7fr_0.7fr] lg:grid-rows-2 gap-4">
-    {{-- Large card (most sold) --}}
+    {{-- Large card --}}
     <div class="lg:row-span-2 relative rounded-xl overflow-hidden bg-white shadow-card group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 reveal-k-k">
+      @if($selectionLargeType === 'collection')
+      <div class="w-full h-full overflow-hidden"><a href="{{ url('collection/'.$selectionLarge->slug) }}" class="block w-full h-full">
+        @if($selectionLarge->image_url)
+        <img src="{{ $selectionLarge->image_url }}" alt="{{ $selectionLarge->name }}"
+             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 min-h-[400px]" loading="lazy">
+        @else
+        <div style="width:100%;height:100%;min-height:400px;background:linear-gradient(135deg, #faf7f2, #ede4db);display:flex;align-items:center;justify-content:center;font-size:3rem;">📚</div>
+        @endif
+      </a></div>
+      <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-dark/60 to-transparent text-white">
+        <span class="text-xs text-gray-200">📚 Collection</span>
+        <h3 class="font-heading text-xl font-medium">{{ $selectionLarge->name }}</h3>
+        <p class="text-sm text-gray-200">{{ $selectionLarge->description }}</p>
+      </div>
+      <span class="absolute top-4 right-4 bg-white text-dark text-sm font-semibold px-4 py-1.5 rounded-full">{{ number_format($selectionLarge->price, 0, ',', ' ') }} €</span>
+      @else
       <div class="w-full h-full overflow-hidden"><a href="{{ url('produit/'.$selectionLarge->slug) }}" class="block w-full h-full">
         <img src="{{ $selectionLarge->image_url }}" alt="{{ $selectionLarge->name }}"
              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 min-h-[400px]" loading="lazy" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
       </a></div>
       <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-dark/60 to-transparent text-white">
+        <span class="text-xs text-gray-200">🔥 Plus vendu</span>
         <h3 class="font-heading text-xl font-medium">{{ $selectionLarge->name }}</h3>
         <p class="text-sm text-gray-200">{{ $selectionLarge->description }}</p>
       </div>
       <span class="absolute top-4 right-4 bg-white text-dark text-sm font-semibold px-4 py-1.5 rounded-full">{{ number_format($selectionLarge->sale_price ?? $selectionLarge->price, 0, ',', ' ') }} €</span>
+      @endif
     </div>
 
     {{-- Small cards --}}

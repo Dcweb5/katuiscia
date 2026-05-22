@@ -22,9 +22,25 @@ class PageController extends Controller
         $bestsellers = Product::mostSold(2)->get();
         $latestProduct = Product::latestPublished(1)->first();
 
-        // Sélection: left = #1 most sold, right = admin-picked products or collections
+        // Sélection: left = admin-picked or most sold, right = admin-picked
         $selection = $sections->get('selection');
-        $selectionLarge = Product::mostSold(1)->first() ?? Product::active()->ordered()->first();
+        $selectionLarge = null;
+        $selectionLargeType = 'product';
+
+        // Large card: admin choice or auto (most sold)
+        $largeType = $selection?->large_type ?? 'auto';
+        if ($largeType === 'product' && $selection?->large_product_id) {
+            $selectionLarge = Product::with('categories')->find($selection->large_product_id);
+            $selectionLargeType = 'product';
+        } elseif ($largeType === 'collection' && $selection?->large_collection_id) {
+            $selectionLarge = \App\Models\Collection::find($selection->large_collection_id);
+            $selectionLargeType = 'collection';
+        }
+
+        if (!$selectionLarge) {
+            $selectionLarge = Product::mostSold(1)->first() ?? Product::active()->ordered()->first();
+            $selectionLargeType = 'product';
+        }
 
         $selectionSmall = collect();
         $selectionType = 'products'; // 'products' or 'collections'
@@ -62,7 +78,7 @@ class PageController extends Controller
 
         return view('pages.index', compact(
             'heroProducts', 'bestsellers', 'latestProduct',
-            'selectionLarge', 'selectionSmall', 'selectionType', 'boutiqueProducts'
+            'selectionLarge', 'selectionLargeType', 'selectionSmall', 'selectionType', 'boutiqueProducts'
         ));
     }
 

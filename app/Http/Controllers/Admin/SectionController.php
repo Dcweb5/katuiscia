@@ -45,6 +45,9 @@ class SectionController extends Controller
             'selection_product_ids.*' => 'exists:products,id',
             'selection_collection_ids' => 'nullable|array|max:4',
             'selection_collection_ids.*' => 'exists:collections,id',
+            'large_type' => 'nullable|in:auto,product,collection',
+            'large_product_id' => 'nullable|exists:products,id',
+            'large_collection_id' => 'nullable|exists:collections,id',
         ]);
 
         // Hero
@@ -60,6 +63,9 @@ class SectionController extends Controller
                 'name' => 'Sélection Organisée',
                 'product_ids' => $request->selection_product_ids ?? [],
                 'collection_ids' => $request->selection_collection_ids ?? [],
+                'large_type' => $request->large_type ?? 'auto',
+                'large_product_id' => $request->large_type === 'product' ? $request->large_product_id : null,
+                'large_collection_id' => $request->large_type === 'collection' ? $request->large_collection_id : null,
                 'is_active' => true
             ]
         );
