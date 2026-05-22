@@ -71,6 +71,29 @@ class Product extends Model
         return $query->orderBy('order')->orderBy('name');
     }
 
+    public function scopeMostSold($query, $limit = null, $excludeIds = [])
+    {
+        $q = $query->join('order_items', 'products.id', '=', 'order_items.product_id')
+            ->join('orders', 'order_items.order_id', '=', 'orders.id')
+            ->whereIn('orders.status', ['confirmed', 'preparing', 'shipped', 'delivered'])
+            ->select('products.*', \DB::raw('SUM(order_items.quantity) as total_sold'))
+            ->groupBy('products.id')
+            ->orderByDesc('total_sold');
+
+        if (!empty($excludeIds)) {
+            $q->whereNotIn('products.id', $excludeIds);
+        }
+        if ($limit) {
+            $q->limit($limit);
+        }
+        return $q;
+    }
+
+    public function scopeLatestPublished($query, $limit = 1)
+    {
+        return $query->active()->where('is_active', true)->latest()->limit($limit);
+    }
+
     public function getDisplayPriceAttribute(): string
     {
         return number_format($this->sale_price ?? $this->price, 0, ',', ' ') . ' €';

@@ -188,6 +188,9 @@ class ProductController extends Controller
         }
         $image->delete();
         $this->syncImageColumns($product);
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true]);
+        }
         return redirect()->route('admin.products.edit', $product)->with('success', 'Image supprimée.');
     }
 
@@ -203,6 +206,9 @@ class ProductController extends Controller
         }
 
         $this->syncImageColumns($product);
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true]);
+        }
         return redirect()->route('admin.products.edit', $product)->with('success', 'Image principale définie.');
     }
 

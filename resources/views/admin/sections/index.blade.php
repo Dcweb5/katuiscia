@@ -1,111 +1,119 @@
 @extends('layouts.admin')
-
-@section('title', 'Gestion des Sections')
-
+@section('title', 'Sections de la page d\'accueil')
 @section('content')
-<main class="dashboard-main">
-    <header class="dashboard-header">
-      <div style="display:flex; align-items:center; gap:16px;">
-        <button class="mobile-toggle" id="mobileToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-        <h2 style="font-family:var(--font-heading); font-size:var(--text-lg);">Sections de la Page d'Accueil</h2>
-      </div>
-      <div class="header-actions">
-        <button class="btn-primary">Publier les Changements</button>
-        <div style="width:36px; height:36px; border-radius:50%; background:var(--color-dark); color:var(--color-white); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:bold;">AD</div>
-      </div>
-    </header>
-    <div class="dashboard-content">
-      <h1 class="page-title">Gestion des Sections</h1>
-      <p class="page-subtitle" style="margin-bottom:var(--space-2xl);">Choisissez les produits affichés dans chaque section de la page d'accueil.</p>
+<div class="dashboard-content">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:var(--space-2xl);flex-wrap:wrap;gap:1rem;">
+    <div><h1 class="page-title">Sections de l'accueil</h1><p class="page-subtitle">Configurez les produits affichés dans chaque section.</p></div>
+    <button type="submit" form="sections-form" class="btn-primary">Publier les changements</button>
+  </div>
 
-      <div class="admin-tabs">
-        <button class="admin-tab active" onclick="showSection('hero')">Hero Section</button>
-        <button class="admin-tab" onclick="showSection('bestsellers')">Best-Sellers & Nouveautés</button>
-        <button class="admin-tab" onclick="showSection('boutique')">Notre Boutique</button>
-        <button class="admin-tab" onclick="showSection('selection')">Sélection Organisée</button>
-      </div>
+  <form id="sections-form" method="POST" action="{{ route('admin.sections.store') }}">
+    @csrf
 
-      <!-- HERO SECTION -->
-      <div class="section-panel" id="panel-hero">
-        <div class="card" style="margin-bottom:var(--space-xl);">
-          <h3 style="font-family:var(--font-heading); font-size:var(--text-lg); margin-bottom:var(--space-md);">Slides du Carrousel Hero</h3>
-          <p style="font-size:var(--text-sm); color:var(--color-text-muted); margin-bottom:var(--space-lg);">Sélectionnez jusqu'à 5 produits à mettre en avant dans le diaporama principal.</p>
-          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:var(--space-md);">
-            <div style="border:2px solid var(--color-warm); border-radius:var(--radius-md); overflow:hidden; position:relative;">
-              <img src="{{ asset('assets/images/product-1a.webp') }}" alt="" style="width:100%; height:160px; object-fit:cover;">
-              <div style="padding:10px;"><strong style="font-size:var(--text-sm);">Nectar Lumineux</strong><br><small style="color:var(--color-text-muted);">Slide 1</small></div>
-              <button class="action-btn action-btn--danger" style="position:absolute; top:8px; right:8px; width:24px; height:24px; background:white;">&times;</button>
-            </div>
-            <div style="border:2px solid var(--color-warm); border-radius:var(--radius-md); overflow:hidden; position:relative;">
-              <img src="{{ asset('assets/images/product-6a.webp') }}" alt="" style="width:100%; height:160px; object-fit:cover;">
-              <div style="padding:10px;"><strong style="font-size:var(--text-sm);">Sérum Éclat</strong><br><small style="color:var(--color-text-muted);">Slide 2</small></div>
-              <button class="action-btn action-btn--danger" style="position:absolute; top:8px; right:8px; width:24px; height:24px; background:white;">&times;</button>
-            </div>
-            <div style="border:2px solid var(--color-warm); border-radius:var(--radius-md); overflow:hidden; position:relative;">
-              <img src="{{ asset('assets/images/product-3a.webp') }}" alt="" style="width:100%; height:160px; object-fit:cover;">
-              <div style="padding:10px;"><strong style="font-size:var(--text-sm);">Gommage Terracotta</strong><br><small style="color:var(--color-text-muted);">Slide 3</small></div>
-              <button class="action-btn action-btn--danger" style="position:absolute; top:8px; right:8px; width:24px; height:24px; background:white;">&times;</button>
-            </div>
-            <div style="border:2px dashed var(--color-border); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; min-height:200px; cursor:pointer;">
-              <div style="text-align:center; color:var(--color-text-muted);">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:28px; height:28px; margin:0 auto 8px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                <span style="font-size:var(--text-sm);">Ajouter un produit</span>
-              </div>
-            </div>
-          </div>
+    {{-- HERO --}}
+    <div class="card" style="margin-bottom:var(--space-xl);padding:var(--space-xl);">
+      <h3 style="font-family:var(--font-heading);font-size:var(--text-lg);margin:0 0 0.5rem;">🎠 Hero Slider</h3>
+      <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:1rem;">Produits qui défilent dans le carrousel principal (max 5).</p>
+
+      <div class="product-pick-grid" id="hero-picks">
+        @foreach($products as $p)
+        <label class="product-pick {{ in_array($p->id, $sections->get('hero')?->product_ids ?? []) ? 'active' : '' }}">
+          <input type="checkbox" name="hero_product_ids[]" value="{{ $p->id }}" @checked(in_array($p->id, $sections->get('hero')?->product_ids ?? [])) hidden>
+          <img src="{{ $p->image_primary ? asset('storage/'.$p->image_primary) : asset('assets/images/K ICONE.webp') }}" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+          <span class="product-pick-name">{{ $p->name }}</span>
+          <span class="product-pick-check">✓</span>
+        </label>
+        @endforeach
+      </div>
+    </div>
+
+    {{-- BEST-SELLERS (info only) --}}
+    <div class="card" style="margin-bottom:var(--space-xl);padding:var(--space-xl);background:var(--color-bg);">
+      <h3 style="font-family:var(--font-heading);font-size:var(--text-lg);margin:0 0 0.25rem;">🏆 Best-Sellers & Nouveautés</h3>
+      <p style="font-size:var(--text-sm);color:var(--color-text-muted);">Automatique — 2 plus vendus + 1 plus récent.</p>
+      @if($mostSold->isNotEmpty())
+      <div style="display:flex;gap:1rem;margin-top:0.75rem;font-size:13px;color:var(--color-text);">
+        @foreach($mostSold->take(2) as $p)
+        <span style="background:#fff;padding:4px 12px;border-radius:8px;border:1px solid var(--color-border);">🔥 {{ $p->name }}</span>
+        @endforeach
+        @if($latestProduct)
+        <span style="background:#fff;padding:4px 12px;border-radius:8px;border:1px solid var(--color-border);">🆕 {{ $latestProduct->name }}</span>
+        @endif
+      </div>
+      @else
+      <p style="font-size:12px;color:var(--color-text-muted);margin-top:0.5rem;">Aucune vente pour le moment. Les produits seront affichés dès les premières commandes.</p>
+      @endif
+    </div>
+
+    {{-- SÉLECTION ORGANISÉE --}}
+    <div class="card" style="margin-bottom:var(--space-xl);padding:var(--space-xl);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+        <div>
+          <h3 style="font-family:var(--font-heading);font-size:var(--text-lg);margin:0 0 0.25rem;">📐 Sélection Organisée</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-text-muted);">Gauche = plus vendu (auto). Droite = 4 produits ou collections au choix.</p>
+        </div>
+        <div style="display:flex;gap:0.5rem;">
+          <button type="button" class="action-btn" onclick="switchTab('products')" id="tab-products" style="padding:6px 14px;height:auto;border-radius:8px;font-size:12px;">Produits</button>
+          <button type="button" class="action-btn" onclick="switchTab('collections')" id="tab-collections" style="padding:6px 14px;height:auto;border-radius:8px;font-size:12px;">Collections</button>
         </div>
       </div>
 
-      <!-- BEST-SELLERS (hidden by default) -->
-      <div class="section-panel" id="panel-bestsellers" style="display:none;">
-        <div class="card">
-          <h3 style="font-family:var(--font-heading); font-size:var(--text-lg); margin-bottom:var(--space-md);">Nos Best-Sellers & Nouveautés</h3>
-          <p style="font-size:var(--text-sm); color:var(--color-text-muted); margin-bottom:var(--space-lg);">Produits affichés dans la grille Best-Sellers de la page d'accueil.</p>
-          <table class="admin-table">
-            <thead><tr><th>Produit</th><th>Catégorie</th><th>Prix</th><th>Badge</th><th>Actions</th></tr></thead>
-            <tbody>
-              <tr><td style="display:flex; align-items:center; gap:12px;"><img src="{{ asset('assets/images/product-1a.webp') }}" style="width:40px; height:40px; border-radius:8px; object-fit:cover;">Nectar Lumineux</td><td>Soin</td><td>125 €</td><td><span class="status-badge status-badge--success">Best-seller</span></td><td><button class="action-btn action-btn--danger" title="Retirer">&times;</button></td></tr>
-              <tr><td style="display:flex; align-items:center; gap:12px;"><img src="{{ asset('assets/images/product-6a.webp') }}" style="width:40px; height:40px; border-radius:8px; object-fit:cover;">Sérum Éclat</td><td>Soin</td><td>110 €</td><td><span class="status-badge status-badge--success">Best-seller</span></td><td><button class="action-btn action-btn--danger" title="Retirer">&times;</button></td></tr>
-              <tr><td style="display:flex; align-items:center; gap:12px;"><img src="{{ asset('assets/images/product-3a.webp') }}" style="width:40px; height:40px; border-radius:8px; object-fit:cover;">Gommage Terracotta</td><td>Soin</td><td>85 €</td><td><span class="status-badge status-badge--info">Nouveau</span></td><td><button class="action-btn action-btn--danger" title="Retirer">&times;</button></td></tr>
-            </tbody>
-          </table>
-          <button style="margin-top:var(--space-lg); padding:8px 16px; border:1px dashed var(--color-border); border-radius:var(--radius-sm); background:none; cursor:pointer; font-size:var(--text-sm); color:var(--color-text-muted);">+ Ajouter un produit</button>
+      <div id="tab-products-content">
+        <div class="product-pick-grid">
+          @foreach($products as $p)
+          <label class="product-pick {{ in_array($p->id, $sections->get('selection')?->product_ids ?? []) ? 'active' : '' }}">
+            <input type="checkbox" name="selection_product_ids[]" value="{{ $p->id }}" @checked(in_array($p->id, $sections->get('selection')?->product_ids ?? [])) hidden>
+            <img src="{{ $p->image_primary ? asset('storage/'.$p->image_primary) : asset('assets/images/K ICONE.webp') }}" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+            <span class="product-pick-name">{{ $p->name }}</span>
+            <span class="product-pick-check">✓</span>
+          </label>
+          @endforeach
         </div>
       </div>
-
-      <!-- BOUTIQUE (hidden) -->
-      <div class="section-panel" id="panel-boutique" style="display:none;">
-        <div class="card">
-          <h3 style="font-family:var(--font-heading); font-size:var(--text-lg); margin-bottom:var(--space-lg);">Notre Boutique — Grille de produits</h3>
-          <p style="font-size:var(--text-sm); color:var(--color-text-muted); margin-bottom:var(--space-lg);">Produits affichés dans la section « Notre Boutique » de la page d'accueil (grille 2×2).</p>
-          <p style="font-size:var(--text-sm); color:var(--color-text-light);">Configuration identique à Best-Sellers. Sélectionnez 4 produits maximum.</p>
-        </div>
-      </div>
-
-      <!-- SÉLECTION (hidden) -->
-      <div class="section-panel" id="panel-selection" style="display:none;">
-        <div class="card">
-          <h3 style="font-family:var(--font-heading); font-size:var(--text-lg); margin-bottom:var(--space-md);">Sélection Organisée — Collections</h3>
-          <p style="font-size:var(--text-sm); color:var(--color-text-muted); margin-bottom:var(--space-lg);">Cette section affiche les collections de produits (packs). Gérez vos collections depuis la page <a href="{{ url('admin-collections') }}" style="color:var(--color-warm); font-weight:500;">Collections</a>.</p>
-          <p style="font-size:var(--text-sm); color:var(--color-text-light);">Les collections actives s'afficheront automatiquement dans la section « Sélection Organisée » de la page d'accueil.</p>
+      <div id="tab-collections-content" style="display:none;">
+        <div class="product-pick-grid">
+          @foreach($collections as $c)
+          <label class="product-pick {{ in_array($c->id, $sections->get('selection')?->collection_ids ?? []) ? 'active' : '' }}">
+            <input type="checkbox" name="selection_collection_ids[]" value="{{ $c->id }}" @checked(in_array($c->id, $sections->get('selection')?->collection_ids ?? [])) hidden>
+            <div style="width:80px;height:56px;background:var(--color-peach);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">📦</div>
+            <span class="product-pick-name">{{ $c->name }}</span>
+            <span class="product-pick-check">✓</span>
+          </label>
+          @endforeach
         </div>
       </div>
     </div>
-  </main>
-  
-  
-@endsection
 
-@section('scripts')
+  </form>
+</div>
+
+<style>
+.product-pick-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0.75rem; }
+.product-pick { display:flex;flex-direction:column;align-items:center;gap:0.5rem;padding:1rem 0.75rem;border:2px solid var(--color-border);border-radius:12px;cursor:pointer;transition:all 0.15s;position:relative; }
+.product-pick:hover { border-color:var(--color-warm); }
+.product-pick.active { border-color:var(--color-warm);background:rgba(196,150,122,0.06); }
+.product-pick img { width:80px;height:56px;border-radius:8px;object-fit:cover; }
+.product-pick-check { position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;background:var(--color-border);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;opacity:0;transition:all 0.15s; }
+.product-pick.active .product-pick-check { background:var(--color-warm);opacity:1; }
+.product-pick-name { font-size:12px;font-weight:500;color:var(--color-text);text-align:center;line-height:1.3; }
+</style>
+
 <script>
-    document.getElementById('mobileToggle')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
-    document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'admin-sections') l.classList.add('active'); });
-    function showSection(name) {
-      document.querySelectorAll('.section-panel').forEach(p => p.style.display = 'none');
-      document.getElementById('panel-' + name).style.display = 'block';
-      document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-      event.target.classList.add('active');
-    }
-  </script>
-<script src="/js/account.js"></script>
+document.querySelectorAll('.product-pick').forEach(function(el){
+  el.addEventListener('click', function(){
+    var cb = this.querySelector('input[type="checkbox"]');
+    cb.checked = !cb.checked;
+    this.classList.toggle('active', cb.checked);
+  });
+});
+
+function switchTab(tab) {
+  document.getElementById('tab-products-content').style.display = tab === 'products' ? '' : 'none';
+  document.getElementById('tab-collections-content').style.display = tab === 'collections' ? '' : 'none';
+  document.getElementById('tab-products').style.borderColor = tab === 'products' ? 'var(--color-warm)' : '';
+  document.getElementById('tab-collections').style.borderColor = tab === 'collections' ? 'var(--color-warm)' : '';
+}
+
+document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'admin-sections') l.classList.add('active'); });
+</script>
 @endsection

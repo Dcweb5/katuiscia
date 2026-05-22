@@ -190,24 +190,34 @@ const csrfToken = '<?php echo e(csrf_token()); ?>';
 const productId = <?php echo e($productId); ?>;
 
 async function imageSetPrimary(id) {
-  if (!confirm('Définir cette image comme principale ?')) return;
   try {
     const r = await fetch('/admin/produits/' + productId + '/images/' + id + '/primary', {
       method: 'PUT', headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' }
     });
     if (r.ok) location.reload();
-  } catch(e) { alert('Erreur'); }
+    else location.reload();
+  } catch(e) { location.reload(); }
 }
 
 async function imageDelete(id) {
-  if (!confirm('Supprimer cette image ?')) return;
   try {
     const r = await fetch('/admin/produits/' + productId + '/images/' + id, {
       method: 'DELETE', headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' }
     });
-    if (r.ok) location.reload();
-    else alert('Erreur lors de la suppression');
-  } catch(e) { alert('Erreur'); }
+    if (r.ok) {
+      var card = document.querySelector('.img-card[data-id="' + id + '"]');
+      if (card) { card.style.transition = 'opacity 0.3s'; card.style.opacity = '0'; setTimeout(function(){ card.remove(); updateImageCount(); }, 300); }
+      if (typeof showToast === 'function') showToast('Image supprimee', 'success');
+    }
+  } catch(e) { location.reload(); }
+}
+
+function updateImageCount() {
+  var count = document.querySelectorAll('.img-card').length;
+  var zone = document.getElementById('upload-zone');
+  var preview = document.getElementById('new-images-preview');
+  if (zone && count >= 5) { zone.style.display = 'none'; if (preview) preview.style.display = 'none'; }
+  else if (zone) { zone.style.display = ''; }
 }
 
 // ===== UPLOAD NOUVELLES IMAGES =====

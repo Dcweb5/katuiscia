@@ -10,8 +10,46 @@ class PageController extends Controller
 {
     public function index()
     {
-        $featuredProducts = Product::with('categories')->active()->featured()->ordered()->take(8)->get();
-        return view('pages.index', compact('featuredProducts'));
+        $sections = \App\Models\HomeSection::pluck('product_ids', 'type');
+
+        // Hero: admin-selected products
+        $heroIds = $sections->get('hero', []);
+        $heroProducts = !empty($heroIds)
+            ? Product::with('categories')->whereIn('id', $heroIds)->get()->sortBy(fn($p) => array_search($p->id, $heroIds))
+            : Product::with('categories')->active()->ordered()->take(3)->get();
+
+        // Best-Sellers (2 most sold) + Latest (1)
+        $bestsellers = Product::mostSold(2)->get();
+        $latestProduct = Product::latestPublished(1)->first();
+
+        // Sélection: left = #1 most sold, right = admin-picked
+        $selectionLarge = Product::mostSold(1, $sections->get('selection', []))->first()
+            ?? Product::active()->ordered()->first();
+        $selectionIds = $sections->get('selection', []);
+        $selectionSmall = !empty($selectionIds)
+            ? Product::with('categories')->whereIn('id', $selectionIds)->get()->take(4)
+            : Product::with('categories')->active()->ordered()->take(4)->get();
+
+        // Notre Boutique: 1 per category, most sold
+        $categories = Category::active()->ordered()->get()->take(4);
+        $boutiqueProducts = collect();
+        $usedIds = [];
+        foreach ($categories as $cat) {
+            $p = Product::whereHas('categories', fn($q) => $q->where('categories.id', $cat->id))
+                ->whereNotIn('products.id', $usedIds)
+                ->active()->ordered()->first();
+            if ($p) { $boutiqueProducts->push($p); $usedIds[] = $p->id; }
+        }
+        if ($boutiqueProducts->count() < 4) {
+            $extra = Product::whereNotIn('id', $usedIds)->active()->ordered()
+                ->take(4 - $boutiqueProducts->count())->get();
+            $boutiqueProducts = $boutiqueProducts->concat($extra);
+        }
+
+        return view('pages.index', compact(
+            'heroProducts', 'bestsellers', 'latestProduct',
+            'selectionLarge', 'selectionSmall', 'boutiqueProducts'
+        ));
     }
 
     public function boutique(Request $request)

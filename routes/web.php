@@ -140,6 +140,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('/collections/{collection}', [App\Http\Controllers\Admin\CollectionController::class, 'update'])->name('collections.update');
     Route::delete('/collections/{collection}', [App\Http\Controllers\Admin\CollectionController::class, 'destroy'])->name('collections.destroy');
     Route::put('/collections/{collection}/toggle', [App\Http\Controllers\Admin\CollectionController::class, 'toggle'])->name('collections.toggle');
-    Route::get('/sections', fn() => view('admin.sections.index'))->name('sections');
+    Route::get('/sections', [App\Http\Controllers\Admin\SectionController::class, 'index'])->name('sections.index');
+    Route::post('/sections', [App\Http\Controllers\Admin\SectionController::class, 'store'])->name('sections.store');
     Route::get('/recompenses', fn() => view('admin.rewards.index'))->name('rewards');
 });
