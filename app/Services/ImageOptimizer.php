@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class ImageOptimizer
 {
-    public static function store(UploadedFile $file, string $folder, int $maxWidth = 1200): string
+    public static function store(UploadedFile $file, string $folder, int $maxWidth = 1600): string
     {
         $extension = 'webp';
         $filename = Str::uuid() . '.' . $extension;
@@ -24,10 +24,10 @@ class ImageOptimizer
             $img->resize($maxWidth, null);
         }
 
-        // Sauvegarder en WebP (qualité 80%)
-        $img->save($path . '/' . $filename, quality: 80);
+        // Sauvegarder en WebP qualité 90%
+        $img->save($path . '/' . $filename, quality: 90);
 
-        // Générer miniature 300px pour les listings
+        // Générer miniature 300px pour les listings (qualité 75%)
         $thumb = Image::decode($file->getRealPath());
         if ($thumb->width() > 300) {
             $thumb->resize(300, null);
