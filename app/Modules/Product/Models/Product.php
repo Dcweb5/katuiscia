@@ -41,6 +41,11 @@ class Product extends Model
 
     public function reviews() { return $this->hasMany(\App\Models\Review::class); }
 
+    public function collections(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(\App\Models\Collection::class, 'collection_product')->withPivot('quantity');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true);

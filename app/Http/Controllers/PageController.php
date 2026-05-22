@@ -10,10 +10,10 @@ class PageController extends Controller
 {
     public function index()
     {
-        $sections = \App\Models\HomeSection::pluck('product_ids', 'type');
+        $sections = \App\Models\HomeSection::all()->keyBy('type');
 
         // Hero: admin-selected products
-        $heroIds = $sections->get('hero', []);
+        $heroIds = $sections->get('hero')?->product_ids ?? [];
         $heroProducts = !empty($heroIds)
             ? Product::with('categories')->whereIn('id', $heroIds)->get()->sortBy(fn($p) => array_search($p->id, $heroIds))
             : Product::with('categories')->active()->ordered()->take(3)->get();
@@ -22,13 +22,28 @@ class PageController extends Controller
         $bestsellers = Product::mostSold(2)->get();
         $latestProduct = Product::latestPublished(1)->first();
 
-        // Sélection: left = #1 most sold, right = admin-picked
-        $selectionLarge = Product::mostSold(1, $sections->get('selection', []))->first()
-            ?? Product::active()->ordered()->first();
-        $selectionIds = $sections->get('selection', []);
-        $selectionSmall = !empty($selectionIds)
-            ? Product::with('categories')->whereIn('id', $selectionIds)->get()->take(4)
-            : Product::with('categories')->active()->ordered()->take(4)->get();
+        // Sélection: left = #1 most sold, right = admin-picked products or collections
+        $selection = $sections->get('selection');
+        $selectionLarge = Product::mostSold(1)->first() ?? Product::active()->ordered()->first();
+
+        // Right side: products from product_ids OR from collections' product_ids
+        $selectionSmall = collect();
+        $productIds = $selection?->product_ids ?? [];
+        $collectionIds = $selection?->collection_ids ?? [];
+
+        if (!empty($productIds)) {
+            // Admin picked specific products
+            $selectionSmall = Product::with('categories')->whereIn('id', $productIds)->get()->take(4);
+        } elseif (!empty($collectionIds)) {
+            // Admin picked collections → get their products
+            $selectionSmall = Product::with('categories')
+                ->whereHas('collections', fn($q) => $q->whereIn('collections.id', $collectionIds))
+                ->active()->get()->take(4);
+        }
+
+        if ($selectionSmall->isEmpty()) {
+            $selectionSmall = Product::with('categories')->active()->ordered()->take(4)->get();
+        }
 
         // Notre Boutique: 1 per category, most sold
         $categories = Category::active()->ordered()->get()->take(4);
