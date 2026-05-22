@@ -126,17 +126,32 @@
     </div>
 
     {{-- Small cards --}}
-    @foreach($selectionSmall as $product)
+    @foreach($selectionSmall as $item)
     <div class="relative rounded-xl overflow-hidden bg-white shadow-card group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 reveal-k-k delay-{{ $loop->iteration }}">
-      <a href="{{ url('produit/'.$product->slug) }}" class="block w-full h-[220px] overflow-hidden">
-        <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+      @if($selectionType === 'collections')
+      <a href="{{ url('collection/'.$item->slug) }}" class="block w-full h-[220px] overflow-hidden">
+        @if($item->image_url)
+        <img src="{{ $item->image_url }}" alt="{{ $item->name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+        @else
+        <div style="width:100%;height:100%;background:linear-gradient(135deg, #faf7f2, #ede4db);display:flex;align-items:center;justify-content:center;font-size:2rem;">📦</div>
+        @endif
+      </a>
+      <div class="p-4 flex flex-col gap-1">
+        <span class="text-xs text-text-muted tracking-wider uppercase">📚 Collection</span>
+        <h3 class="font-heading text-xl font-medium text-dark">{{ $item->name }}</h3>
+        <span class="text-md font-semibold text-dark mt-1">{{ number_format($item->price, 0, ',', ' ') }} €</span>
+      </div>
+      @else
+      <a href="{{ url('produit/'.$item->slug) }}" class="block w-full h-[220px] overflow-hidden">
+        <img src="{{ $item->image_url }}" alt="{{ $item->name }}"
              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
       </a>
       <div class="p-4 flex flex-col gap-1">
-        <span class="text-xs text-text-muted tracking-wider uppercase">{{ $product->categories->first()?->name ?? 'Soin' }}</span>
-        <h3 class="font-heading text-xl font-medium text-dark">{{ $product->name }}</h3>
-        <span class="text-md font-semibold text-dark mt-1">{{ number_format($product->sale_price ?? $product->price, 0, ',', ' ') }} €</span>
+        <span class="text-xs text-text-muted tracking-wider uppercase">{{ $item->categories->first()?->name ?? 'Soin' }}</span>
+        <h3 class="font-heading text-xl font-medium text-dark">{{ $item->name }}</h3>
+        <span class="text-md font-semibold text-dark mt-1">{{ number_format($item->sale_price ?? $item->price, 0, ',', ' ') }} €</span>
       </div>
+      @endif
     </div>
     @endforeach
   </div>

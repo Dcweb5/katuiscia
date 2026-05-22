@@ -26,23 +26,22 @@ class PageController extends Controller
         $selection = $sections->get('selection');
         $selectionLarge = Product::mostSold(1)->first() ?? Product::active()->ordered()->first();
 
-        // Right side: products from product_ids OR from collections' product_ids
         $selectionSmall = collect();
+        $selectionType = 'products'; // 'products' or 'collections'
         $productIds = $selection?->product_ids ?? [];
         $collectionIds = $selection?->collection_ids ?? [];
 
         if (!empty($productIds)) {
-            // Admin picked specific products
             $selectionSmall = Product::with('categories')->whereIn('id', $productIds)->get()->take(4);
+            $selectionType = 'products';
         } elseif (!empty($collectionIds)) {
-            // Admin picked collections → get their products
-            $selectionSmall = Product::with('categories')
-                ->whereHas('collections', fn($q) => $q->whereIn('collections.id', $collectionIds))
-                ->active()->get()->take(4);
+            $selectionSmall = \App\Models\Collection::active()->whereIn('id', $collectionIds)->get()->take(4);
+            $selectionType = 'collections';
         }
 
         if ($selectionSmall->isEmpty()) {
             $selectionSmall = Product::with('categories')->active()->ordered()->take(4)->get();
+            $selectionType = 'products';
         }
 
         // Notre Boutique: 1 per category, most sold
@@ -63,7 +62,7 @@ class PageController extends Controller
 
         return view('pages.index', compact(
             'heroProducts', 'bestsellers', 'latestProduct',
-            'selectionLarge', 'selectionSmall', 'boutiqueProducts'
+            'selectionLarge', 'selectionSmall', 'selectionType', 'boutiqueProducts'
         ));
     }
 

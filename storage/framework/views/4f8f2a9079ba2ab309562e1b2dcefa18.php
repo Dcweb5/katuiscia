@@ -124,17 +124,32 @@
     </div>
 
     
-    <?php $__currentLoopData = $selectionSmall; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+    <?php $__currentLoopData = $selectionSmall; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
     <div class="relative rounded-xl overflow-hidden bg-white shadow-card group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 reveal-k-k delay-<?php echo e($loop->iteration); ?>">
-      <a href="<?php echo e(url('produit/'.$product->slug)); ?>" class="block w-full h-[220px] overflow-hidden">
-        <img src="<?php echo e($product->image_url); ?>" alt="<?php echo e($product->name); ?>"
+      <?php if($selectionType === 'collections'): ?>
+      <a href="<?php echo e(url('collection/'.$item->slug)); ?>" class="block w-full h-[220px] overflow-hidden">
+        <?php if($item->image_url): ?>
+        <img src="<?php echo e($item->image_url); ?>" alt="<?php echo e($item->name); ?>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+        <?php else: ?>
+        <div style="width:100%;height:100%;background:linear-gradient(135deg, #faf7f2, #ede4db);display:flex;align-items:center;justify-content:center;font-size:2rem;">📦</div>
+        <?php endif; ?>
+      </a>
+      <div class="p-4 flex flex-col gap-1">
+        <span class="text-xs text-text-muted tracking-wider uppercase">📚 Collection</span>
+        <h3 class="font-heading text-xl font-medium text-dark"><?php echo e($item->name); ?></h3>
+        <span class="text-md font-semibold text-dark mt-1"><?php echo e(number_format($item->price, 0, ',', ' ')); ?> €</span>
+      </div>
+      <?php else: ?>
+      <a href="<?php echo e(url('produit/'.$item->slug)); ?>" class="block w-full h-[220px] overflow-hidden">
+        <img src="<?php echo e($item->image_url); ?>" alt="<?php echo e($item->name); ?>"
              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.src='<?php echo e(asset('assets/images/K ICONE.webp')); ?>'">
       </a>
       <div class="p-4 flex flex-col gap-1">
-        <span class="text-xs text-text-muted tracking-wider uppercase"><?php echo e($product->categories->first()?->name ?? 'Soin'); ?></span>
-        <h3 class="font-heading text-xl font-medium text-dark"><?php echo e($product->name); ?></h3>
-        <span class="text-md font-semibold text-dark mt-1"><?php echo e(number_format($product->sale_price ?? $product->price, 0, ',', ' ')); ?> €</span>
+        <span class="text-xs text-text-muted tracking-wider uppercase"><?php echo e($item->categories->first()?->name ?? 'Soin'); ?></span>
+        <h3 class="font-heading text-xl font-medium text-dark"><?php echo e($item->name); ?></h3>
+        <span class="text-md font-semibold text-dark mt-1"><?php echo e(number_format($item->sale_price ?? $item->price, 0, ',', ' ')); ?> €</span>
       </div>
+      <?php endif; ?>
     </div>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
   </div>
