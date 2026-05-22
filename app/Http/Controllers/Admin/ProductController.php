@@ -183,7 +183,9 @@ class ProductController extends Controller
 
     public function deleteImage(Product $product, ProductImage $image)
     {
-        Storage::disk('public')->delete($image->path);
+        if ($image->path) {
+            Storage::disk('public')->delete($image->path);
+        }
         $image->delete();
         $this->syncImageColumns($product);
         return redirect()->route('admin.products.edit', $product)->with('success', 'Image supprimée.');
@@ -248,8 +250,11 @@ class ProductController extends Controller
             $product->image_secondary = $images->count() > 1
                 ? $this->imagePathToUrl($images[1]->path)
                 : $this->imagePathToUrl($images[0]->path);
-            $product->save();
+        } else {
+            $product->image_primary = null;
+            $product->image_secondary = null;
         }
+        $product->save();
     }
 
     private function imagePathToUrl(string $path): string
