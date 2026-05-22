@@ -24,8 +24,8 @@ class ImageOptimizer
             $img->resize($maxWidth, null);
         }
 
-        // Convertir en WebP qualité 80%
-        $img->toWebp(80)->save($path . '/' . $filename);
+        // Sauvegarder en WebP (qualité 80%)
+        $img->save($path . '/' . $filename, quality: 80);
 
         // Générer miniature 300px pour les listings
         $thumb = Image::decode($file->getRealPath());
@@ -33,7 +33,7 @@ class ImageOptimizer
             $thumb->resize(300, null);
         }
         $thumbPath = $path . '/thumb_' . $filename;
-        $thumb->toWebp(75)->save($thumbPath);
+        $thumb->save($thumbPath, quality: 75);
 
         return $folder . '/' . $filename;
     }
