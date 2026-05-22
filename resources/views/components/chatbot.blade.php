@@ -1,11 +1,11 @@
-<div id="chat-widget" style="position:fixed;bottom:20px;right:20px;z-index:9999;font-family:Inter,system-ui,sans-serif;">
+<div id="chat-widget" style="position:fixed;bottom:90px;right:20px;z-index:900;font-family:Inter,system-ui,sans-serif;">
   {{-- Chat button --}}
-  <button onclick="toggleChat()" id="chat-btn" style="width:56px;height:56px;border-radius:50%;background:var(--color-warm);color:#fff;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;font-size:24px;transition:all 0.2s;">
+  <button onclick="toggleChat()" id="chat-btn" style="width:52px;height:52px;border-radius:50%;background:var(--color-warm);color:#fff;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;font-size:22px;transition:transform 0.2s;">
     💬
   </button>
 
   {{-- Chat window --}}
-  <div id="chat-window" style="display:none;position:absolute;bottom:70px;right:0;width:360px;max-height:480px;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.12);overflow:hidden;flex-direction:column;">
+  <div id="chat-window" style="display:none;position:absolute;bottom:62px;right:0;width:360px;max-height:480px;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.12);overflow:hidden;">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--color-warm);color:#fff;font-weight:600;font-size:15px;">
       <span>💬 KATUISCIA</span>
       <button onclick="toggleChat()" style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
@@ -22,14 +22,25 @@
   </div>
 </div>
 
-<style>#chat-window{display:none;}#chat-window.open{display:flex;}</style>
+<style>#chat-window{display:none;}#chat-window.open{display:flex;flex-direction:column;}</style>
 <script>
-var chatVisible = false;
+var chatOpen = false;
 function toggleChat() {
-  chatVisible = !chatVisible;
-  document.getElementById('chat-window').classList.toggle('open', chatVisible);
-  document.getElementById('chat-btn').textContent = chatVisible ? '✕' : '💬';
-  if (chatVisible) document.getElementById('chat-input').focus();
+  chatOpen = !chatOpen;
+  var w = document.getElementById('chat-window');
+  var b = document.getElementById('chat-btn');
+  if (chatOpen) {
+    w.classList.add('open');
+    w.style.display = 'flex';
+    b.textContent = '✕';
+    b.style.transform = 'rotate(90deg)';
+    document.getElementById('chat-input').focus();
+  } else {
+    w.classList.remove('open');
+    w.style.display = 'none';
+    b.textContent = '💬';
+    b.style.transform = 'rotate(0deg)';
+  }
 }
 function sendMessage() {
   var input = document.getElementById('chat-input');

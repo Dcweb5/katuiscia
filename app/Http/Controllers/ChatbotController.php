@@ -36,8 +36,16 @@ class ChatbotController extends Controller
 
             $data = $response->json();
             $reply = $data['candidates'][0]['content']['parts'][0]['text'] ?? 'Désolé, je n\'ai pas compris. Pouvez-vous reformuler ?';
+            $reply = trim($reply);
 
-            return response()->json(['reply' => trim($reply)]);
+            \App\Models\ChatMessage::create([
+                'session_id' => session()->getId(),
+                'user_id' => auth()->id(),
+                'message' => $request->message,
+                'reply' => $reply,
+            ]);
+
+            return response()->json(['reply' => $reply]);
         } catch (\Exception $e) {
             return response()->json(['reply' => 'Je rencontre un problème technique. Veuillez réessayer dans un instant.']);
         }

@@ -38,9 +38,15 @@ KATUISCIA — Header Component (Blade)
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </a>
         @endguest
-        <button class="flex items-center justify-center w-11 h-11 text-dark rounded-full hover:text-warm transition-colors" aria-label="Messages">
+        @auth
+        @if(auth()->user()->is_admin)
+        <a href="{{ url('admin/chat') }}" class="flex items-center justify-center w-11 h-11 text-dark rounded-full hover:text-warm transition-colors relative" aria-label="Messages">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-        </button>
+          @php $unreadCount = \App\Models\ChatMessage::where('is_read', false)->count(); @endphp
+          @if($unreadCount > 0)<span style="position:absolute;top:-2px;right:-2px;background:var(--color-error);color:#fff;font-size:10px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">{{ $unreadCount }}</span>@endif
+        </a>
+        @endif
+        @endauth
         <a href="{{ url('panier') }}" class="flex items-center justify-center w-11 h-11 text-dark rounded-full hover:text-warm transition-colors relative" aria-label="Panier">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
           <span class="absolute top-0.5 right-0.5 w-4 h-4 bg-dark text-cream text-[10px] font-semibold flex items-center justify-center rounded-full" id="cart-badge">0</span>

@@ -118,7 +118,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/commandes/{order}', [App\Http\Controllers\Admin\OrderManagementController::class, 'show'])->name('orders.show');
     Route::put('/commandes/{order}/status', [App\Http\Controllers\Admin\OrderManagementController::class, 'updateStatus'])->name('orders.update-status');
 
-    // Pages admin statiques (à convertir progressivement)
+    // Chatbot
+    Route::get('/chat', [App\Http\Controllers\Admin\ChatController::class, 'index'])->name('chat.index');
+    Route::put('/chat/{message}/read', [App\Http\Controllers\Admin\ChatController::class, 'markRead'])->name('chat.read');
     // Blog
     Route::get('/blog', [App\Http\Controllers\Admin\BlogController::class, 'index'])->name('blog.index');
     Route::post('/blog', [App\Http\Controllers\Admin\BlogController::class, 'store'])->name('blog.store');
