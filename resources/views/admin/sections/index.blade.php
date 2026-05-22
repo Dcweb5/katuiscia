@@ -19,7 +19,7 @@
         @foreach($products as $p)
         <label class="product-pick {{ in_array($p->id, $sections->get('hero')?->product_ids ?? []) ? 'active' : '' }}">
           <input type="checkbox" name="hero_product_ids[]" value="{{ $p->id }}" @checked(in_array($p->id, $sections->get('hero')?->product_ids ?? [])) hidden>
-          <img src="{{ $p->image_primary ? asset('storage/'.$p->image_primary) : asset('assets/images/K ICONE.webp') }}" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+          <img src="{{ $p->image_url }}" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
           <span class="product-pick-name">{{ $p->name }}</span>
           <span class="product-pick-check">✓</span>
         </label>
@@ -52,9 +52,9 @@
           <h3 style="font-family:var(--font-heading);font-size:var(--text-lg);margin:0 0 0.25rem;">📐 Sélection Organisée</h3>
           <p style="font-size:var(--text-sm);color:var(--color-text-muted);">Gauche = plus vendu (auto). Droite = 4 produits ou collections au choix.</p>
         </div>
-        <div style="display:flex;gap:0.5rem;">
-          <button type="button" class="action-btn" onclick="switchTab('products')" id="tab-products" style="padding:6px 14px;height:auto;border-radius:8px;font-size:12px;">Produits</button>
-          <button type="button" class="action-btn" onclick="switchTab('collections')" id="tab-collections" style="padding:6px 14px;height:auto;border-radius:8px;font-size:12px;">Collections</button>
+        <div style="display:flex;gap:0;">
+          <button type="button" onclick="switchTab('products')" id="tab-products" class="tab-btn tab-btn--active">📦 Produits</button>
+          <button type="button" onclick="switchTab('collections')" id="tab-collections" class="tab-btn">📚 Collections</button>
         </div>
       </div>
 
@@ -63,7 +63,7 @@
           @foreach($products as $p)
           <label class="product-pick {{ in_array($p->id, $sections->get('selection')?->product_ids ?? []) ? 'active' : '' }}">
             <input type="checkbox" name="selection_product_ids[]" value="{{ $p->id }}" @checked(in_array($p->id, $sections->get('selection')?->product_ids ?? [])) hidden>
-            <img src="{{ $p->image_primary ? asset('storage/'.$p->image_primary) : asset('assets/images/K ICONE.webp') }}" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+            <img src="{{ $p->image_url }}" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
             <span class="product-pick-name">{{ $p->name }}</span>
             <span class="product-pick-check">✓</span>
           </label>
@@ -75,7 +75,11 @@
           @foreach($collections as $c)
           <label class="product-pick {{ in_array($c->id, $sections->get('selection')?->collection_ids ?? []) ? 'active' : '' }}">
             <input type="checkbox" name="selection_collection_ids[]" value="{{ $c->id }}" @checked(in_array($c->id, $sections->get('selection')?->collection_ids ?? [])) hidden>
+            @if($c->image_url)
+            <img src="{{ $c->image_url }}" style="width:80px;height:56px;border-radius:6px;object-fit:cover;">
+            @else
             <div style="width:80px;height:56px;background:var(--color-peach);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">📦</div>
+            @endif
             <span class="product-pick-name">{{ $c->name }}</span>
             <span class="product-pick-check">✓</span>
           </label>
@@ -88,6 +92,11 @@
 </div>
 
 <style>
+.tab-btn { padding:10px 20px;border:2px solid #d1d5db;background:#fff;cursor:pointer;font-size:14px;font-weight:500;color:#6b7280;transition:all 0.15s; }
+.tab-btn:first-child { border-radius:10px 0 0 10px;border-right:none; }
+.tab-btn:last-child { border-radius:0 10px 10px 0; }
+.tab-btn--active { background:var(--color-warm);border-color:var(--color-warm);color:#fff;font-weight:600; }
+
 .product-pick-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0.75rem; }
 .product-pick { display:flex;flex-direction:column;align-items:center;gap:0.5rem;padding:1rem 0.75rem;border:2px solid var(--color-border);border-radius:12px;cursor:pointer;transition:all 0.15s;position:relative; }
 .product-pick:hover { border-color:var(--color-warm); }
@@ -110,8 +119,8 @@ document.querySelectorAll('.product-pick').forEach(function(el){
 function switchTab(tab) {
   document.getElementById('tab-products-content').style.display = tab === 'products' ? '' : 'none';
   document.getElementById('tab-collections-content').style.display = tab === 'collections' ? '' : 'none';
-  document.getElementById('tab-products').style.borderColor = tab === 'products' ? 'var(--color-warm)' : '';
-  document.getElementById('tab-collections').style.borderColor = tab === 'collections' ? 'var(--color-warm)' : '';
+  document.getElementById('tab-products').classList.toggle('tab-btn--active', tab === 'products');
+  document.getElementById('tab-collections').classList.toggle('tab-btn--active', tab === 'collections');
 }
 
 document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'admin-sections') l.classList.add('active'); });
