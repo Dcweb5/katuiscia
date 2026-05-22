@@ -26,6 +26,8 @@
   <script type="module" src="<?php echo e(asset('js/main.js')); ?>"></script>
   <script src="<?php echo e(asset('js/cart-ajax.js')); ?>"></script>
   <?php echo $__env->yieldContent('scripts'); ?>
+
+  <?php echo $__env->make('components.chatbot', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </body>
 </html>
 <?php /**PATH E:\mes sites web\KATUISCIA LARAVEL\resources\views\layouts\public.blade.php ENDPATH**/ ?>

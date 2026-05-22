@@ -36,7 +36,7 @@ Route::get('/politique-remboursement', [PageController::class, 'politiqueRembour
 // ===== ACTIONS PUBLIQUES =====
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
 Route::post('/rendez-vous', [App\Http\Controllers\AppointmentController::class, 'store'])->name('appointment.store');
-Route::get('/recherche', [App\Http\Controllers\SearchController::class, 'index'])->name('search');
+Route::post('/api/chat', [App\Http\Controllers\ChatbotController::class, 'chat'])->name('chatbot.chat');
 Route::get('/collection/{slug}', [App\Http\Controllers\PageController::class, 'collectionShow'])->name('collection.show');
 
 // ===== SUIVI DE COMMANDE (PUBLIC) =====

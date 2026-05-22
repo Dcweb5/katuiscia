@@ -26,5 +26,7 @@
   <script type="module" src="{{ asset('js/main.js') }}"></script>
   <script src="{{ asset('js/cart-ajax.js') }}"></script>
   @yield('scripts')
+
+  @include('components.chatbot')
 </body>
 </html>

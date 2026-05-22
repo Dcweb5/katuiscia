@@ -124,13 +124,11 @@
 
       <div class="admin-form-group">
         <label class="admin-label">Produits inclus</label>
-        <div id="products-list" style="max-height:200px;overflow-y:auto;border:1px solid var(--color-border);border-radius:8px;padding:0.5rem;">
+        <div id="products-list" style="max-height:220px;overflow-y:auto;border:1px solid var(--color-border);border-radius:8px;padding:0.5rem;">
           <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <label style="display:flex;align-items:center;gap:0.5rem;padding:6px 8px;cursor:pointer;border-radius:4px;font-size:14px;" class="product-check-label">
+          <label style="display:flex;align-items:center;gap:0.75rem;padding:8px 10px;cursor:pointer;border-radius:6px;font-size:14px;" class="product-check-label">
             <input type="checkbox" name="product_ids[]" value="<?php echo e($product->id); ?>" class="product-check">
-            <?php if($product->image_primary): ?>
-            <img src="<?php echo e(Storage::url($product->image_primary)); ?>" style="width:28px;height:28px;border-radius:4px;object-fit:cover;">
-            <?php endif; ?>
+            <img src="<?php echo e($product->image_url); ?>" style="width:40px;height:40px;border-radius:6px;object-fit:cover;flex-shrink:0;" onerror="this.style.display='none'">
             <?php echo e($product->name); ?>
 
           </label>
