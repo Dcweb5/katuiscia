@@ -27,7 +27,7 @@
       <?php if($product->badge): ?>
       <span class="absolute top-4 left-4 z-10 bg-warm text-white text-xs font-semibold tracking-wider uppercase px-4 py-1.5 rounded-full"><?php echo e($product->badge); ?></span>
       <?php endif; ?>
-      <img src="<?php echo e($mainImage ? asset('storage/' . $mainImage->path) : asset($product->image_primary ?: 'assets/images/product-1a.png')); ?>"
+      <img src="<?php echo e($mainImage ? asset('storage/' . $mainImage->path) : asset($product->image_primary ?: 'assets/images/product-1a.webp')); ?>"
            alt="<?php echo e($product->name); ?>" class="w-full h-full object-cover transition-opacity duration-500" id="main-product-image">
     </div>
     <?php if($images->count() > 1 || $product->image_secondary): ?>
@@ -165,7 +165,7 @@
       <?php $__currentLoopData = $related; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rp): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
       <a href="<?php echo e(url('produit/' . $rp->slug)); ?>" class="group block rounded-xl overflow-hidden bg-cream shadow-card hover:shadow-lg transition-all hover:-translate-y-1 reveal-k-k delay-<?php echo e($loop->index); ?>">
         <div class="h-[260px] bg-gray-k flex items-center justify-center p-6">
-          <img src="<?php echo e($rp->images->first() ? asset('storage/' . $rp->images->first()->path) : asset($rp->image_primary ?: 'assets/images/product-1a.png')); ?>"
+          <img src="<?php echo e($rp->images->first() ? asset('storage/' . $rp->images->first()->path) : asset($rp->image_primary ?: 'assets/images/product-1a.webp')); ?>"
                alt="<?php echo e($rp->name); ?>" class="max-h-full object-contain transition-transform duration-500 group-hover:scale-110" loading="lazy">
         </div>
         <div class="p-5"><h3 class="font-heading text-lg font-medium text-dark"><?php echo e($rp->name); ?></h3><p class="text-sm text-text-light"><?php echo e($rp->description); ?></p><span class="text-md font-semibold text-dark mt-2 block"><?php echo e(number_format($rp->price, 0, ',', ' ')); ?> €</span></div>

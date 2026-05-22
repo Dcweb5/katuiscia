@@ -38,15 +38,15 @@
     <!-- Slideshow -->
     <div class="relative flex justify-center items-center min-h-[500px] reveal-k-k delay-2" id="hero-slideshow">
       <div class="hero-slide active" data-name="Nectar Lumineux" data-price="125 €">
-        <img src="{{ asset('assets/images/product-1a.png') }}" alt="Nectar Lumineux"
+        <img src="{{ asset('assets/images/product-1a.webp') }}" alt="Nectar Lumineux"
              class="max-w-[380px] w-full rounded-2xl shadow-xl transition-transform duration-500 ease-out-expo" width="400" height="533">
       </div>
       <div class="hero-slide" data-name="Botanique de Minuit" data-price="160 €">
-        <img src="{{ asset('assets/images/product-2a.png') }}" alt="Botanique de Minuit"
+        <img src="{{ asset('assets/images/product-2a.webp') }}" alt="Botanique de Minuit"
              class="max-w-[380px] w-full rounded-2xl shadow-xl transition-transform duration-500 ease-out-expo" width="400" height="533">
       </div>
       <div class="hero-slide" data-name="Sérum Éclat" data-price="110 €">
-        <img src="{{ asset('assets/images/product-6a.png') }}" alt="Sérum Éclat"
+        <img src="{{ asset('assets/images/product-6a.webp') }}" alt="Sérum Éclat"
              class="max-w-[380px] w-full rounded-2xl shadow-xl transition-transform duration-500 ease-out-expo" width="400" height="533">
       </div>
 
@@ -56,9 +56,9 @@
         <button class="hero-dot" data-slide="2" aria-label="Produit 3"></button>
       </div>
 
-      <img src="{{ asset('assets/images/product-3a.png') }}" alt=""
+      <img src="{{ asset('assets/images/product-3a.webp') }}" alt=""
            class="absolute top-0 -right-8 w-[130px] rounded-xl shadow-lg z-20 hidden lg:block animate-float" aria-hidden="true" data-parallax="-0.05">
-      <img src="{{ asset('assets/images/product-4a.png') }}" alt=""
+      <img src="{{ asset('assets/images/product-4a.webp') }}" alt=""
            class="absolute bottom-8 -left-10 w-[110px] rounded-xl shadow-lg z-20 hidden lg:block animate-float-delayed" aria-hidden="true" data-parallax="-0.08">
     </div>
   </div>
@@ -76,7 +76,7 @@
     @foreach($featuredProducts as $product)
     <a href="{{ url('produit/' . $product->slug) }}" class="showcase-item group flex-none w-[280px] lg:w-[320px] snap-center relative flex flex-col items-center text-center transition-transform duration-300 ease-out-expo hover:-translate-y-2 reveal-k-k @if($loop->iteration > 1) delay-{{ $loop->iteration - 1 }} @endif">
       <div class="w-full h-[350px] lg:h-[400px] bg-gray-med rounded-2xl flex items-center justify-center p-8 transition-colors group-hover:bg-[#E2DFD9]">
-        <img src="{{ asset($product->image_primary ?: 'assets/images/product-4a.png') }}" alt="{{ $product->name }}"
+        <img src="{{ asset($product->image_primary ?: 'assets/images/product-4a.webp') }}" alt="{{ $product->name }}"
              class="max-h-full object-contain drop-shadow-xl transition-transform duration-500 group-hover:scale-110" loading="lazy">
       </div>
       <div class="absolute -bottom-5 bg-white px-8 py-3 rounded-xl shadow-md flex flex-col min-w-[220px]">
@@ -105,7 +105,7 @@
   <div class="max-w-[1200px] mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.3fr_0.7fr_0.7fr] lg:grid-rows-2 gap-4">
     <div class="lg:row-span-2 relative rounded-xl overflow-hidden bg-white shadow-card group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 reveal-k-k">
       <div class="w-full h-full overflow-hidden"><a href="{{ url('produit/' . ($featuredProducts[1]->slug ?? 'botanique-de-minuit')) }}" class="block w-full h-full">
-        <img src="{{ asset($featuredProducts[1]->image_primary ?? 'assets/images/product-2a.png') }}" alt="Botanique de Minuit"
+        <img src="{{ asset($featuredProducts[1]->image_primary ?? 'assets/images/product-2a.webp') }}" alt="Botanique de Minuit"
              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 min-h-[400px]" loading="lazy">
       </a></div>
       <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-dark/60 to-transparent text-white">
@@ -116,7 +116,7 @@
     </div>
     <div class="relative rounded-xl overflow-hidden bg-white shadow-card group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 reveal-k-k delay-1">
       <a href="{{ url('produit/' . ($featuredProducts[2]->slug ?? 'serum-eclat')) }}" class="block w-full h-[220px] overflow-hidden">
-        <img src="{{ asset($featuredProducts[2]->image_primary ?? 'assets/images/product-5a.png') }}" alt="Émulsion Soyeuse"
+        <img src="{{ asset($featuredProducts[2]->image_primary ?? 'assets/images/product-5a.webp') }}" alt="Émulsion Soyeuse"
              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
       </a>
       <div class="p-4 flex flex-col gap-1">
@@ -127,7 +127,7 @@
     </div>
     <div class="relative rounded-xl overflow-hidden bg-white shadow-card group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 reveal-k-k delay-2">
       <a href="{{ url('produit/' . ($featuredProducts[3]->slug ?? 'creme-velours')) }}" class="block w-full h-[220px] overflow-hidden">
-        <img src="{{ asset($featuredProducts[3]->image_primary ?? 'assets/images/product-7a.png') }}" alt="Crème Velours"
+        <img src="{{ asset($featuredProducts[3]->image_primary ?? 'assets/images/product-7a.webp') }}" alt="Crème Velours"
              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
       </a>
       <div class="p-4 flex flex-col gap-1">
@@ -152,7 +152,7 @@
     <div class="product-card-k reveal-k-k delay-{{ $loop->iteration }}">
       <div class="card-image">
         <a href="{{ url('produit/' . $product->slug) }}" class="block w-full h-full">
-          <img src="{{ asset($product->image_primary ?: 'assets/images/product-1a.png') }}" alt="{{ $product->name }}" class="img-primary" loading="lazy">
+          <img src="{{ asset($product->image_primary ?: 'assets/images/product-1a.webp') }}" alt="{{ $product->name }}" class="img-primary" loading="lazy">
           <img src="{{ asset($product->image_secondary ?: $product->image_primary) }}" alt="{{ $product->name }} alt" class="img-secondary" loading="lazy">
         </a>
         @if($product->badge)<span class="card-badge">{{ $product->badge }}</span>@endif
@@ -176,15 +176,15 @@
 <section class="bg-peach overflow-hidden" id="philosophy">
   <div class="max-w-site mx-auto grid grid-cols-1 lg:grid-cols-2">
     <div class="relative min-h-[400px] lg:min-h-[600px] reveal-k-k">
-      <img src="{{ asset('assets/images/editorial-main.png') }}" alt="Botanique" class="absolute w-full h-full object-cover" loading="lazy">
-      <img src="{{ asset('assets/images/product-5a.png') }}" alt="Soin" class="absolute -bottom-5 -right-8 w-32 lg:w-40 rounded-2xl shadow-xl z-10 border-4 border-peach" loading="lazy">
+      <img src="{{ asset('assets/images/editorial-main.webp') }}" alt="Botanique" class="absolute w-full h-full object-cover" loading="lazy">
+      <img src="{{ asset('assets/images/product-5a.webp') }}" alt="Soin" class="absolute -bottom-5 -right-8 w-32 lg:w-40 rounded-2xl shadow-xl z-10 border-4 border-peach" loading="lazy">
     </div>
     <div class="p-12 lg:p-24 flex flex-col justify-center reveal-k-k delay-1">
       <span class="text-xs font-semibold tracking-[0.2em] uppercase text-warm mb-4">Notre Philosophie</span>
       <h2 class="font-heading text-4xl lg:text-5xl font-light text-dark leading-tight mb-8">Formulé<br>avec Intention.</h2>
       <p class="text-base text-text-light leading-relaxed mb-8 max-w-md">Nous croyons que le soin de la peau va au-delà des apparences. Chaque produit KATUISCIA est conçu avec des ingrédients botaniques rigoureusement sélectionnés.</p>
       <div class="bg-white/50 backdrop-blur-sm p-6 rounded-xl flex items-center gap-6 mb-10 max-w-lg">
-        <img src="{{ asset('assets/images/editorial-accent.png') }}" alt="" class="w-20 h-20 rounded-lg object-cover flex-none" loading="lazy">
+        <img src="{{ asset('assets/images/editorial-accent.webp') }}" alt="" class="w-20 h-20 rounded-lg object-cover flex-none" loading="lazy">
         <p class="font-heading italic text-dark leading-relaxed">"Ce qui est en harmonie avec la nature doit être aussi en harmonie avec votre peau."</p>
       </div>
       <a href="{{ url('maison') }}" class="btn-katuiscia self-start">Découvrir nos produits</a>

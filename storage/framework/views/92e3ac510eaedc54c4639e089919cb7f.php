@@ -30,17 +30,17 @@
           <p style="font-size:var(--text-sm); color:var(--color-text-muted); margin-bottom:var(--space-lg);">Sélectionnez jusqu'à 5 produits à mettre en avant dans le diaporama principal.</p>
           <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:var(--space-md);">
             <div style="border:2px solid var(--color-warm); border-radius:var(--radius-md); overflow:hidden; position:relative;">
-              <img src="<?php echo e(asset('assets/images/product-1a.png')); ?>" alt="" style="width:100%; height:160px; object-fit:cover;">
+              <img src="<?php echo e(asset('assets/images/product-1a.webp')); ?>" alt="" style="width:100%; height:160px; object-fit:cover;">
               <div style="padding:10px;"><strong style="font-size:var(--text-sm);">Nectar Lumineux</strong><br><small style="color:var(--color-text-muted);">Slide 1</small></div>
               <button class="action-btn action-btn--danger" style="position:absolute; top:8px; right:8px; width:24px; height:24px; background:white;">&times;</button>
             </div>
             <div style="border:2px solid var(--color-warm); border-radius:var(--radius-md); overflow:hidden; position:relative;">
-              <img src="<?php echo e(asset('assets/images/product-6a.png')); ?>" alt="" style="width:100%; height:160px; object-fit:cover;">
+              <img src="<?php echo e(asset('assets/images/product-6a.webp')); ?>" alt="" style="width:100%; height:160px; object-fit:cover;">
               <div style="padding:10px;"><strong style="font-size:var(--text-sm);">Sérum Éclat</strong><br><small style="color:var(--color-text-muted);">Slide 2</small></div>
               <button class="action-btn action-btn--danger" style="position:absolute; top:8px; right:8px; width:24px; height:24px; background:white;">&times;</button>
             </div>
             <div style="border:2px solid var(--color-warm); border-radius:var(--radius-md); overflow:hidden; position:relative;">
-              <img src="<?php echo e(asset('assets/images/product-3a.png')); ?>" alt="" style="width:100%; height:160px; object-fit:cover;">
+              <img src="<?php echo e(asset('assets/images/product-3a.webp')); ?>" alt="" style="width:100%; height:160px; object-fit:cover;">
               <div style="padding:10px;"><strong style="font-size:var(--text-sm);">Gommage Terracotta</strong><br><small style="color:var(--color-text-muted);">Slide 3</small></div>
               <button class="action-btn action-btn--danger" style="position:absolute; top:8px; right:8px; width:24px; height:24px; background:white;">&times;</button>
             </div>
@@ -62,9 +62,9 @@
           <table class="admin-table">
             <thead><tr><th>Produit</th><th>Catégorie</th><th>Prix</th><th>Badge</th><th>Actions</th></tr></thead>
             <tbody>
-              <tr><td style="display:flex; align-items:center; gap:12px;"><img src="<?php echo e(asset('assets/images/product-1a.png')); ?>" style="width:40px; height:40px; border-radius:8px; object-fit:cover;">Nectar Lumineux</td><td>Soin</td><td>125 €</td><td><span class="status-badge status-badge--success">Best-seller</span></td><td><button class="action-btn action-btn--danger" title="Retirer">&times;</button></td></tr>
-              <tr><td style="display:flex; align-items:center; gap:12px;"><img src="<?php echo e(asset('assets/images/product-6a.png')); ?>" style="width:40px; height:40px; border-radius:8px; object-fit:cover;">Sérum Éclat</td><td>Soin</td><td>110 €</td><td><span class="status-badge status-badge--success">Best-seller</span></td><td><button class="action-btn action-btn--danger" title="Retirer">&times;</button></td></tr>
-              <tr><td style="display:flex; align-items:center; gap:12px;"><img src="<?php echo e(asset('assets/images/product-3a.png')); ?>" style="width:40px; height:40px; border-radius:8px; object-fit:cover;">Gommage Terracotta</td><td>Soin</td><td>85 €</td><td><span class="status-badge status-badge--info">Nouveau</span></td><td><button class="action-btn action-btn--danger" title="Retirer">&times;</button></td></tr>
+              <tr><td style="display:flex; align-items:center; gap:12px;"><img src="<?php echo e(asset('assets/images/product-1a.webp')); ?>" style="width:40px; height:40px; border-radius:8px; object-fit:cover;">Nectar Lumineux</td><td>Soin</td><td>125 €</td><td><span class="status-badge status-badge--success">Best-seller</span></td><td><button class="action-btn action-btn--danger" title="Retirer">&times;</button></td></tr>
+              <tr><td style="display:flex; align-items:center; gap:12px;"><img src="<?php echo e(asset('assets/images/product-6a.webp')); ?>" style="width:40px; height:40px; border-radius:8px; object-fit:cover;">Sérum Éclat</td><td>Soin</td><td>110 €</td><td><span class="status-badge status-badge--success">Best-seller</span></td><td><button class="action-btn action-btn--danger" title="Retirer">&times;</button></td></tr>
+              <tr><td style="display:flex; align-items:center; gap:12px;"><img src="<?php echo e(asset('assets/images/product-3a.webp')); ?>" style="width:40px; height:40px; border-radius:8px; object-fit:cover;">Gommage Terracotta</td><td>Soin</td><td>85 €</td><td><span class="status-badge status-badge--info">Nouveau</span></td><td><button class="action-btn action-btn--danger" title="Retirer">&times;</button></td></tr>
             </tbody>
           </table>
           <button style="margin-top:var(--space-lg); padding:8px 16px; border:1px dashed var(--color-border); border-radius:var(--radius-sm); background:none; cursor:pointer; font-size:var(--text-sm); color:var(--color-text-muted);">+ Ajouter un produit</button>

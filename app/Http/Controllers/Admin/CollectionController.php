@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Collection;
 use App\Modules\Product\Models\Product;
+use App\Services\ImageOptimizer;
 use Illuminate\Http\Request;
 
 class CollectionController extends Controller
@@ -34,7 +35,7 @@ class CollectionController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('collections', 'public');
+            $validated['image'] = ImageOptimizer::store($request->file('image'), 'collections', 1000);
         }
 
         $validated['is_active'] = $request->boolean('is_active');
@@ -67,7 +68,7 @@ class CollectionController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('collections', 'public');
+            $validated['image'] = ImageOptimizer::store($request->file('image'), 'collections', 1000);
         }
 
         $validated['is_active'] = $request->boolean('is_active');

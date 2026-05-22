@@ -26,7 +26,7 @@
           <span class="status-badge status-badge--warning">En attente de retour</span>
         </div>
         <div style="display:flex; gap:var(--space-lg); align-items:center; padding:var(--space-md); background:var(--color-gray); border-radius:var(--radius-md); margin-bottom:var(--space-md);">
-          <img src="<?php echo e(asset('assets/images/product-4a.png')); ?>" style="width:56px; height:56px; border-radius:8px; object-fit:cover;">
+          <img src="<?php echo e(asset('assets/images/product-4a.webp')); ?>" style="width:56px; height:56px; border-radius:8px; object-fit:cover;">
           <div style="flex:1;">
             <strong>Rouleau Quartz Rose</strong>
             <p style="font-size:var(--text-sm); color:var(--color-text-muted);">Commande #KAT-10495 • 55,00 €</p>
@@ -62,7 +62,7 @@
           <span class="status-badge status-badge--success">Remboursé</span>
         </div>
         <div style="display:flex; gap:var(--space-lg); align-items:center; padding:var(--space-md); background:var(--color-gray); border-radius:var(--radius-md);">
-          <img src="<?php echo e(asset('assets/images/product-3a.png')); ?>" style="width:56px; height:56px; border-radius:8px; object-fit:cover;">
+          <img src="<?php echo e(asset('assets/images/product-3a.webp')); ?>" style="width:56px; height:56px; border-radius:8px; object-fit:cover;">
           <div style="flex:1;">
             <strong>Gommage Terracotta</strong>
             <p style="font-size:var(--text-sm); color:var(--color-text-muted);">Commande #KAT-08510 • Remboursé 85,00 € le 28 Sep</p>

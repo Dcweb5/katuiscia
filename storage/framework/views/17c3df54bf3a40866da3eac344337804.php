@@ -9,7 +9,7 @@
     
     <!-- Hero Section -->
     <section class="relative h-[70vh] flex items-center justify-center overflow-hidden bg-dark text-white text-center">
-      <div class="absolute inset-0 w-full h-full bg-[url('assets/images/beaute-resp-hero.png')] bg-cover bg-center bg-fixed opacity-60 z-0"></div>
+      <div class="absolute inset-0 w-full h-full bg-[url('assets/images/beaute-resp-hero.webp')] bg-cover bg-center bg-fixed opacity-60 z-0"></div>
       <div class="relative z-10 max-w-4xl px-8 reveal-k-k">
         <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl mb-6 font-light tracking-tight">Beauté Responsable</h1>
         <p class="text-lg md:text-xl font-light opacity-90 leading-relaxed max-w-2xl mx-auto">Pour vous et la planète, nous nous engageons toujours plus, toujours mieux. Pour une beauté toujours plus responsable et engagée.</p>
@@ -27,7 +27,7 @@
             <p class="text-lg text-text-light leading-relaxed"><strong class="text-dark font-semibold">Nos collaborateurs :</strong> Aujourd'hui comme hier, nos collaborateurs sont notre atout principal. Ils partagent cette quête collective de générosité et de perfection propre à notre marque.</p>
           </div>
           <div class="reveal-k-k delay-1">
-            <img src="<?php echo e(asset('assets/images/biodiv-hero.png')); ?>" alt="Femme appliquant un soin KATUISCIA" class="w-full h-[400px] md:h-[500px] object-cover rounded-2xl shadow-xl">
+            <img src="<?php echo e(asset('assets/images/biodiv-hero.webp')); ?>" alt="Femme appliquant un soin KATUISCIA" class="w-full h-[400px] md:h-[500px] object-cover rounded-2xl shadow-xl">
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@
             <p class="text-lg text-gray-300 leading-relaxed">Nous sélectionnons chaque ingrédient pour son efficacité et dans le respect de son écosystème d'origine. Notre objectif est de privilégier l'agriculture respectueuse de la nature, avec un maximum d'extraits de plantes bio.</p>
           </div>
           <div class="reveal-k-k delay-1">
-            <img src="<?php echo e(asset('assets/images/emballage-hero.png')); ?>" alt="Feuilles botaniques et nature" class="w-full h-[400px] md:h-[500px] object-cover rounded-2xl shadow-xl">
+            <img src="<?php echo e(asset('assets/images/emballage-hero.webp')); ?>" alt="Feuilles botaniques et nature" class="w-full h-[400px] md:h-[500px] object-cover rounded-2xl shadow-xl">
           </div>
         </div>
 

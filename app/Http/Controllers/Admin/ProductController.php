@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ProductImage;
 use App\Modules\Product\Models\Category;
 use App\Modules\Product\Models\Product;
+use App\Services\ImageOptimizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -59,7 +60,7 @@ class ProductController extends Controller
         if ($request->hasFile('images')) {
             $uploadedPaths = [];
             foreach ($request->file('images') as $i => $image) {
-                $path = $image->store('products', 'public');
+                $path = ImageOptimizer::store($image, 'products', 1200);
                 ProductImage::create([
                     'product_id' => $product->id,
                     'path' => $path,
@@ -121,7 +122,7 @@ class ProductController extends Controller
             $existingCount = $product->images()->count();
             foreach ($request->file('images') as $i => $image) {
                 if ($existingCount + $i >= 5) break; // Max 5 images
-                $path = $image->store('products', 'public');
+                $path = ImageOptimizer::store($image, 'products', 1200);
                 ProductImage::create([
                     'product_id' => $product->id,
                     'path' => $path,
@@ -166,7 +167,7 @@ class ProductController extends Controller
 
         foreach ($request->file('images') as $i => $image) {
             if ($existingCount + $i >= 5) break;
-            $path = $image->store('products', 'public');
+            $path = ImageOptimizer::store($image, 'products', 1200);
             $img = ProductImage::create([
                 'product_id' => $product->id,
                 'path' => $path,

@@ -29,7 +29,7 @@
       @if($product->badge)
       <span class="absolute top-4 left-4 z-10 bg-warm text-white text-xs font-semibold tracking-wider uppercase px-4 py-1.5 rounded-full">{{ $product->badge }}</span>
       @endif
-      <img src="{{ $mainImage ? asset('storage/' . $mainImage->path) : asset($product->image_primary ?: 'assets/images/product-1a.png') }}"
+      <img src="{{ $mainImage ? asset('storage/' . $mainImage->path) : asset($product->image_primary ?: 'assets/images/product-1a.webp') }}"
            alt="{{ $product->name }}" class="w-full h-full object-cover transition-opacity duration-500" id="main-product-image">
     </div>
     @if($images->count() > 1 || $product->image_secondary)
@@ -167,7 +167,7 @@
       @foreach($related as $rp)
       <a href="{{ url('produit/' . $rp->slug) }}" class="group block rounded-xl overflow-hidden bg-cream shadow-card hover:shadow-lg transition-all hover:-translate-y-1 reveal-k-k delay-{{ $loop->index }}">
         <div class="h-[260px] bg-gray-k flex items-center justify-center p-6">
-          <img src="{{ $rp->images->first() ? asset('storage/' . $rp->images->first()->path) : asset($rp->image_primary ?: 'assets/images/product-1a.png') }}"
+          <img src="{{ $rp->images->first() ? asset('storage/' . $rp->images->first()->path) : asset($rp->image_primary ?: 'assets/images/product-1a.webp') }}"
                alt="{{ $rp->name }}" class="max-h-full object-contain transition-transform duration-500 group-hover:scale-110" loading="lazy">
         </div>
         <div class="p-5"><h3 class="font-heading text-lg font-medium text-dark">{{ $rp->name }}</h3><p class="text-sm text-text-light">{{ $rp->description }}</p><span class="text-md font-semibold text-dark mt-2 block">{{ number_format($rp->price, 0, ',', ' ') }} €</span></div>

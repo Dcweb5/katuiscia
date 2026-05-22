@@ -11,7 +11,7 @@
     
     <!-- Hero Section -->
     <section class="relative h-[70vh] flex items-center justify-center overflow-hidden bg-dark text-white text-center">
-      <div class="absolute inset-0 w-full h-full bg-[url('assets/images/biodiv-hero.png')] bg-cover bg-center bg-fixed opacity-60 z-0"></div>
+      <div class="absolute inset-0 w-full h-full bg-[url('assets/images/biodiv-hero.webp')] bg-cover bg-center bg-fixed opacity-60 z-0"></div>
       <div class="relative z-10 max-w-4xl px-8 reveal-k-k">
         <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl mb-6 font-light tracking-tight">Personne & Biodiversité</h1>
         <p class="text-lg md:text-xl font-light opacity-90 leading-relaxed max-w-2xl mx-auto">KATUISCIA met chaque jour en pratique la conviction que la beauté doit être porteuse de sens, en finançant et conduisant des actions pour celles et ceux qui en ont besoin.</p>
@@ -28,7 +28,7 @@
 
         <!-- Card 1 -->
         <div class="flex flex-col md:flex-row bg-cream rounded-2xl overflow-hidden shadow-lg mb-16 reveal-k-k delay-1">
-          <div class="flex-1 min-h-[300px] bg-[url('assets/images/beaute-resp-hero.png')] bg-cover bg-center"></div>
+          <div class="flex-1 min-h-[300px] bg-[url('assets/images/beaute-resp-hero.webp')] bg-cover bg-center"></div>
           <div class="flex-1 p-10 md:p-16 flex flex-col justify-center">
             <span class="self-start bg-warm text-white px-3 py-1 rounded-full text-xs uppercase tracking-widest mb-6">Sourcing Responsable</span>
             <h3 class="font-heading text-2xl md:text-3xl text-dark mb-4">Nos communautés locales</h3>
@@ -38,7 +38,7 @@
 
         <!-- Card 2 -->
         <div class="flex flex-col md:flex-row-reverse bg-cream rounded-2xl overflow-hidden shadow-lg mb-16 reveal-k-k delay-2">
-          <div class="flex-1 min-h-[300px] bg-[url('assets/images/emballage-hero.png')] bg-cover bg-center"></div>
+          <div class="flex-1 min-h-[300px] bg-[url('assets/images/emballage-hero.webp')] bg-cover bg-center"></div>
           <div class="flex-1 p-10 md:p-16 flex flex-col justify-center">
             <span class="self-start bg-warm text-white px-3 py-1 rounded-full text-xs uppercase tracking-widest mb-6">Biodiversité</span>
             <h3 class="font-heading text-2xl md:text-3xl text-dark mb-4">Graines de Beauté</h3>
@@ -48,7 +48,7 @@
 
         <!-- Card 3 -->
         <div class="flex flex-col md:flex-row bg-cream rounded-2xl overflow-hidden shadow-lg reveal-k-k delay-3">
-          <div class="flex-1 min-h-[300px] bg-[url('assets/images/blog-hero.png')] bg-cover bg-center"></div>
+          <div class="flex-1 min-h-[300px] bg-[url('assets/images/blog-hero.webp')] bg-cover bg-center"></div>
           <div class="flex-1 p-10 md:p-16 flex flex-col justify-center">
             <span class="self-start bg-warm text-white px-3 py-1 rounded-full text-xs uppercase tracking-widest mb-6">Engagement Social</span>
             <h3 class="font-heading text-2xl md:text-3xl text-dark mb-4">Engagés pour l'éducation</h3>

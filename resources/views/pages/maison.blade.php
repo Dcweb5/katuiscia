@@ -11,7 +11,7 @@
 
     <!-- ===== HERO ===== -->
     <section class="about-hero">
-      <img src="{{ asset('assets/images/about-hero.png') }}" alt="" class="about-hero__bg" aria-hidden="true">
+      <img src="{{ asset('assets/images/about-hero.webp') }}" alt="" class="about-hero__bg" aria-hidden="true">
       <div class="about-hero__content reveal-k">
         <span class="about-hero__brand">KATUISCIA</span>
         <h1 class="about-hero__title">Histoire & Origine</h1>
@@ -23,7 +23,7 @@
     <section class="founder section" id="story">
       <div class="founder__inner">
         <div class="founder__image reveal-k">
-          <img src="{{ asset('assets/images/about-story.png') }}" alt="Dolly Batchawa, fondatrice de KATUISCIA">
+          <img src="{{ asset('assets/images/about-story.webp') }}" alt="Dolly Batchawa, fondatrice de KATUISCIA">
           <div class="founder__image-tag">
             <span class="founder__image-tag-name">Dolly Batchawa</span>
             <span class="founder__image-tag-title">Fondatrice & PDG</span>

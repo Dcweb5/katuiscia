@@ -11,7 +11,7 @@
     
     <!-- Hero Section -->
     <section class="relative h-[70vh] flex items-center justify-center overflow-hidden bg-dark text-white text-center">
-      <div class="absolute inset-0 w-full h-full bg-[url('assets/images/emballage-hero.png')] bg-cover bg-center bg-fixed opacity-60 z-0"></div>
+      <div class="absolute inset-0 w-full h-full bg-[url('assets/images/emballage-hero.webp')] bg-cover bg-center bg-fixed opacity-60 z-0"></div>
       <div class="relative z-10 max-w-4xl px-8 reveal-k-k">
         <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl mb-6 font-light tracking-tight">Emballage Durable</h1>
         <p class="text-lg md:text-xl font-light opacity-90 leading-relaxed max-w-2xl mx-auto">Plongez dans l'univers de l'éco-conception chez KATUISCIA, où l'innovation rencontre la durabilité pour transmettre un monde plus beau.</p>
@@ -51,7 +51,7 @@
       <div class="max-w-site mx-auto px-4 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div class="reveal-k-k">
-            <img src="{{ asset('assets/images/biodiv-hero.png') }}" alt="Produit KATUISCIA dans un pot en verre" class="w-full h-[400px] md:h-[500px] object-cover rounded-2xl shadow-xl">
+            <img src="{{ asset('assets/images/biodiv-hero.webp') }}" alt="Produit KATUISCIA dans un pot en verre" class="w-full h-[400px] md:h-[500px] object-cover rounded-2xl shadow-xl">
           </div>
           <div class="reveal-k-k delay-1 space-y-6">
             <h2 class="font-heading text-3xl md:text-4xl text-warm">Éco-conception sans compromis</h2>

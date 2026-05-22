@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\BlogPost;
+use App\Services\ImageOptimizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -31,7 +32,7 @@ class BlogController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('blog', 'public');
+            $validated['image'] = ImageOptimizer::store($request->file('image'), 'blog', 800);
         }
 
         $validated['slug'] = $this->uniqueSlug($validated['title']);
@@ -54,7 +55,7 @@ class BlogController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('blog', 'public');
+            $validated['image'] = ImageOptimizer::store($request->file('image'), 'blog', 800);
         }
 
         if ($validated['title'] !== $post->title) {
@@ -75,7 +76,7 @@ class BlogController extends Controller
     public function uploadImage(Request $request)
     {
         $request->validate(['file' => 'required|image|mimes:jpeg,png,jpg,gif,webp,svg|max:8192']);
-        $path = $request->file('file')->store('blog/content', 'public');
+        $path = ImageOptimizer::store($request->file('file'), 'blog/content', 1200);
         return response()->json(['location' => asset('storage/' . $path)]);
     }
 
