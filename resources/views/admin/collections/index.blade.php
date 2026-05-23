@@ -104,12 +104,13 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
         <div class="admin-form-group">
           <label class="admin-label">Réduction (%)</label>
-          <input type="number" name="discount_percent" id="input-discount" class="admin-input" step="1" min="0" max="100" value="0">
-          <small style="color:var(--color-text-muted);">Le prix est calculé automatiquement depuis les produits sélectionnés.</small>
+          <input type="number" name="discount_percent" id="input-discount" class="admin-input" step="1" min="0" max="100" value="0" onchange="updatePricePreview()">
         </div>
         <div class="admin-form-group">
-          <label class="admin-label">Prix barré (optionnel)</label>
-          <input type="number" name="original_price" id="input-original-price" class="admin-input" step="0.01" min="0" style="display:none;">
+          <label class="admin-label">&nbsp;</label>
+          <div id="price-preview" style="background:#faf7f2;padding:10px 14px;border-radius:8px;font-size:14px;text-align:center;min-height:42px;display:flex;flex-direction:column;justify-content:center;">
+            <span style="color:var(--color-text-muted);">Sélectionnez des produits</span>
+          </div>
         </div>
       </div>
 
@@ -159,6 +160,31 @@
 <script>
 var collectionsData = @json($collections->load('products'));
 
+var productsPrices = {};
+@foreach($products as $p)
+productsPrices[{{ $p->id }}] = {{ $p->price }};
+@endforeach
+
+function updatePricePreview() {
+  var checked = document.querySelectorAll('.product-check:checked');
+  var sum = 0;
+  checked.forEach(function(c){ sum += (productsPrices[c.value] || 0); });
+  var discount = parseInt(document.getElementById('input-discount').value) || 0;
+  var final = sum - (sum * discount / 100);
+  document.getElementById('price-preview').innerHTML = 
+    '<div style="font-size:18px;font-weight:700;color:#2d2117;">' + formatPrice(final) + ' €</div>' +
+    (sum > 0 ? '<div style="font-size:11px;color:var(--color-text-muted);margin-top:2px;">' +
+      (discount > 0 ? '<span style="text-decoration:line-through;color:#a39688;">' + formatPrice(sum) + ' €</span> → ' : 'Somme : ') +
+      '<strong>' + formatPrice(sum) + ' €</strong>' +
+      (discount > 0 ? ' · -' + discount + '%' : '') +
+    '</div>' : '');
+  document.querySelectorAll('.product-check').forEach(function(cb){ cb.onchange = updatePricePreview; });
+}
+
+function formatPrice(p) { return new Intl.NumberFormat('fr-FR').format(Math.round(p * 100) / 100); }
+
+updatePricePreview();
+
 function openCreateModal() {
   document.getElementById('modal-title').textContent = 'Nouvelle Collection';
   document.getElementById('collection-form').action = '{{ route('admin.collections.store') }}';
@@ -184,6 +210,7 @@ function openEditModal(id) {
   document.getElementById('input-name').value = c.name;
   document.getElementById('input-category').value = c.category_id || '';
   document.getElementById('input-discount').value = c.discount_percent || 0;
+  updatePricePreview();
   document.getElementById('input-original-price').value = c.original_price || '';
   document.getElementById('input-desc').value = c.description || '';
   document.getElementById('input-image').value = '';

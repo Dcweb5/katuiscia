@@ -210,6 +210,15 @@ class CheckoutController extends Controller
         if (auth()->check()) {
             auth()->user()->increment('loyalty_points', (int) $order->total);
         }
+
+        // Vider le panier après confirmation
+        $cart = \App\Models\Cart::where('user_id', $order->user_id)->first()
+            ?? \App\Models\Cart::where('session_id', session()->getId())->first();
+        if ($cart) {
+            $cart->items()->delete();
+            $cart->delete();
+        }
+        session()->forget('coupon');
     }
 }
 

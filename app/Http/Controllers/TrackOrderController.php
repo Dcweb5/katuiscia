@@ -18,7 +18,7 @@ class TrackOrderController extends Controller
             'email' => 'required|email|max:255',
         ]);
 
-        $order = Order::with('items')
+        $order = Order::with(['items', 'invoice'])
             ->where('order_number', $request->order_number)
             ->where('email', $request->email)
             ->first();

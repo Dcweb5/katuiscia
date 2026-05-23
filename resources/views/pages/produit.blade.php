@@ -83,8 +83,7 @@
       </div>
       <button type="button" class="btn-katuiscia-filled w-full !justify-center cart-add-btn" data-product-id="{{ $product->id }}" id="add-to-cart-btn">AJOUTER AU PANIER</button>
       <button type="button" class="btn-katuiscia-warm w-full !justify-center" onclick="buyNow({{ $product->id }})" style="margin-top:var(--space-sm);">⚡ ACHETER MAINTENANT</button>
-      <a href="{{ url('paiement') }}" class="btn-katuiscia-warm w-full !justify-center">ACHETER MAINTENANT</a>
-    </div>
+</div>
 
     <div class="flex gap-6 text-sm text-text-light mb-8">
       <span class="flex items-center gap-2"><svg class="w-4 h-4 text-warm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> Livraison Gratuite</span>
