@@ -10,17 +10,14 @@ class Collection extends Model
     protected $table = 'collections';
 
     protected $fillable = [
-        'name', 'slug', 'description', 'price', 'original_price',
+        'name', 'slug', 'description', 'price', 'original_price', 'discount_percent',
         'image', 'category_id', 'is_active', 'order',
     ];
-
-    protected function casts(): array
-    {
+    protected function casts(): array {
         return [
-            'price' => 'float',
-            'original_price' => 'float',
-            'is_active' => 'boolean',
-            'order' => 'integer',
+            'price' => 'float', 'original_price' => 'float',
+            'discount_percent' => 'integer',
+            'is_active' => 'boolean', 'order' => 'integer',
         ];
     }
 

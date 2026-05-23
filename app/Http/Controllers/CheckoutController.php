@@ -61,6 +61,16 @@ class CheckoutController extends Controller
 
         $total = max(0, $cart->total - $discount);
 
+        // Si le panier contient des items de collection, appliquer la réduction
+        $collectionItem = $cart->items->where('collection_id', '!=', null)->first();
+        if ($collectionItem && !$couponCode) {
+            $collection = \App\Models\Collection::find($collectionItem->collection_id);
+            if ($collection) {
+                $discount = $cart->total - $collection->price;
+                $total = $collection->price;
+            }
+        }
+
         if ($validated['payment_method'] === 'cod') {
             // Paiement à la livraison : flow classique
             $order = $this->createOrder($validated, $cart, $discount, $couponCode, $total);
@@ -72,6 +82,14 @@ class CheckoutController extends Controller
         // Paiement par carte : Stripe Checkout
         $order = $this->createOrder($validated, $cart, $discount, $couponCode, $total);
         $order->update(['payment_status' => 'pending_payment']);
+
+        // Lier au compte utilisateur si l'email correspond
+        if (!auth()->check()) {
+            $user = \App\Models\User::where('email', $validated['email'])->first();
+            if ($user) {
+                $order->update(['user_id' => $user->id]);
+            }
+        }
 
         $stripe = new StripeClient(config('services.stripe.secret'));
 

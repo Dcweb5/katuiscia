@@ -72,6 +72,13 @@
         </div>
         @endif
 
+        @if($order->invoice)
+        <div style="background:var(--color-bg);padding:1rem;border-radius:8px;margin-bottom:1.5rem;">
+          <strong style="font-size:var(--text-sm);">📄 Facture :</strong>
+          <a href="{{ route('invoice.public', $order->invoice->public_token) }}" style="color:var(--color-warm);margin-left:0.5rem;font-size:var(--text-sm);">Télécharger la facture (PDF)</a>
+        </div>
+        @endif
+
         <div style="margin-bottom:1.5rem;">
           <strong style="display:block;margin-bottom:0.75rem;font-size:var(--text-sm);">Articles commandés</strong>
           <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">

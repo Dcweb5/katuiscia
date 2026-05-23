@@ -82,6 +82,7 @@
         </div>
       </div>
       <button type="button" class="btn-katuiscia-filled w-full !justify-center cart-add-btn" data-product-id="{{ $product->id }}" id="add-to-cart-btn">AJOUTER AU PANIER</button>
+      <button type="button" class="btn-katuiscia-warm w-full !justify-center" onclick="buyNow({{ $product->id }})" style="margin-top:var(--space-sm);">⚡ ACHETER MAINTENANT</button>
       <a href="{{ url('paiement') }}" class="btn-katuiscia-warm w-full !justify-center">ACHETER MAINTENANT</a>
     </div>
 
@@ -190,6 +191,16 @@
 @section('scripts')
 <script type="module" src="{{ asset('js/main.js') }}"></script>
 <script>
+function buyNow(productId) {
+  var csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+  fetch('{{ url('panier/ajouter') }}', {
+    method: 'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded','X-CSRF-TOKEN':csrf},
+    body: 'product_id='+productId+'&quantity=1'
+  }).then(function(r){
+    if (r.ok) window.location = '{{ url('paiement') }}';
+  }).catch(function(){});
+}
 document.addEventListener('DOMContentLoaded', function() {
   var mainImg = document.getElementById('main-product-image');
   document.querySelectorAll('.gallery-thumb').forEach(function(thumb) {

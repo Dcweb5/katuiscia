@@ -102,12 +102,13 @@
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
         <div class="admin-form-group">
-          <label class="admin-label">Prix du pack *</label>
-          <input type="number" name="price" id="input-price" class="admin-input" step="0.01" min="0" required>
+          <label class="admin-label">Réduction (%)</label>
+          <input type="number" name="discount_percent" id="input-discount" class="admin-input" step="1" min="0" max="100" value="0">
+          <small style="color:var(--color-text-muted);">Le prix est calculé automatiquement depuis les produits sélectionnés.</small>
         </div>
         <div class="admin-form-group">
           <label class="admin-label">Prix barré (optionnel)</label>
-          <input type="number" name="original_price" id="input-original-price" class="admin-input" step="0.01" min="0">
+          <input type="number" name="original_price" id="input-original-price" class="admin-input" step="0.01" min="0" style="display:none;">
         </div>
       </div>
 
@@ -164,7 +165,7 @@ function openCreateModal() {
   document.getElementById('form-method').value = 'POST';
   document.getElementById('input-name').value = '';
   document.getElementById('input-category').value = '';
-  document.getElementById('input-price').value = '';
+  document.getElementById('input-discount').value = 0;
   document.getElementById('input-original-price').value = '';
   document.getElementById('input-desc').value = '';
   document.getElementById('input-image').value = '';
@@ -182,7 +183,7 @@ function openEditModal(id) {
   document.getElementById('form-method').value = 'PUT';
   document.getElementById('input-name').value = c.name;
   document.getElementById('input-category').value = c.category_id || '';
-  document.getElementById('input-price').value = c.price;
+  document.getElementById('input-discount').value = c.discount_percent || 0;
   document.getElementById('input-original-price').value = c.original_price || '';
   document.getElementById('input-desc').value = c.description || '';
   document.getElementById('input-image').value = '';

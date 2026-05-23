@@ -116,9 +116,12 @@
     </div>
 
     
-    <div style="text-align:center;margin-bottom:2rem;">
+    <div style="text-align:center;margin-bottom:2rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
       <button class="collection-cta" onclick="addCollectionToCart(<?php echo e($collection->id); ?>)">
         🛒 Ajouter le pack au panier
+      </button>
+      <button class="collection-cta" style="background:var(--color-warm);" onclick="buyNowCollection(<?php echo e($collection->id); ?>)">
+        ⚡ Acheter maintenant
       </button>
     </div>
 
@@ -137,21 +140,28 @@
 <script type="module" src="<?php echo e(asset('js/main.js')); ?>"></script>
 <script>
 function addCollectionToCart(collectionId) {
-  var products = <?php echo json_encode($collection->products->pluck('id'), 15, 512) ?>;
-  var promises = products.map(function(pid) {
-    return fetch('<?php echo e(url('panier/ajouter')); ?>', {
-      method: 'POST',
-      headers: {'Content-Type':'application/x-www-form-urlencoded','X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]')?.content||''},
-      body: 'product_id='+pid+'&quantity=1'
-    });
-  });
-  Promise.all(promises).then(function() {
+  var csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+  fetch('<?php echo e(url('panier/ajouter')); ?>', {
+    method: 'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded','X-CSRF-TOKEN':csrf},
+    body: 'collection_id='+collectionId+'&quantity=1'
+  }).then(function(){
     fetch('<?php echo e(url('panier/count')); ?>').then(r=>r.json()).then(d=>{
       var badge = document.getElementById('cart-badge');
       if (badge) badge.textContent = d.count;
     });
-    alert('Pack ajouté au panier !');
-  }).catch(function() { alert('Erreur lors de l\'ajout au panier.'); });
+  }).catch(function(){});
+}
+
+function buyNowCollection(collectionId) {
+  var csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+  fetch('<?php echo e(url('panier/ajouter')); ?>', {
+    method: 'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded','X-CSRF-TOKEN':csrf},
+    body: 'collection_id='+collectionId+'&quantity=1'
+  }).then(function(r){
+    if (r.ok) window.location = '<?php echo e(url('paiement')); ?>';
+  }).catch(function(){});
 }
 </script>
 <?php $__env->stopSection(); ?>

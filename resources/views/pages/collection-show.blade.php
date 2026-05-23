@@ -117,9 +117,12 @@
     </div>
 
     {{-- CTA --}}
-    <div style="text-align:center;margin-bottom:2rem;">
+    <div style="text-align:center;margin-bottom:2rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
       <button class="collection-cta" onclick="addCollectionToCart({{ $collection->id }})">
         🛒 Ajouter le pack au panier
+      </button>
+      <button class="collection-cta" style="background:var(--color-warm);" onclick="buyNowCollection({{ $collection->id }})">
+        ⚡ Acheter maintenant
       </button>
     </div>
 
@@ -138,21 +141,28 @@
 <script type="module" src="{{ asset('js/main.js') }}"></script>
 <script>
 function addCollectionToCart(collectionId) {
-  var products = @json($collection->products->pluck('id'));
-  var promises = products.map(function(pid) {
-    return fetch('{{ url('panier/ajouter') }}', {
-      method: 'POST',
-      headers: {'Content-Type':'application/x-www-form-urlencoded','X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]')?.content||''},
-      body: 'product_id='+pid+'&quantity=1'
-    });
-  });
-  Promise.all(promises).then(function() {
+  var csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+  fetch('{{ url('panier/ajouter') }}', {
+    method: 'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded','X-CSRF-TOKEN':csrf},
+    body: 'collection_id='+collectionId+'&quantity=1'
+  }).then(function(){
     fetch('{{ url('panier/count') }}').then(r=>r.json()).then(d=>{
       var badge = document.getElementById('cart-badge');
       if (badge) badge.textContent = d.count;
     });
-    alert('Pack ajouté au panier !');
-  }).catch(function() { alert('Erreur lors de l\'ajout au panier.'); });
+  }).catch(function(){});
+}
+
+function buyNowCollection(collectionId) {
+  var csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+  fetch('{{ url('panier/ajouter') }}', {
+    method: 'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded','X-CSRF-TOKEN':csrf},
+    body: 'collection_id='+collectionId+'&quantity=1'
+  }).then(function(r){
+    if (r.ok) window.location = '{{ url('paiement') }}';
+  }).catch(function(){});
 }
 </script>
 @endsection

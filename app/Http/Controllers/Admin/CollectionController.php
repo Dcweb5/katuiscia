@@ -25,8 +25,7 @@ class CollectionController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:2000',
-            'price' => 'required|numeric|min:0',
-            'original_price' => 'nullable|numeric|min:0',
+            'discount_percent' => 'nullable|integer|min:0|max:100',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             'category_id' => 'nullable|exists:categories,id',
             'is_active' => 'boolean',
@@ -39,15 +38,22 @@ class CollectionController extends Controller
         }
 
         $validated['is_active'] = $request->boolean('is_active');
+        $validated['discount_percent'] = (int) ($request->discount_percent ?? 0);
+
+        // Auto-calculate price from selected products
+        $productIds = $request->product_ids ?? [];
+        $sum = \App\Modules\Product\Models\Product::whereIn('id', $productIds)->sum('price');
+        $discount = $sum * ($validated['discount_percent'] / 100);
+        $validated['original_price'] = $sum;
+        $validated['price'] = max(0, $sum - $discount);
 
         $collection = Collection::create($validated);
 
-        if ($request->has('product_ids')) {
+        if (!empty($productIds)) {
             $pivot = [];
-            foreach ($request->product_ids as $pid) {
-                $pivot[$pid] = ['quantity' => 1];
-            }
+            foreach ($productIds as $pid) { $pivot[$pid] = ['quantity' => 1]; }
             $collection->products()->sync($pivot);
+        }
         }
 
         return redirect()->route('admin.collections.index')->with('success', 'Collection créée.');
@@ -58,8 +64,7 @@ class CollectionController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:2000',
-            'price' => 'required|numeric|min:0',
-            'original_price' => 'nullable|numeric|min:0',
+            'discount_percent' => 'nullable|integer|min:0|max:100',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             'category_id' => 'nullable|exists:categories,id',
             'is_active' => 'boolean',
@@ -72,14 +77,18 @@ class CollectionController extends Controller
         }
 
         $validated['is_active'] = $request->boolean('is_active');
+        $validated['discount_percent'] = (int) ($request->discount_percent ?? 0);
+
+        $productIds = $request->product_ids ?? [];
+        $sum = \App\Modules\Product\Models\Product::whereIn('id', $productIds)->sum('price');
+        $discount = $sum * ($validated['discount_percent'] / 100);
+        $validated['original_price'] = $sum;
+        $validated['price'] = max(0, $sum - $discount);
+
         $collection->update($validated);
 
         $pivot = [];
-        if ($request->has('product_ids')) {
-            foreach ($request->product_ids as $pid) {
-                $pivot[$pid] = ['quantity' => 1];
-            }
-        }
+        foreach ($productIds as $pid) { $pivot[$pid] = ['quantity' => 1]; }
         $collection->products()->sync($pivot);
 
         return redirect()->route('admin.collections.index')->with('success', 'Collection mise à jour.');

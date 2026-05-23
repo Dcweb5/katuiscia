@@ -55,23 +55,53 @@ class CartController extends Controller
     public function add(Request $request)
     {
         $request->validate([
-            'product_id' => 'required|exists:products,id',
+            'product_id' => 'nullable|exists:products,id',
+            'collection_id' => 'nullable|exists:collections,id',
             'quantity' => 'nullable|integer|min:1|max:10',
         ]);
 
-        $product = Product::findOrFail($request->product_id);
         $cart = $this->getOrCreateCart();
         $quantity = $request->integer('quantity', 1);
 
-        $existing = $cart->items()->where('product_id', $product->id)->first();
-        if ($existing) {
-            $existing->increment('quantity', $quantity);
+        // Collection mode: add all products with pack pricing
+        if ($collectionId = $request->collection_id) {
+            $collection = \App\Models\Collection::with('products')->findOrFail($collectionId);
+            $products = $collection->products;
+            if ($products->isEmpty()) {
+                return $request->expectsJson()
+                    ? response()->json(['success' => false, 'message' => 'Collection vide.'])
+                    : back()->with('error', 'Collection vide.');
+            }
+            $pricePerProduct = $collection->price / $products->count();
+            foreach ($products as $product) {
+                $existing = $cart->items()->where('product_id', $product->id)->where('collection_id', $collectionId)->first();
+                if ($existing) {
+                    $existing->increment('quantity', $quantity);
+                } else {
+                    $cart->items()->create([
+                        'product_id' => $product->id,
+                        'collection_id' => $collectionId,
+                        'quantity' => $quantity,
+                        'price' => $pricePerProduct,
+                    ]);
+                }
+            }
+        } elseif ($productId = $request->product_id) {
+            $product = \App\Modules\Product\Models\Product::findOrFail($productId);
+            $existing = $cart->items()->where('product_id', $productId)->whereNull('collection_id')->first();
+            if ($existing) {
+                $existing->increment('quantity', $quantity);
+            } else {
+                $cart->items()->create([
+                    'product_id' => $productId,
+                    'quantity' => $quantity,
+                    'price' => $product->sale_price ?? $product->price,
+                ]);
+            }
         } else {
-            $cart->items()->create([
-                'product_id' => $product->id,
-                'quantity' => $quantity,
-                'price' => $product->sale_price ?? $product->price,
-            ]);
+            return $request->expectsJson()
+                ? response()->json(['success' => false, 'message' => 'Produit ou collection requis.'])
+                : back()->with('error', 'Produit ou collection requis.');
         }
 
         if ($request->expectsJson()) {
