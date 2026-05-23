@@ -33,9 +33,12 @@
   text-decoration:none;color:inherit;transition:all 0.2s;
 }
 .collection-product:hover { border-color:#c4967a;box-shadow:0 4px 16px rgba(0,0,0,0.04); }
+.collection-product { cursor:pointer; }
+.collection-product.expanded .collection-product__desc { max-height:200px !important; margin-top:0.5rem !important; }
 .collection-product__img { width:56px;height:56px;border-radius:8px;object-fit:cover;flex-shrink:0; }
 .collection-product__placeholder { width:56px;height:56px;border-radius:8px;background:var(--color-peach);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0; }
-.collection-product__name { font-weight:500;font-size:14px;margin-bottom:0.25rem; }
+.collection-product__name { font-weight:500;font-size:14px;margin-bottom:0.25rem;color:var(--color-dark);text-decoration:none;display:block; }
+.collection-product__name:hover { color:var(--color-warm);text-decoration:underline; }
 .collection-product__qty { font-size:12px;color:var(--color-text-muted); }
 .collection-pricing {
   background:#faf7f2;border-radius:16px;padding:2rem;text-align:center;
@@ -102,13 +105,18 @@
     </h2>
     <div class="collection-products">
       @foreach($collection->products as $product)
-      <a href="{{ url('produit/'.$product->slug) }}" class="collection-product">
+      <div class="collection-product" onclick="this.classList.toggle('expanded')">
+        @if($product->image_url)
         <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="collection-product__img" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+        @else
+        <div class="collection-product__placeholder">📦</div>
+        @endif
         <div>
-          <div class="collection-product__name">{{ $product->name }}</div>
+          <a href="{{ url('produit/'.$product->slug) }}" class="collection-product__name" onclick="event.stopPropagation()">{{ $product->name }}</a>
           <div class="collection-product__qty">Qté : {{ $product->pivot->quantity ?? 1 }}</div>
+          <div class="collection-product__desc" style="max-height:0;overflow:hidden;transition:max-height 0.3s;font-size:13px;color:var(--color-text-muted);line-height:1.5;margin-top:0.25rem;">{{ $product->description }}</div>
         </div>
-      </a>
+      </div>
       @endforeach
     </div>
 
@@ -140,7 +148,7 @@ function addCollectionToCart(collectionId) {
   var csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
   fetch('{{ url('panier/ajouter') }}', {
     method: 'POST',
-    headers: {'Content-Type':'application/x-www-form-urlencoded','X-CSRF-TOKEN':csrf},
+    headers: {'Content-Type':'application/x-www-form-urlencoded','X-CSRF-TOKEN':csrf,'Accept':'application/json'},
     body: 'collection_id='+collectionId+'&quantity=1'
   }).then(function(){
     fetch('{{ url('panier/count') }}').then(r=>r.json()).then(d=>{
@@ -154,7 +162,7 @@ function buyNowCollection(collectionId) {
   var csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
   fetch('{{ url('panier/ajouter') }}', {
     method: 'POST',
-    headers: {'Content-Type':'application/x-www-form-urlencoded','X-CSRF-TOKEN':csrf},
+    headers: {'Content-Type':'application/x-www-form-urlencoded','X-CSRF-TOKEN':csrf,'Accept':'application/json'},
     body: 'collection_id='+collectionId+'&quantity=1'
   }).then(function(r){
     if (r.ok) window.location = '{{ url('paiement') }}';
