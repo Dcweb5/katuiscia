@@ -11,7 +11,8 @@ class Order extends Model
         'firstname', 'lastname', 'address', 'address2',
         'postal_code', 'city', 'country', 'phone',
         'subtotal', 'discount', 'shipping', 'total',
-        'coupon_code', 'status', 'tracking_number', 'payment_method', 'notes',
+        'coupon_code', 'status', 'stripe_session_id', 'payment_status', 'paid_at', 'payment_gateway',
+        'tracking_number', 'payment_method', 'notes',
     ];
 
     protected function casts(): array
@@ -21,6 +22,7 @@ class Order extends Model
             'discount' => 'float',
             'shipping' => 'float',
             'total' => 'float',
+            'paid_at' => 'datetime',
         ];
     }
 
