@@ -20,6 +20,9 @@
         <div style="display:flex;gap:var(--space-sm);align-items:center;">
           @php $colors=['pending'=>'var(--color-warm)','confirmed'=>'#3b82f6','preparing'=>'#f59e0b','shipped'=>'#8b5cf6','delivered'=>'var(--color-success)','cancelled'=>'var(--color-error)']; @endphp
           <span style="font-size:11px;font-weight:600;color:white;background:{{ $colors[$order->status] ?? '#ccc' }};padding:4px 12px;border-radius:var(--radius-full);">{{ $steps[$order->status] ?? $order->status }}</span>
+          @if($order->invoice)
+          <a href="{{ route('invoice.download', $order->invoice) }}" class="action-btn" title="Télécharger la facture" style="width:auto;padding:4px 10px;text-decoration:none;font-size:11px;gap:4px;">📄 Facture</a>
+          @endif
           <strong style="font-family:var(--font-display);">{{ number_format($order->total, 0, ',', ' ') }} €</strong>
         </div>
       </div>

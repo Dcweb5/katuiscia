@@ -35,6 +35,7 @@ Route::get('/politique-remboursement', [PageController::class, 'politiqueRembour
 
 // ===== ACTIONS PUBLIQUES =====
 Route::post('/stripe/webhook', [App\Http\Controllers\StripeWebhookController::class, 'handle']);
+Route::get('/facture/{token}', [App\Http\Controllers\InvoiceController::class, 'downloadByToken'])->name('invoice.public');
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
 Route::post('/rendez-vous', [App\Http\Controllers\AppointmentController::class, 'store'])->name('appointment.store');
 Route::post('/api/chat', [App\Http\Controllers\ChatbotController::class, 'chat'])->name('chatbot.chat');
@@ -69,6 +70,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/produits/{product}/reviews', [App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
     Route::put('/compte/reviews/{review}', [App\Http\Controllers\ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/compte/reviews/{review}', [App\Http\Controllers\ReviewController::class, 'destroy'])->name('reviews.destroy');
+
+    // Facture
+    Route::get('/compte/facture/{invoice}', [App\Http\Controllers\InvoiceController::class, 'download'])->name('invoice.download');
 });
 
 // ===== ADMIN =====

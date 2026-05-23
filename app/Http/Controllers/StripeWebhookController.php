@@ -50,9 +50,46 @@ class StripeWebhookController extends Controller
                     $cart->items()->delete();
                     $cart->delete();
                 }
+
+                // Générer et envoyer la facture
+                try {
+                    $this->generateAndSendInvoice($order);
+                } catch (\Exception $e) {
+                    \Log::error('Invoice generation failed: ' . $e->getMessage());
+                }
             }
         }
 
         return response()->json(['status' => 'ok']);
+    }
+
+    private function generateAndSendInvoice(Order $order): void
+    {
+        $count = \App\Models\Invoice::count();
+        $invoiceNumber = 'FACT-' . now()->format('Y') . '-' . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
+
+        $invoice = \App\Models\Invoice::create([
+            'order_id' => $order->id,
+            'invoice_number' => $invoiceNumber,
+            'file_path' => 'invoices/' . $invoiceNumber . '.pdf',
+            'total' => $order->total,
+            'is_emailed' => false,
+        ]);
+
+        $order->load('items');
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('invoices.template', compact('order', 'invoice'));
+        $pdfPath = storage_path('app/invoices/' . $invoiceNumber . '.pdf');
+
+        if (!is_dir(dirname($pdfPath))) {
+            mkdir(dirname($pdfPath), 0755, true);
+        }
+
+        $pdf->save($pdfPath);
+
+        // Envoyer l'email avec la facture en pièce jointe
+        \Mail::to($order->email, $order->firstname . ' ' . $order->lastname)
+            ->send(new \App\Mail\InvoiceMail($order, $invoice, $pdfPath));
+
+        $invoice->update(['is_emailed' => true]);
     }
 }

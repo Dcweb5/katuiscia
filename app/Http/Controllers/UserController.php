@@ -18,7 +18,7 @@ class UserController extends Controller
     public function orders()
     {
         $user = auth()->user();
-        $orders = \App\Models\Order::with('items')->where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+        $orders = \App\Models\Order::with(['items', 'invoice'])->where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
         return view('account.orders', compact('user', 'orders'));
     }
 
