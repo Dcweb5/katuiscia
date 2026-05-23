@@ -192,7 +192,6 @@ function openCreateModal() {
   document.getElementById('input-name').value = '';
   document.getElementById('input-category').value = '';
   document.getElementById('input-discount').value = 0;
-  document.getElementById('input-original-price').value = '';
   document.getElementById('input-desc').value = '';
   document.getElementById('input-image').value = '';
   document.getElementById('input-active').checked = true;
@@ -211,7 +210,6 @@ function openEditModal(id) {
   document.getElementById('input-category').value = c.category_id || '';
   document.getElementById('input-discount').value = c.discount_percent || 0;
   updatePricePreview();
-  document.getElementById('input-original-price').value = c.original_price || '';
   document.getElementById('input-desc').value = c.description || '';
   document.getElementById('input-image').value = '';
   document.getElementById('input-active').checked = c.is_active;
