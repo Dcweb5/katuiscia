@@ -29,14 +29,14 @@
       <div class="bg-white p-5 rounded-2xl shadow-md inline-flex flex-col gap-1 max-w-[280px]">
         <span class="text-xs text-text-muted tracking-wide uppercase">Produit en vedette</span>
         <span class="font-heading text-xl font-medium text-dark transition-all duration-300" id="hero-tag-name">{{ $heroProducts->first()->name }}</span>
-        <span class="text-md font-semibold text-warm transition-all duration-300" id="hero-tag-price">{{ number_format($heroProducts->first()->sale_price ?? $heroProducts->first()->price, 0, ',', ' ') }} €</span>
+        <span class="text-md font-semibold text-warm transition-all duration-300" id="hero-tag-price">{{ number_format($heroProducts->first()->final_price, 0, ',', ' ') }} €</span>
       </div>
       @endif
     </div>
 
     <div class="relative flex justify-center items-center min-h-[500px] reveal-k-k delay-2" id="hero-slideshow">
       @foreach($heroProducts as $i => $product)
-      <a href="{{ url('produit/'.$product->slug) }}" class="hero-slide {{ $i === 0 ? 'active' : '' }}" data-name="{{ $product->name }}" data-price="{{ number_format($product->sale_price ?? $product->price, 0, ',', ' ') }} €">
+      <a href="{{ url('produit/'.$product->slug) }}" class="hero-slide {{ $i === 0 ? 'active' : '' }}" data-name="{{ $product->name }}" data-price="{{ number_format($product->final_price, 0, ',', ' ') }} €">
         <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
              class="max-w-[380px] w-full rounded-2xl shadow-xl transition-transform duration-500 ease-out-expo" loading="eager" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
       </a>
@@ -139,7 +139,7 @@
         <h3 class="font-heading text-xl font-medium">{{ $selectionLarge->name }}</h3>
         <p class="text-sm text-gray-200">{{ $selectionLarge->description }}</p>
       </div>
-      <span class="absolute top-4 right-4 bg-white text-dark text-sm font-semibold px-4 py-1.5 rounded-full">{{ number_format($selectionLarge->sale_price ?? $selectionLarge->price, 0, ',', ' ') }} €</span>
+      <span class="absolute top-4 right-4 bg-white text-dark text-sm font-semibold px-4 py-1.5 rounded-full">{{ number_format($selectionLarge->final_price, 0, ',', ' ') }} €</span>
       @endif
     </div>
 
@@ -167,7 +167,7 @@
       <div class="p-4 flex flex-col gap-1">
         <span class="text-xs text-text-muted tracking-wider uppercase">{{ $item->categories->first()?->name ?? 'Soin' }}</span>
         <h3 class="font-heading text-xl font-medium text-dark">{{ $item->name }}</h3>
-        <span class="text-md font-semibold text-dark mt-1">{{ number_format($item->sale_price ?? $item->price, 0, ',', ' ') }} €</span>
+        <span class="text-md font-semibold text-dark mt-1">{{ number_format($item->final_price, 0, ',', ' ') }} €</span>
       </div>
       @endif
     </div>
@@ -202,7 +202,7 @@
         <span class="card-category">{{ $product->categories->first()?->name ?? 'Soin de la peau' }}</span>
         <h3 class="card-name">{{ $product->name }}</h3>
         <p class="card-desc">{{ $product->description }}</p>
-        <span class="card-price">{{ number_format($product->sale_price ?? $product->price, 0, ',', ' ') }} €</span>
+        <span class="card-price">{{ number_format($product->final_price, 0, ',', ' ') }} €</span>
       </a></div>
     </div>
     @endforeach

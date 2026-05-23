@@ -119,7 +119,15 @@ class Product extends Model
 
     public function getDisplayPriceAttribute(): string
     {
-        return number_format($this->sale_price ?? $this->price, 0, ',', ' ') . ' €';
+        return number_format($this->final_price, 0, ',', ' ') . ' €';
+    }
+
+    public function getFinalPriceAttribute(): float
+    {
+        if ($this->sale_price && $this->sale_price < $this->price) {
+            return $this->sale_price;
+        }
+        return $this->price;
     }
 
     public function getHasDiscountAttribute(): bool

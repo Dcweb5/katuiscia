@@ -27,14 +27,14 @@
       <div class="bg-white p-5 rounded-2xl shadow-md inline-flex flex-col gap-1 max-w-[280px]">
         <span class="text-xs text-text-muted tracking-wide uppercase">Produit en vedette</span>
         <span class="font-heading text-xl font-medium text-dark transition-all duration-300" id="hero-tag-name"><?php echo e($heroProducts->first()->name); ?></span>
-        <span class="text-md font-semibold text-warm transition-all duration-300" id="hero-tag-price"><?php echo e(number_format($heroProducts->first()->sale_price ?? $heroProducts->first()->price, 0, ',', ' ')); ?> €</span>
+        <span class="text-md font-semibold text-warm transition-all duration-300" id="hero-tag-price"><?php echo e(number_format($heroProducts->first()->final_price, 0, ',', ' ')); ?> €</span>
       </div>
       <?php endif; ?>
     </div>
 
     <div class="relative flex justify-center items-center min-h-[500px] reveal-k-k delay-2" id="hero-slideshow">
       <?php $__currentLoopData = $heroProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-      <a href="<?php echo e(url('produit/'.$product->slug)); ?>" class="hero-slide <?php echo e($i === 0 ? 'active' : ''); ?>" data-name="<?php echo e($product->name); ?>" data-price="<?php echo e(number_format($product->sale_price ?? $product->price, 0, ',', ' ')); ?> €">
+      <a href="<?php echo e(url('produit/'.$product->slug)); ?>" class="hero-slide <?php echo e($i === 0 ? 'active' : ''); ?>" data-name="<?php echo e($product->name); ?>" data-price="<?php echo e(number_format($product->final_price, 0, ',', ' ')); ?> €">
         <img src="<?php echo e($product->image_url); ?>" alt="<?php echo e($product->name); ?>"
              class="max-w-[380px] w-full rounded-2xl shadow-xl transition-transform duration-500 ease-out-expo" loading="eager" onerror="this.src='<?php echo e(asset('assets/images/K ICONE.webp')); ?>'">
       </a>
@@ -137,7 +137,7 @@
         <h3 class="font-heading text-xl font-medium"><?php echo e($selectionLarge->name); ?></h3>
         <p class="text-sm text-gray-200"><?php echo e($selectionLarge->description); ?></p>
       </div>
-      <span class="absolute top-4 right-4 bg-white text-dark text-sm font-semibold px-4 py-1.5 rounded-full"><?php echo e(number_format($selectionLarge->sale_price ?? $selectionLarge->price, 0, ',', ' ')); ?> €</span>
+      <span class="absolute top-4 right-4 bg-white text-dark text-sm font-semibold px-4 py-1.5 rounded-full"><?php echo e(number_format($selectionLarge->final_price, 0, ',', ' ')); ?> €</span>
       <?php endif; ?>
     </div>
 
@@ -165,7 +165,7 @@
       <div class="p-4 flex flex-col gap-1">
         <span class="text-xs text-text-muted tracking-wider uppercase"><?php echo e($item->categories->first()?->name ?? 'Soin'); ?></span>
         <h3 class="font-heading text-xl font-medium text-dark"><?php echo e($item->name); ?></h3>
-        <span class="text-md font-semibold text-dark mt-1"><?php echo e(number_format($item->sale_price ?? $item->price, 0, ',', ' ')); ?> €</span>
+        <span class="text-md font-semibold text-dark mt-1"><?php echo e(number_format($item->final_price, 0, ',', ' ')); ?> €</span>
       </div>
       <?php endif; ?>
     </div>
@@ -200,7 +200,7 @@
         <span class="card-category"><?php echo e($product->categories->first()?->name ?? 'Soin de la peau'); ?></span>
         <h3 class="card-name"><?php echo e($product->name); ?></h3>
         <p class="card-desc"><?php echo e($product->description); ?></p>
-        <span class="card-price"><?php echo e(number_format($product->sale_price ?? $product->price, 0, ',', ' ')); ?> €</span>
+        <span class="card-price"><?php echo e(number_format($product->final_price, 0, ',', ' ')); ?> €</span>
       </a></div>
     </div>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
