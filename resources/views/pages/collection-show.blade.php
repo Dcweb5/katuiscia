@@ -103,11 +103,7 @@
     <div class="collection-products">
       @foreach($collection->products as $product)
       <a href="{{ url('produit/'.$product->slug) }}" class="collection-product">
-        @if($product->image_primary)
-        <img src="{{ Storage::url($product->image_primary) }}" alt="{{ $product->name }}" class="collection-product__img">
-        @else
-        <div class="collection-product__placeholder">📦</div>
-        @endif
+        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="collection-product__img" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
         <div>
           <div class="collection-product__name">{{ $product->name }}</div>
           <div class="collection-product__qty">Qté : {{ $product->pivot->quantity ?? 1 }}</div>

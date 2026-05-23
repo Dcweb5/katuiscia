@@ -54,7 +54,6 @@ class CollectionController extends Controller
             foreach ($productIds as $pid) { $pivot[$pid] = ['quantity' => 1]; }
             $collection->products()->sync($pivot);
         }
-        }
 
         return redirect()->route('admin.collections.index')->with('success', 'Collection créée.');
     }

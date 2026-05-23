@@ -102,11 +102,7 @@
     <div class="collection-products">
       <?php $__currentLoopData = $collection->products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
       <a href="<?php echo e(url('produit/'.$product->slug)); ?>" class="collection-product">
-        <?php if($product->image_primary): ?>
-        <img src="<?php echo e(Storage::url($product->image_primary)); ?>" alt="<?php echo e($product->name); ?>" class="collection-product__img">
-        <?php else: ?>
-        <div class="collection-product__placeholder">📦</div>
-        <?php endif; ?>
+        <img src="<?php echo e($product->image_url); ?>" alt="<?php echo e($product->name); ?>" class="collection-product__img" onerror="this.src='<?php echo e(asset('assets/images/K ICONE.webp')); ?>'">
         <div>
           <div class="collection-product__name"><?php echo e($product->name); ?></div>
           <div class="collection-product__qty">Qté : <?php echo e($product->pivot->quantity ?? 1); ?></div>
