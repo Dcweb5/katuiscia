@@ -74,8 +74,10 @@ class CheckoutController extends Controller
         if ($validated['payment_method'] === 'cod') {
             // Paiement à la livraison : flow classique
             $order = $this->createOrder($validated, $cart, $discount, $couponCode, $total);
+            $order->update(['payment_status' => 'paid', 'paid_at' => now()]);
             $this->clearCart($cart);
             if (auth()->check()) auth()->user()->increment('loyalty_points', (int) $total);
+            try { $this->generateInvoice($order); } catch (\Exception $e) { \Log::error('COD invoice failed: ' . $e->getMessage()); }
             return redirect('/checkout/success/' . $order->order_number);
         }
 
@@ -176,7 +178,7 @@ class CheckoutController extends Controller
 
     public function success(string $orderNumber)
     {
-        $order = Order::with('items')->where('order_number', $orderNumber)->firstOrFail();
+        $order = Order::with(['items', 'invoice'])->where('order_number', $orderNumber)->firstOrFail();
 
         if (auth()->check() && $order->user_id && $order->user_id !== auth()->id()) {
             abort(403);
@@ -211,6 +213,9 @@ class CheckoutController extends Controller
             auth()->user()->increment('loyalty_points', (int) $order->total);
         }
 
+        // Générer la facture
+        try { $this->generateInvoice($order); } catch (\Exception $e) { \Log::error('Invoice failed: ' . $e->getMessage()); }
+
         // Vider le panier après confirmation
         $cart = \App\Models\Cart::where('user_id', $order->user_id)->first()
             ?? \App\Models\Cart::where('session_id', session()->getId())->first();
@@ -219,6 +224,37 @@ class CheckoutController extends Controller
             $cart->delete();
         }
         session()->forget('coupon');
+    }
+
+    private function generateInvoice(Order $order): void
+    {
+        // Ne pas générer de doublon
+        if ($order->invoice) return;
+
+        $count = \App\Models\Invoice::count();
+        $invoiceNumber = 'FACT-' . now()->format('Y') . '-' . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
+
+        $invoice = \App\Models\Invoice::create([
+            'order_id' => $order->id,
+            'invoice_number' => $invoiceNumber,
+            'file_path' => 'invoices/' . $invoiceNumber . '.pdf',
+            'total' => $order->total,
+            'is_emailed' => false,
+        ]);
+
+        $order->load('items');
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('invoices.template', compact('order', 'invoice'));
+        $pdfPath = storage_path('app/invoices/' . $invoiceNumber . '.pdf');
+
+        if (!is_dir(dirname($pdfPath))) {
+            mkdir(dirname($pdfPath), 0755, true);
+        }
+        $pdf->save($pdfPath);
+
+        \Mail::to($order->email, $order->firstname . ' ' . $order->lastname)
+            ->send(new \App\Mail\InvoiceMail($order, $invoice, $pdfPath));
+
+        $invoice->update(['is_emailed' => true]);
     }
 }
 

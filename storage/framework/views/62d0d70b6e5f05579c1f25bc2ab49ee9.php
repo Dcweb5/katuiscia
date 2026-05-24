@@ -27,6 +27,9 @@
     <div style="display:flex;gap:var(--space-md);justify-content:center;flex-wrap:wrap;margin-bottom:var(--space-2xl);">
       <?php if(auth()->guard()->check()): ?><a href="<?php echo e(url('compte/commandes')); ?>" class="btn-katuiscia">Suivre ma commande</a><?php endif; ?>
       <a href="<?php echo e(route('track')); ?>?order_number=<?php echo e($order->order_number); ?>&email=<?php echo e(urlencode($order->email)); ?>" class="btn-katuiscia">📦 Suivi de commande</a>
+      <?php if($order->invoice): ?>
+      <a href="<?php echo e(route('invoice.public', $order->invoice->public_token)); ?>" class="btn-katuiscia">📄 Télécharger la facture</a>
+      <?php endif; ?>
       <a href="<?php echo e(url('boutique')); ?>" class="btn-katuiscia-filled">Continuer mes achats</a>
     </div>
 

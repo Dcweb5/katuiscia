@@ -59,6 +59,7 @@ class AppointmentController extends Controller
                 function ($mail) use ($appointment) {
                     $mail->to($appointment->email, $appointment->name)
                          ->from('contact@katuiscia.com', 'KATUISCIA')
+                         ->replyTo('contact@katuiscia.com', 'KATUISCIA')
                          ->subject('Confirmation de votre rendez-vous KATUISCIA');
                 }
             );

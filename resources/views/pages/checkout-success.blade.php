@@ -28,6 +28,9 @@
     <div style="display:flex;gap:var(--space-md);justify-content:center;flex-wrap:wrap;margin-bottom:var(--space-2xl);">
       @auth<a href="{{ url('compte/commandes') }}" class="btn-katuiscia">Suivre ma commande</a>@endauth
       <a href="{{ route('track') }}?order_number={{ $order->order_number }}&email={{ urlencode($order->email) }}" class="btn-katuiscia">📦 Suivi de commande</a>
+      @if($order->invoice)
+      <a href="{{ route('invoice.public', $order->invoice->public_token) }}" class="btn-katuiscia">📄 Télécharger la facture</a>
+      @endif
       <a href="{{ url('boutique') }}" class="btn-katuiscia-filled">Continuer mes achats</a>
     </div>
 
