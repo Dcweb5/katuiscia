@@ -18,15 +18,18 @@
     <div class="card stat-card"><span class="stat-title">Livrées</span><span class="stat-value" style="color:var(--color-success);">{{ $stats['delivered'] }}</span></div>
   </div>
 
-  <!-- Filtres -->
-  <form method="GET" style="display:flex;gap:var(--space-md);margin-bottom:var(--space-lg);flex-wrap:wrap;">
-    <div class="header-search" style="flex:1;min-width:200px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" name="search" placeholder="Rechercher (nº, nom, email)..." value="{{ request('search') }}" style="border:none;background:transparent;padding:8px 12px;font-size:var(--text-sm);outline:none;width:100%;"></div>
-    <select name="status" class="admin-input" style="width:auto;padding:8px 16px;" onchange="this.form.submit()">
+  {{-- Filters bar --}}
+  <div style="display:flex;gap:0.75rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center;">
+    <form method="GET" style="flex:1;min-width:200px;max-width:350px;display:flex;gap:0.5rem;">
+      <input type="text" name="search" value="{{ request('search') }}" placeholder="Rechercher (nº, nom, email)..." class="admin-input" style="padding:8px 14px;">
+      <button type="submit" class="action-btn" style="width:auto;padding:0 14px;height:40px;">🔍</button>
+      @if(request()->anyFilled(['search','status']))<a href="?" class="action-btn" style="width:auto;padding:0 12px;text-decoration:none;height:40px;display:flex;align-items:center;">✕</a>@endif
+    </form>
+    <select name="status" class="admin-input" style="width:auto;min-width:150px;padding:8px 14px;" onchange="this.form.submit()">
       <option value="">Tous statuts</option>
       @foreach($statuses as $key => $label)<option value="{{ $key }}" @selected(request('status')==$key)>{{ $label }}</option>@endforeach
     </select>
-    @if(request()->anyFilled(['search','status']))<a href="{{ url('admin/commandes') }}" class="text-xs text-text-muted hover:text-dark">Réinitialiser</a>@endif
-  </form>
+  </div>
 
   <div class="card" style="padding:0;overflow:hidden;">
     <table class="admin-table">
