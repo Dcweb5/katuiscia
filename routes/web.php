@@ -64,7 +64,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/compte/commandes', [App\Http\Controllers\UserController::class, 'orders'])->name('account.orders');
     Route::get('/compte/recompenses', [App\Http\Controllers\UserController::class, 'rewards'])->name('account.rewards');
     Route::get('/compte/avis', [App\Http\Controllers\UserController::class, 'reviews'])->name('account.reviews');
-    Route::get('/compte/retours', [App\Http\Controllers\UserController::class, 'returns'])->name('account.returns');
+    // Retours
+    Route::get('/compte/retours', [App\Http\Controllers\ReturnController::class, 'index'])->name('account.returns');
+    Route::post('/compte/retours', [App\Http\Controllers\ReturnController::class, 'store'])->name('returns.store');
+    Route::put('/compte/retours/{returnRequest}/cancel', [App\Http\Controllers\ReturnController::class, 'cancel'])->name('returns.cancel');
 
     // Avis
     Route::post('/produits/{product}/reviews', [App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
@@ -149,5 +152,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('/collections/{collection}/toggle', [App\Http\Controllers\Admin\CollectionController::class, 'toggle'])->name('collections.toggle');
     Route::get('/sections', [App\Http\Controllers\Admin\SectionController::class, 'index'])->name('sections.index');
     Route::post('/sections', [App\Http\Controllers\Admin\SectionController::class, 'store'])->name('sections.store');
-    Route::get('/recompenses', fn() => view('admin.rewards.index'))->name('rewards');
+    // Retours
+    Route::get('/retours', [App\Http\Controllers\Admin\ReturnController::class, 'index'])->name('returns.index');
+    Route::put('/retours/{return}', [App\Http\Controllers\Admin\ReturnController::class, 'update'])->name('returns.update');
 });

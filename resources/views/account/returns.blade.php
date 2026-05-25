@@ -1,152 +1,116 @@
 @extends('layouts.account')
-
 @section('title', 'Retours & Échanges')
-
 @section('content')
-<main class="dashboard-main">
-    <header class="dashboard-header">
-      <div style="display:flex; align-items:center; gap:16px;">
-        <button class="mobile-toggle" id="mobileToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-        <span style="font-family:var(--font-heading); font-size:var(--text-lg); color:var(--color-dark);">Retours & Échanges</span>
-      </div>
-      <div class="header-actions">
-        <button class="btn-primary" onclick="document.getElementById('modal-retour').showModal()">+ Nouvelle demande</button>
-      </div>
-    </header>
+<div class="dashboard-content">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:var(--space-2xl);flex-wrap:wrap;gap:1rem;">
+    <div><h1 class="page-title">Retours & Échanges</h1><p class="page-subtitle">Gérez vos demandes de retour. Vous avez 30 jours après livraison.</p></div>
+    <button class="btn-primary" onclick="document.getElementById('modal-retour').showModal()">+ Nouvelle demande</button>
+  </div>
 
-    <div class="dashboard-content">
-      <h1 class="page-title">Mes Retours & Échanges</h1>
-      <p class="page-subtitle">Gérez vos demandes de retour et suivez leur avancement. Vous avez 30 jours après livraison pour effectuer un retour.</p>
-
-      <!-- Retour en cours -->
-      <div class="card" style="margin-bottom:var(--space-lg); border-left:4px solid var(--color-warm);">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-md); flex-wrap:wrap; gap:8px;">
-          <div>
-            <strong style="font-size:var(--text-lg);">Retour #RET-001</strong>
-            <span style="color:var(--color-text-muted); font-size:var(--text-sm); margin-left:8px;">Demandé le 4 Mai 2026</span>
-          </div>
-          <span class="status-badge status-badge--warning">En attente de retour</span>
-        </div>
-        <div style="display:flex; gap:var(--space-lg); align-items:center; padding:var(--space-md); background:var(--color-gray); border-radius:var(--radius-md); margin-bottom:var(--space-md);">
-          <img src="{{ asset('assets/images/product-4a.webp') }}" style="width:56px; height:56px; border-radius:8px; object-fit:cover;">
-          <div style="flex:1;">
-            <strong>Rouleau Quartz Rose</strong>
-            <p style="font-size:var(--text-sm); color:var(--color-text-muted);">Commande #KAT-10495 • 55,00 €</p>
-          </div>
-        </div>
-        <div style="background:rgba(196,150,122,0.08); border-radius:var(--radius-sm); padding:var(--space-md); margin-bottom:var(--space-md);">
-          <p style="font-size:var(--text-sm); margin-bottom:4px;"><strong>Motif :</strong> Produit endommagé à la réception</p>
-          <p style="font-size:var(--text-sm); color:var(--color-text-muted);"><strong>Type :</strong> Échange (même produit)</p>
-        </div>
-        <!-- Tracking retour -->
-        <div style="display:flex; align-items:center; gap:4px; margin-bottom:var(--space-sm);">
-          <div style="flex:1; height:4px; background:var(--color-warm); border-radius:2px;"></div>
-          <div style="flex:1; height:4px; background:var(--color-warm); border-radius:2px;"></div>
-          <div style="flex:1; height:4px; background:var(--color-border); border-radius:2px;"></div>
-          <div style="flex:1; height:4px; background:var(--color-border); border-radius:2px;"></div>
-        </div>
-        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--color-text-muted); margin-bottom:var(--space-md);">
-          <span>Demandé</span><span style="color:var(--color-warm); font-weight:600;">Approuvé</span><span>Colis reçu</span><span>Remboursé</span>
-        </div>
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <button class="btn-primary" style="padding:8px 16px; font-size:12px;">Imprimer l'étiquette retour</button>
-          <button style="padding:8px 16px; font-size:12px; border:1px solid var(--color-border); border-radius:var(--radius-sm); background:transparent; cursor:pointer; color:var(--color-error);">Annuler la demande</button>
-        </div>
+  @if($returns->isEmpty() && $orders->isEmpty())
+  <div style="text-align:center;padding:4rem;color:var(--color-text-muted);">
+    <p style="font-size:48px;margin-bottom:1rem;">📦</p>
+    <p>Aucune commande livrée éligible à un retour.</p>
+    <a href="{{ url('boutique') }}" class="btn-katuiscia" style="margin-top:1rem;">Découvrir la boutique</a>
+  </div>
+  @else
+  @foreach($returns as $r)
+  <div class="card" style="margin-bottom:var(--space-lg);{{ $r->status === 'pending' ? 'border-left:4px solid var(--color-warm);' : ($r->status === 'rejected' ? 'border-left:4px solid var(--color-error);' : 'opacity:'.($r->status==='completed'||$r->status==='cancelled'?'0.6':'1').';') }}">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-md);flex-wrap:wrap;gap:8px;">
+      <div>
+        <strong style="font-size:var(--text-lg);">Retour #{{ $r->request_number }}</strong>
+        <span style="color:var(--color-text-muted);font-size:var(--text-sm);margin-left:8px;">{{ $r->created_at->format('d/m/Y') }}</span>
       </div>
-
-      <!-- Retour terminé -->
-      <div class="card" style="margin-bottom:var(--space-lg); opacity:0.75;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-md); flex-wrap:wrap; gap:8px;">
-          <div>
-            <strong style="font-size:var(--text-lg);">Retour #RET-000</strong>
-            <span style="color:var(--color-text-muted); font-size:var(--text-sm); margin-left:8px;">Demandé le 15 Sep 2025</span>
-          </div>
-          <span class="status-badge status-badge--success">Remboursé</span>
-        </div>
-        <div style="display:flex; gap:var(--space-lg); align-items:center; padding:var(--space-md); background:var(--color-gray); border-radius:var(--radius-md);">
-          <img src="{{ asset('assets/images/product-3a.webp') }}" style="width:56px; height:56px; border-radius:8px; object-fit:cover;">
-          <div style="flex:1;">
-            <strong>Gommage Terracotta</strong>
-            <p style="font-size:var(--text-sm); color:var(--color-text-muted);">Commande #KAT-08510 • Remboursé 85,00 € le 28 Sep</p>
-          </div>
-        </div>
-      </div>
+      @php $colors=['pending'=>'#f59e0b','approved'=>'#3b82f6','received'=>'#8b5cf6','completed'=>'#2e7d32','rejected'=>'#c62828','cancelled'=>'#999']; $labels=['pending'=>'En attente','approved'=>'Approuvé','received'=>'Reçu','completed'=>'Remboursé','rejected'=>'Refusé','cancelled'=>'Annulé']; @endphp
+      <span style="font-size:11px;font-weight:600;color:#fff;background:{{ $colors[$r->status] ?? '#ccc' }};padding:4px 12px;border-radius:var(--radius-full);">{{ $labels[$r->status] ?? $r->status }}</span>
     </div>
-  </main>
 
-  <!-- MODAL: Demande de retour -->
-  <dialog id="modal-retour" class="admin-modal" style="max-width:580px;">
-    <div class="admin-modal__content">
-      <div class="admin-modal__header">
-        <h2 style="font-family:var(--font-heading); font-size:var(--text-xl);">Demande de Retour / Échange</h2>
-        <button onclick="document.getElementById('modal-retour').close()" class="admin-modal__close">&times;</button>
-      </div>
-      <form class="admin-modal__body">
-        <div class="admin-form-group">
-          <label class="admin-label">Commande concernée *</label>
-          <select class="admin-input" required>
-            <option value="">Sélectionnez une commande...</option>
-            <option>#KAT-10512 — Nectar Lumineux x2 (250 €) — 2 Mai 2026</option>
-            <option>#KAT-10495 — Sérum Botanique Éclat (110 €) — 20 Oct 2026</option>
-            <option>#KAT-09823 — Gommage Terracotta (85 €) — 12 Sep 2026</option>
-          </select>
-        </div>
-        <div class="admin-form-group">
-          <label class="admin-label">Article à retourner *</label>
-          <select class="admin-input" required>
-            <option value="">Sélectionnez l'article...</option>
-            <option>Nectar Lumineux — 125 €</option>
-            <option>Sérum Botanique Éclat — 110 €</option>
-            <option>Gommage Terracotta — 85 €</option>
-          </select>
-        </div>
-        <div class="admin-form-group">
-          <label class="admin-label">Type de demande *</label>
-          <select class="admin-input" required>
-            <option>Remboursement</option>
-            <option>Échange (même produit)</option>
-            <option>Échange (autre produit)</option>
-          </select>
-        </div>
-        <div class="admin-form-group">
-          <label class="admin-label">Motif du retour *</label>
-          <select class="admin-input" required>
-            <option value="">Sélectionnez un motif...</option>
-            <option>Produit endommagé / défectueux</option>
-            <option>Produit non conforme à la description</option>
-            <option>Erreur de commande</option>
-            <option>Ne me convient pas</option>
-            <option>Allergie / réaction cutanée</option>
-            <option>Autre</option>
-          </select>
-        </div>
-        <div class="admin-form-group">
-          <label class="admin-label">Commentaire</label>
-          <textarea class="admin-input" rows="3" placeholder="Décrivez votre problème en détail..." style="resize:vertical;"></textarea>
-        </div>
-        <div class="admin-form-group">
-          <label class="admin-label">Photo (optionnel)</label>
-          <div style="border:2px dashed var(--color-border); border-radius:var(--radius-md); padding:var(--space-lg); text-align:center; cursor:pointer;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:24px; height:24px; color:var(--color-text-muted); margin:0 auto 4px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <p style="font-size:var(--text-sm); color:var(--color-text-muted);">Ajoutez une photo du produit <span style="color:var(--color-warm);">parcourir</span></p>
-          </div>
-        </div>
-        <div style="display:flex; gap:var(--space-sm); justify-content:flex-end; padding-top:var(--space-md); border-top:1px solid var(--color-border);">
-          <button type="button" onclick="document.getElementById('modal-retour').close()" style="padding:10px 20px; border:1px solid var(--color-border); border-radius:var(--radius-sm); background:transparent; cursor:pointer; font-size:var(--text-sm);">Annuler</button>
-          <button type="submit" class="btn-primary">Soumettre la demande</button>
-        </div>
-      </form>
+    <div style="display:flex;gap:1rem;align-items:center;padding:var(--space-md);background:var(--color-bg);border-radius:var(--radius-md);margin-bottom:var(--space-md);">
+      @if($r->item)
+      <strong>{{ $r->item->product_name }}</strong>
+      <span style="font-size:var(--text-sm);color:var(--color-text-muted);">×{{ $r->item->quantity }}</span>
+      @else
+      <strong>Commande #{{ $r->order->order_number }}</strong>
+      @endif
     </div>
-  </dialog>
 
-  
-  
-@endsection
+    <div style="background:rgba(196,150,122,0.06);border-radius:var(--radius-sm);padding:var(--space-md);margin-bottom:var(--space-md);">
+      <p style="font-size:var(--text-sm);margin-bottom:4px;"><strong>Motif :</strong> {{ $r->reason }}</p>
+      <p style="font-size:var(--text-sm);color:var(--color-text-muted);"><strong>Type :</strong> {{ $r->type === 'return' ? '↩ Remboursement' : '🔄 Échange' }}</p>
+      @if($r->admin_notes)<p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-top:4px;"><strong>Réponse :</strong> {{ $r->admin_notes }}</p>@endif
+    </div>
 
-@section('scripts')
-<script src="/js/account.js"></script>
+    {{-- Progress bar --}}
+    @php $steps = ['Demandé','Approuvé','Reçu','Remboursé']; $statuses = ['pending','approved','received','completed']; $current = array_search($r->status, $statuses); $current = $current !== false ? $current : 0; @endphp
+    <div style="display:flex;align-items:center;gap:0;margin-bottom:var(--space-sm);">
+      @foreach($steps as $i => $step)
+      <div style="flex:1;text-align:center;"><div style="width:12px;height:12px;border-radius:50%;background:{{ $i <= $current ? 'var(--color-warm)' : 'var(--color-border)' }};margin:0 auto 4px;"></div><span style="font-size:10px;color:{{ $i <= $current ? 'var(--color-warm)' : 'var(--color-text-muted)' }};">{{ $step }}</span></div>
+      @if($i < 3)<div style="flex:0.5;height:2px;background:{{ $i < $current ? 'var(--color-warm)' : 'var(--color-border)' }};"></div>@endif
+      @endforeach
+    </div>
+
+    @if(in_array($r->status, ['pending','approved']))
+    <form method="POST" action="{{ route('returns.cancel', $r) }}" onsubmit="return confirm('Annuler cette demande ?')">
+      @csrf @method('PUT')
+      <button type="submit" style="padding:8px 16px;font-size:12px;border:1px solid var(--color-error);border-radius:var(--radius-sm);background:transparent;cursor:pointer;color:var(--color-error);">Annuler la demande</button>
+    </form>
+    @endif
+  </div>
+  @endforeach
+  @endif
+</div>
+
+{{-- MODAL --}}
+<dialog id="modal-retour" class="admin-modal" style="max-width:550px;">
+  <div class="admin-modal__content">
+    <div class="admin-modal__header">
+      <h2 style="font-family:var(--font-heading);font-size:var(--text-xl);">Demande de Retour / Échange</h2>
+      <button onclick="document.getElementById('modal-retour').close()" class="admin-modal__close">&times;</button>
+    </div>
+    <form method="POST" action="{{ route('returns.store') }}" class="admin-modal__body">
+      @csrf
+      <div class="admin-form-group">
+        <label class="admin-label">Commande *</label>
+        <select name="order_id" class="admin-input" required onchange="updateOrderItems(this.value)">
+          <option value="">Sélectionnez...</option>
+          @foreach($orders as $o)
+          <option value="{{ $o->id }}">{{ $o->order_number }} — {{ $o->created_at->format('d/m/Y') }} ({{ number_format($o->total,0,',',' ') }} €)</option>
+          @endforeach
+        </select>
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-label">Produit concerné</label>
+        <select name="order_item_id" class="admin-input" id="order-items-select">
+          <option value="">Toute la commande</option>
+        </select>
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-label">Type *</label>
+        <select name="type" class="admin-input" required>
+          <option value="return">↩ Remboursement</option>
+          <option value="exchange">🔄 Échange</option>
+        </select>
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-label">Motif *</label>
+        <textarea name="reason" class="admin-input" rows="3" required placeholder="Décrivez le motif de votre retour..."></textarea>
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%;">Envoyer la demande</button>
+    </form>
+  </div>
+</dialog>
 <script>
-    document.getElementById('mobileToggle')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
-    document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'compte-retours') l.classList.add('active'); });
-  </script>
+var orderItems = @json($orders->pluck('items','id'));
+function updateOrderItems(orderId) {
+  var sel = document.getElementById('order-items-select');
+  sel.innerHTML = '<option value="">Toute la commande</option>';
+  if (orderItems[orderId]) {
+    orderItems[orderId].forEach(function(item) {
+      sel.innerHTML += '<option value="'+item.id+'">'+item.product_name+' ×'+item.quantity+' ('+item.price+' €)</option>';
+    });
+  }
+}
+document.getElementById('mobileToggle')?.addEventListener('click',()=>document.getElementById('sidebar').classList.toggle('open'));
+document.querySelectorAll('.sidebar-link[data-page]').forEach(l=>{if(l.dataset.page==='compte-retours')l.classList.add('active');});
+</script>
 @endsection
