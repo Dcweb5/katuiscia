@@ -18,18 +18,17 @@
     <div class="card stat-card"><span class="stat-title">Livrées</span><span class="stat-value" style="color:var(--color-success);">{{ $stats['delivered'] }}</span></div>
   </div>
 
-  {{-- Filters bar --}}
-  <div style="display:flex;gap:0.75rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center;">
-    <form method="GET" style="flex:1;min-width:200px;max-width:350px;display:flex;gap:0.5rem;">
-      <input type="text" name="search" value="{{ request('search') }}" placeholder="Rechercher (nº, nom, email)..." class="admin-input" style="padding:8px 14px;">
-      <button type="submit" class="action-btn" style="width:auto;padding:0 14px;height:40px;">🔍</button>
-      @if(request()->anyFilled(['search','status']))<a href="?" class="action-btn" style="width:auto;padding:0 12px;text-decoration:none;height:40px;display:flex;align-items:center;">✕</a>@endif
-    </form>
-    <select name="status" class="admin-input" style="width:auto;min-width:150px;padding:8px 14px;" onchange="this.form.submit()">
-      <option value="">Tous statuts</option>
-      @foreach($statuses as $key => $label)<option value="{{ $key }}" @selected(request('status')==$key)>{{ $label }}</option>@endforeach
-    </select>
+  {{-- Filters --}}
+  <div class="filter-pills">
+    <div class="search-bar" style="margin-right:auto;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" name="search" form="orders-filter" value="{{ request('search') }}" placeholder="Rechercher (nº, nom, email)...">
+    </div>
+    @foreach([''=>'Tous statuts','pending'=>'En attente','confirmed'=>'Confirmées','preparing'=>'En prépa','shipped'=>'Expédiées','delivered'=>'Livrées','cancelled'=>'Annulées'] as $k=>$l)
+    <a href="?{{ http_build_query(array_merge(request()->except('status','page'), $k ? ['status'=>$k] : [])) }}" class="filter-pill {{ request('status','') === $k ? 'active' : '' }}">{{ $l }}</a>
+    @endforeach
   </div>
+  <form id="orders-filter" method="GET" style="display:none;"></form>
 
   <div class="card" style="padding:0;overflow:hidden;">
     <table class="admin-table">

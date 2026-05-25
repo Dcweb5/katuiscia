@@ -18,36 +18,26 @@
     <div class="card stat-card"><span class="stat-title">Catégories</span><span class="stat-value">{{ $categories->count() }}</span></div>
   </div>
 
-  {{-- Filters bar --}}
-  <div style="display:flex;gap:0.75rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center;">
-    <form method="GET" style="flex:1;min-width:200px;max-width:350px;display:flex;gap:0.5rem;">
-      <input type="text" name="search" value="{{ request('search') }}" placeholder="Rechercher un produit..." class="admin-input" style="padding:8px 14px;">
-      <button type="submit" class="action-btn" style="width:auto;padding:0 14px;height:40px;">🔍</button>
-      @if(request('search'))<a href="?" class="action-btn" style="width:auto;padding:0 12px;text-decoration:none;height:40px;display:flex;align-items:center;">✕</a>@endif
-    </form>
-
-    <select name="category" class="admin-input" style="width:auto;min-width:150px;padding:8px 14px;" onchange="window.location=this.value?'?category='+this.value+(location.search.match(/sort=[^&]+/)?'&'+location.search.match(/sort=[^&]+/)[0]:'')+(location.search.match(/search=[^&]+/)?'&'+location.search.match(/search=[^&]+/)[0]:'')+(location.search.match(/status=[^&]+/)?'&'+location.search.match(/status=[^&]+/)[0]:''):'?'">
-      <option value="">Toutes les catégories</option>
-      @foreach($categories as $cat)
-      <option value="{{ $cat->id }}" @selected(request('category') == $cat->id)>{{ $cat->name }}</option>
-      @endforeach
-    </select>
-
-    <select name="status" class="admin-input" style="width:auto;min-width:140px;padding:8px 14px;" onchange="window.location=this.value?'?status='+this.value+(location.search.match(/sort=[^&]+/)?'&'+location.search.match(/sort=[^&]+/)[0]:'')+(location.search.match(/search=[^&]+/)?'&'+location.search.match(/search=[^&]+/)[0]:'')+(location.search.match(/category=[^&]+/)?'&'+location.search.match(/category=[^&]+/)[0]:''):'?'">
-      <option value="">Tous les statuts</option>
-      <option value="active" @selected(request('status') === 'active')>Actif</option>
-      <option value="inactive" @selected(request('status') === 'inactive')>Inactif</option>
-    </select>
-
-    <select name="sort" class="admin-input" style="width:auto;min-width:160px;padding:8px 14px;" onchange="window.location='?sort='+this.value+(location.search.match(/search=[^&]+/)?'&'+location.search.match(/search=[^&]+/)[0]:'')+(location.search.match(/category=[^&]+/)?'&'+location.search.match(/category=[^&]+/)[0]:'')+(location.search.match(/status=[^&]+/)?'&'+location.search.match(/status=[^&]+/)[0]:'')">
-      <option value="newest" @selected(!request('sort') || request('sort') === 'newest')>Trier par : Plus récent</option>
+  {{-- Filters --}}
+  <div class="filter-pills">
+    <div class="search-bar" style="margin-right:auto;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" name="search" form="products-filter" value="{{ request('search') }}" placeholder="Rechercher un produit...">
+    </div>
+    @foreach([''=>'Toutes catégories'] + $categories->pluck('name','id')->toArray() as $k=>$l)
+    <a href="?{{ http_build_query(array_merge(request()->except(['category','page']), $k ? ['category'=>$k] : [])) }}" class="filter-pill {{ request('category','') == (string)$k ? 'active' : '' }}">{{ $l }}</a>
+    @endforeach
+    <a href="?{{ http_build_query(array_merge(request()->except(['status','page']), request('status')==='active'?[]:['status'=>'active'])) }}" class="filter-pill {{ request('status') === 'active' ? 'active' : '' }}">Actif</a>
+    <a href="?{{ http_build_query(array_merge(request()->except(['status','page']), ['status'=>'inactive'])) }}" class="filter-pill {{ request('status') === 'inactive' ? 'active' : '' }}">Inactif</a>
+    <select name="sort" class="admin-input" form="products-filter" style="width:auto;min-width:160px;padding:8px 14px;margin-left:0.5rem;">
+      <option value="newest" @selected(!request('sort') || request('sort') === 'newest')>Tri : Plus récent</option>
       <option value="oldest" @selected(request('sort') === 'oldest')>Plus ancien</option>
       <option value="name" @selected(request('sort') === 'name')>Nom A-Z</option>
       <option value="price_asc" @selected(request('sort') === 'price_asc')>Prix croissant</option>
       <option value="price_desc" @selected(request('sort') === 'price_desc')>Prix décroissant</option>
-      <option value="stock_low" @selected(request('sort') === 'stock_low')>Stock faible d'abord</option>
     </select>
   </div>
+  <form id="products-filter" method="GET" style="display:none;"></form>
 
   <div class="card" style="padding:0;overflow:hidden;">
     <table class="admin-table">

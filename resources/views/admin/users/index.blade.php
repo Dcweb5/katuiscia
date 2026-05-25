@@ -39,27 +39,26 @@
     </div>
   </div>
 
-  {{-- Filters bar --}}
-  <div style="display:flex;gap:0.75rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center;">
-    <form method="GET" style="flex:1;min-width:200px;max-width:350px;display:flex;gap:0.5rem;">
-      <input type="text" name="search" value="{{ request('search') }}" placeholder="Rechercher (nom, email)..." class="admin-input" style="padding:8px 14px;">
-      <button type="submit" class="action-btn" style="width:auto;padding:0 14px;height:40px;">🔍</button>
-      @if(request()->anyFilled(['search','role','status','country']))<a href="?" class="action-btn" style="width:auto;padding:0 12px;text-decoration:none;height:40px;display:flex;align-items:center;">✕</a>@endif
-    </form>
-    <select name="role" class="admin-input" style="width:auto;min-width:130px;padding:8px 14px;" onchange="this.form.submit()">
-      <option value="">Tous les rôles</option>
-      <option value="admin" @selected(request('role')=='admin')>Admin</option>
-      <option value="client" @selected(request('role')=='client')>Client</option>
-    </select>
-    <select name="status" class="admin-input" style="width:auto;min-width:130px;padding:8px 14px;" onchange="this.form.submit()">
-      <option value="">Tous les statuts</option>
-      <option value="active" @selected(request('status')=='active')>Actif</option>
-      <option value="inactive" @selected(request('status')=='inactive')>Inactif</option>
-    </select>
-    <select name="country" class="admin-input" style="width:auto;min-width:120px;padding:8px 14px;" onchange="this.form.submit()">
-      <option value="">Tous les pays</option>
+  {{-- Filters --}}
+  <div class="filter-pills">
+    <div class="search-bar" style="margin-right:auto;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" name="search" form="users-filter" value="{{ request('search') }}" placeholder="Rechercher (nom, email)...">
+    </div>
+    @foreach([''=>'Tous les rôles','admin'=>'Admin','client'=>'Client'] as $k=>$l)
+    <a href="?{{ http_build_query(array_merge(request()->except(['role','page']), $k ? ['role'=>$k] : [])) }}" class="filter-pill {{ request('role','') === $k ? 'active' : '' }}">{{ $l }}</a>
+    @endforeach
+    @foreach([''=>'Tous statuts','active'=>'Actif','inactive'=>'Inactif'] as $k=>$l)
+    <a href="?{{ http_build_query(array_merge(request()->except(['status','page']), $k ? ['status'=>$k] : [])) }}" class="filter-pill {{ request('status','') === $k ? 'active' : '' }}">{{ $l }}</a>
+    @endforeach
+    <select name="country" class="admin-input" form="users-filter" style="width:auto;min-width:110px;padding:8px 14px;margin-left:0.5rem;">
+      <option value="">Tous pays</option>
       @foreach($stats['countries'] as $code)
       <option value="{{ $code }}" @selected(request('country')==$code)>{{ $code }}</option>
+      @endforeach
+    </select>
+  </div>
+  <form id="users-filter" method="GET" style="display:none;"></form>
       @endforeach
     </select>
   </div>
