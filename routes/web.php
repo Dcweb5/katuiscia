@@ -143,7 +143,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('/rendezvous/{appointment}', [App\Http\Controllers\Admin\AppointmentController::class, 'update'])->name('appointments.update');
     Route::delete('/rendezvous/{appointment}', [App\Http\Controllers\Admin\AppointmentController::class, 'destroy'])->name('appointments.destroy');
     Route::post('/rendezvous/bulk-delete', [App\Http\Controllers\Admin\AppointmentController::class, 'bulkDestroy'])->name('appointments.bulk-destroy');
-    Route::get('/funnels', fn() => view('admin.funnels.index'))->name('funnels');
+    // Funnels / Marketing
+    Route::get('/funnels', [App\Http\Controllers\Admin\FunnelsController::class, 'index'])->name('funnels.index');
     Route::get('/finances', [App\Http\Controllers\Admin\FinanceController::class, 'index'])->name('finances');
     Route::get('/analytics', [App\Http\Controllers\Admin\AnalyticsController::class, 'index'])->name('analytics');
     // Collections
