@@ -40,6 +40,14 @@
       @if($r->admin_notes)<p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-top:4px;"><strong>Réponse :</strong> {{ $r->admin_notes }}</p>@endif
     </div>
 
+    @if($r->images->isNotEmpty())
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:var(--space-md);">
+      @foreach($r->images as $img)
+      <a href="{{ asset('storage/'.$img->path) }}" target="_blank"><img src="{{ asset('storage/'.$img->path) }}" style="width:70px;height:70px;border-radius:8px;object-fit:cover;border:1px solid var(--color-border);"></a>
+      @endforeach
+    </div>
+    @endif
+
     {{-- Progress bar --}}
     @php $steps = ['Demandé','Approuvé','Reçu','Remboursé']; $statuses = ['pending','approved','received','completed']; $current = array_search($r->status, $statuses); $current = $current !== false ? $current : 0; @endphp
     <div style="display:flex;align-items:center;gap:0;margin-bottom:var(--space-sm);">
@@ -67,7 +75,7 @@
       <h2 style="font-family:var(--font-heading);font-size:var(--text-xl);">Demande de Retour / Échange</h2>
       <button onclick="document.getElementById('modal-retour').close()" class="admin-modal__close">&times;</button>
     </div>
-    <form method="POST" action="{{ route('returns.store') }}" class="admin-modal__body">
+    <form method="POST" action="{{ route('returns.store') }}" class="admin-modal__body" enctype="multipart/form-data">
       @csrf
       <div class="admin-form-group">
         <label class="admin-label">Commande *</label>
@@ -95,6 +103,16 @@
         <label class="admin-label">Motif *</label>
         <textarea name="reason" class="admin-input" rows="3" required placeholder="Décrivez le motif de votre retour..."></textarea>
       </div>
+      <div class="admin-form-group">
+        <label class="admin-label">Photos (max 5)</label>
+        <div id="drop-zone" style="border:2px dashed #d1d5db;border-radius:10px;padding:1.5rem;text-align:center;cursor:pointer;transition:border-color 0.2s;" onclick="document.getElementById('images-input').click()">
+          <div style="font-size:2rem;margin-bottom:0.5rem;">📷</div>
+          <p style="font-size:13px;color:var(--color-text-muted);">Glissez-déposez des photos ou <span style="color:var(--color-warm);font-weight:500;">parcourez</span></p>
+          <p style="font-size:11px;color:var(--color-text-muted);">Jusqu'à 5 images (JPG, PNG, WebP)</p>
+        </div>
+        <input type="file" name="images[]" id="images-input" accept="image/*" multiple style="display:none;" onchange="handleFiles(this.files)">
+        <div id="preview-list" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;"></div>
+      </div>
       <button type="submit" class="btn-primary" style="width:100%;">Envoyer la demande</button>
     </form>
   </div>
@@ -110,6 +128,46 @@ function updateOrderItems(orderId) {
     });
   }
 }
+
+var returnFiles = [];
+var dt = document.getElementById('drop-zone');
+['dragenter','dragover','dragleave','drop'].forEach(function(e){ dt.addEventListener(e, function(e){ e.preventDefault(); e.stopPropagation(); }); });
+['dragenter','dragover'].forEach(function(e){ dt.addEventListener(e, function(){ dt.style.borderColor='var(--color-warm)'; }); });
+['dragleave','drop'].forEach(function(e){ dt.addEventListener(e, function(){ dt.style.borderColor='#d1d5db'; }); });
+dt.addEventListener('drop', function(e){ handleFiles(e.dataTransfer.files); });
+
+function handleFiles(files) {
+  var remaining = 5 - returnFiles.length;
+  Array.from(files).slice(0, remaining).forEach(function(f){
+    if (returnFiles.length >= 5) return;
+    returnFiles.push(f);
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      var img = document.createElement('img');
+      img.src = ev.target.result;
+      img.style.cssText = 'width:70px;height:70px;border-radius:8px;object-fit:cover;border:2px solid var(--color-border);';
+      img.title = f.name;
+      var container = document.createElement('div');
+      container.style.position = 'relative';
+      var btn = document.createElement('button');
+      btn.textContent = '×';
+      btn.style.cssText = 'position:absolute;top:-6px;right:-6px;background:var(--color-error);color:#fff;border:none;width:20px;height:20px;border-radius:50%;font-size:12px;cursor:pointer;';
+      btn.onclick = function(ev){ ev.stopPropagation(); returnFiles = returnFiles.filter(function(x){ return x !== f; }); container.remove(); updateFileInput(); };
+      container.appendChild(img); container.appendChild(btn);
+      document.getElementById('preview-list').appendChild(container);
+      updateFileInput();
+    };
+    reader.readAsDataURL(f);
+  });
+}
+
+function updateFileInput(){
+  var input = document.getElementById('images-input');
+  var dt = new DataTransfer();
+  returnFiles.forEach(function(f){ dt.items.add(f); });
+  input.files = dt.files;
+}
+
 document.getElementById('mobileToggle')?.addEventListener('click',()=>document.getElementById('sidebar').classList.toggle('open'));
 document.querySelectorAll('.sidebar-link[data-page]').forEach(l=>{if(l.dataset.page==='compte-retours')l.classList.add('active');});
 </script>

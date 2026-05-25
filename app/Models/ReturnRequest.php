@@ -21,4 +21,5 @@ class ReturnRequest extends Model
     public function user() { return $this->belongsTo(User::class); }
     public function order() { return $this->belongsTo(Order::class); }
     public function item() { return $this->belongsTo(OrderItem::class, 'order_item_id'); }
+    public function images() { return $this->hasMany(ReturnImage::class); }
 }

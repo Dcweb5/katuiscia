@@ -27,7 +27,7 @@
   <div class="card" style="padding:0;overflow:hidden;">
     <table class="admin-table">
       <thead>
-        <tr><th>N° Demande</th><th>Client</th><th>Commande</th><th>Produit</th><th>Type</th><th>Motif</th><th>Statut</th><th>Actions</th></tr>
+        <tr><th>N° Demande</th><th>Client</th><th>Commande</th><th>Produit</th><th>Type</th><th>Motif</th><th>Photos</th><th>Statut</th><th>Actions</th></tr>
       </thead>
       <tbody>
         @forelse($returns as $r)
@@ -41,6 +41,17 @@
           <td style="font-size:13px;">{{ $r->item->product_name ?? 'Toute la commande' }}</td>
           <td><span style="font-size:12px;">{{ $r->type === 'return' ? '↩ Retour' : '🔄 Échange' }}</span></td>
           <td style="font-size:12px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="{{ $r->reason }}">{{ \Str::limit($r->reason, 60) }}</td>
+          <td>
+            @if($r->images->isNotEmpty())
+            <div style="display:flex;gap:3px;flex-wrap:wrap;max-width:100px;">
+              @foreach($r->images->take(3) as $img)
+              <a href="{{ asset('storage/'.$img->path) }}" target="_blank"><img src="{{ asset('storage/'.$img->path) }}" style="width:28px;height:28px;border-radius:4px;object-fit:cover;"></a>
+              @endforeach
+              @if($r->images->count() > 3)<span style="font-size:10px;color:var(--color-text-muted);">+{{ $r->images->count() - 3 }}</span>@endif
+            </div>
+            @else <span style="font-size:11px;color:var(--color-text-muted);">—</span>
+            @endif
+          </td>
           <td>
             @php $colors = ['pending'=>'#f59e0b','approved'=>'#3b82f6','received'=>'#8b5cf6','completed'=>'#2e7d32','rejected'=>'#c62828','cancelled'=>'#999']; @endphp
             <span style="font-size:11px;font-weight:600;color:#fff;padding:3px 10px;border-radius:var(--radius-full);background:{{ $colors[$r->status] ?? '#ccc' }};">
@@ -60,7 +71,7 @@
           </td>
         </tr>
         @empty
-        <tr><td colspan="8" style="text-align:center;padding:3rem;color:var(--color-text-muted);">Aucune demande de retour.</td></tr>
+        <tr><td colspan="9" style="text-align:center;padding:3rem;color:var(--color-text-muted);">Aucune demande de retour.</td></tr>
         @endforelse
       </tbody>
     </table>
