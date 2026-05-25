@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="{{ asset('css/global.css') }}">
   <link rel="stylesheet" href="{{ asset('css/components.css') }}">
   @yield('head')
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1LFTT4JZ9R"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1LFTT4JZ9R');</script>
 </head>
 <body class="bg-cream text-dark font-body antialiased">
 

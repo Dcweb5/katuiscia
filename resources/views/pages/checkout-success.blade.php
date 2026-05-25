@@ -42,3 +42,18 @@
   </div>
 </div>
 @endsection
+
+@section('scripts')
+<script>
+gtag('event','purchase',{
+  transaction_id:'{{ $order->order_number }}',
+  value:{{ $order->total }},
+  currency:'EUR',
+  items:[
+    @foreach($order->items as $item)
+    {item_id:'{{ $item->product_id }}',item_name:'{{ addslashes($item->product_name) }}',price:{{ $item->price }},quantity:{{ $item->quantity }}}@if(!$loop->last),@endif
+    @endforeach
+  ]
+});
+</script>
+@endsection
