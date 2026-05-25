@@ -40,7 +40,7 @@
           <td style="font-size:13px;">{{ $r->order->order_number ?? '—' }}</td>
           <td style="font-size:13px;">{{ $r->item->product_name ?? 'Toute la commande' }}</td>
           <td><span style="font-size:12px;">{{ $r->type === 'return' ? '↩ Retour' : '🔄 Échange' }}</span></td>
-          <td style="font-size:12px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="{{ $r->reason }}">{{ \Str::limit($r->reason, 60) }}</td>
+          <td style="font-size:12px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;" title="Cliquez pour lire" onclick="this.classList.toggle('expanded')">{{ $r->reason }}</td>
           <td>
             @if($r->images->isNotEmpty())
             <div style="display:flex;gap:3px;flex-wrap:wrap;max-width:100px;">
@@ -80,6 +80,9 @@
 </div>
 
 <form id="return-form" method="POST" style="display:none;">@csrf @method('PUT')</form>
+<style>
+.expanded { white-space:normal !important; overflow:visible !important; text-overflow:unset !important; max-width:none !important; background:#faf7f2;padding:8px 12px;border-radius:6px; }
+</style>
 <script>
 function updateStatus(sel, id) {
   if (!sel.value) return;

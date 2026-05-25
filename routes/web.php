@@ -41,7 +41,9 @@ Route::post('/rendez-vous', [App\Http\Controllers\AppointmentController::class, 
 Route::post('/api/chat', [App\Http\Controllers\ChatbotController::class, 'chat'])->name('chatbot.chat');
 Route::get('/collection/{slug}', [App\Http\Controllers\PageController::class, 'collectionShow'])->name('collection.show');
 
-// ===== SUIVI DE COMMANDE (PUBLIC) =====
+// ===== QUIZ BEAUTÉ (LANDING PAGE) =====
+Route::get('/quiz-beaute', [App\Http\Controllers\LandingController::class, 'quiz'])->name('quiz');
+Route::post('/quiz-beaute', [App\Http\Controllers\LandingController::class, 'storeQuiz'])->name('quiz.store');
 Route::get('/suivi-commande', [App\Http\Controllers\TrackOrderController::class, 'index'])->name('track');
 Route::post('/suivi-commande', [App\Http\Controllers\TrackOrderController::class, 'track'])->name('track.find');
 
