@@ -41,6 +41,23 @@ class LandingController extends Controller
             ]
         );
 
-        return view('pages.merci-quiz', compact('lead'));
+        // Produits recommandés basés sur le type de peau
+        $skinType = $validated['skin_type'] ?? null;
+        $need = match ($skinType) {
+            'seche' => 'hydratation',
+            'grasse' => 'eclat',
+            'sensible' => 'restauration',
+            default => null,
+        };
+
+        $query = \App\Modules\Product\Models\Product::active()->ordered();
+        if ($need) {
+            $recommendedProducts = $query->where('need', $need)->take(2)->get();
+        }
+        if (empty($recommendedProducts) || $recommendedProducts->count() < 2) {
+            $recommendedProducts = $query->take(2)->get();
+        }
+
+        return view('pages.merci-quiz', compact('lead', 'recommendedProducts'));
     }
 }

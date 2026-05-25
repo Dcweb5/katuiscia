@@ -39,18 +39,10 @@
 
     <div class="merci-box">
       <strong>✨ Recommandé pour vous</strong>
-      @php
-        $recs = match($lead->quiz_responses['skin_type'] ?? '') {
-          'seche' => [['Nectar Lumineux','Hydratation intense','assets/images/K ICONE.webp'],['Crème Douce','Confort quotidien','assets/images/K ICONE.webp']],
-          'grasse' => [['Sérum Éclat','Matifiant purifiant','assets/images/K ICONE.webp'],['Botanique Minuit','Équilibre sébo-régulateur','assets/images/K ICONE.webp']],
-          'sensible' => [['Crème Velours','Apaisant sans parfum','assets/images/K ICONE.webp'],['Émulsion Soyeuse','Protection barrière','assets/images/K ICONE.webp']],
-          default => [['Nectar Lumineux','Soin universel','assets/images/K ICONE.webp'],['Sérum Éclat','Éclat immédiat','assets/images/K ICONE.webp']]
-        };
-      @endphp
-      @foreach($recs as $r)
+      @foreach($recommendedProducts as $product)
       <div class="merci-product">
-        <div class="merci-product-img"><img src="{{ asset($r[2]) }}" style="width:100%;height:100%;border-radius:10px;object-fit:cover;"></div>
-        <div><div class="merci-product-name">{{ $r[0] }}</div><div class="merci-product-desc">{{ $r[1] }}</div></div>
+        <div class="merci-product-img"><img src="{{ $product->image_url }}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'"></div>
+        <div><div class="merci-product-name">{{ $product->name }}</div><div class="merci-product-desc">{{ Str::limit($product->description, 50) }}</div></div>
       </div>
       @endforeach
     </div>
