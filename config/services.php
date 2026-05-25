@@ -47,8 +47,8 @@ return [
         'redirect'      => env('FACEBOOK_REDIRECT_URI'),
     ],
 
-    'gemini' => [
-        'api_key' => env('GEMINI_API_KEY'),
+    'deepseek' => [
+        'api_key' => env('DEEPSEEK_API_KEY'),
     ],
 
     'stripe' => [

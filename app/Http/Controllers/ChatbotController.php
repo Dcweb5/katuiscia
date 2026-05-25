@@ -10,7 +10,7 @@ class ChatbotController extends Controller
     {
         $request->validate(['message' => 'required|string|max:2000']);
 
-        $apiKey = env('GEMINI_API_KEY');
+        $apiKey = env('DEEPSEEK_API_KEY');
         if (!$apiKey) {
             return response()->json(['reply' => 'Chatbot non configuré.']);
         }
@@ -26,21 +26,24 @@ class ChatbotController extends Controller
         try {
             $response = Http::timeout(15)
                 ->withOptions(['verify' => !app()->isLocal()])
-                ->post('https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=' . $apiKey, [
-                    'contents' => [[
-                        'parts' => [
-                            ['text' => $context . "\n\nClient: " . $request->message]
-                        ]
-                    ]]
+                ->withToken($apiKey)
+                ->post('https://api.deepseek.com/v1/chat/completions', [
+                    'model' => 'deepseek-chat',
+                    'messages' => [
+                        ['role' => 'system', 'content' => $context],
+                        ['role' => 'user', 'content' => $request->message],
+                    ],
+                    'temperature' => 0.7,
+                    'max_tokens' => 500,
                 ]);
 
             if (!$response->successful()) {
-                \Log::error('Gemini API error: ' . $response->status() . ' - ' . $response->body());
+                \Log::error('DeepSeek API error: ' . $response->status() . ' - ' . $response->body());
                 return response()->json(['reply' => 'Service momentanément indisponible. Veuillez réessayer.']);
             }
 
             $data = $response->json();
-            $reply = $data['candidates'][0]['content']['parts'][0]['text'] ?? 'Désolé, je n\'ai pas compris. Pouvez-vous reformuler ?';
+            $reply = $data['choices'][0]['message']['content'] ?? 'Désolé, je n\'ai pas compris. Pouvez-vous reformuler ?';
             $reply = trim($reply);
 
             \App\Models\ChatMessage::create([
