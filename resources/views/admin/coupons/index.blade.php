@@ -20,18 +20,17 @@
     <div class="card stat-card"><span class="stat-title">Utilisations</span><span class="stat-value">{{ $stats['used'] }}</span></div>
   </div>
 
-  <form method="GET" style="display:flex;gap:var(--space-md);margin-bottom:var(--space-lg);flex-wrap:wrap;">
-    <div class="header-search" style="flex:1;min-width:200px;">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" name="search" placeholder="Rechercher un code..." value="{{ request('search') }}" style="border:none;background:transparent;padding:8px 12px;font-size:var(--text-sm);outline:none;width:100%;">
+  {{-- Filters --}}
+  <div class="filter-pills">
+    <div class="search-bar" style="margin-right:auto;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" name="search" form="coupons-filter" value="{{ request('search') }}" placeholder="Rechercher un code...">
     </div>
-    <select name="type" class="admin-input" style="width:auto;padding:8px 16px;" onchange="this.form.submit()">
-      <option value="">Tous types</option><option value="percentage" @selected(request('type')=='percentage')>Pourcentage</option><option value="fixed" @selected(request('type')=='fixed')>Fixe</option><option value="free_shipping" @selected(request('type')=='free_shipping')>Livraison gratuite</option>
-    </select>
-    @if(request()->anyFilled(['search','type']))
-    <a href="{{ url('admin/coupons') }}" class="text-xs text-text-muted hover:text-dark" style="white-space:nowrap;">Réinitialiser</a>
-    @endif
-  </form>
+    @foreach([''=>'Tous types','percentage'=>'Pourcentage','fixed'=>'Fixe','free_shipping'=>'Livraison gratuite'] as $k=>$l)
+    <a href="?{{ http_build_query(array_merge(request()->except(['type','page']), $k ? ['type'=>$k] : [])) }}" class="filter-pill {{ request('type','') === $k ? 'active' : '' }}">{{ $l }}</a>
+    @endforeach
+  </div>
+  <form id="coupons-filter" method="GET" style="display:none;"></form>
 
   <div class="card" style="padding:0;overflow:hidden;">
     <table class="admin-table">
