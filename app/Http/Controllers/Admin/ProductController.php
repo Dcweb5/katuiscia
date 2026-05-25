@@ -13,11 +13,50 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('categories', 'images')->orderBy('created_at', 'desc')->paginate(20);
+        $query = Product::with('categories', 'images')->orderBy('created_at', 'desc');
+
+        // Search
+        if ($search = $request->query('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('sku', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter by category
+        if ($cat = $request->query('category')) {
+            $query->whereHas('categories', fn($q) => $q->where('categories.id', $cat));
+        }
+
+        // Filter by status
+        if ($status = $request->query('status')) {
+            if ($status === 'active') $query->where('is_active', true);
+            elseif ($status === 'inactive') $query->where('is_active', false);
+        }
+
+        // Sort
+        $sort = $request->query('sort', 'newest');
+        match ($sort) {
+            'oldest' => $query->reorder()->orderBy('created_at'),
+            'name' => $query->reorder()->orderBy('name'),
+            'price_asc' => $query->reorder()->orderBy('price'),
+            'price_desc' => $query->reorder()->orderByDesc('price'),
+            'stock_low' => $query->reorder()->orderBy('stock')->orderBy('name'),
+            default => null,
+        };
+
+        $products = $query->paginate(20)->appends($request->query());
         $categories = Category::ordered()->get();
-        return view('admin.products.index', compact('products', 'categories'));
+
+        $total = Product::count();
+        $active = Product::where('is_active', true)->count();
+        $inStock = Product::where('stock', '>', 5)->where('is_active', true)->count();
+        $lowStock = Product::where('stock', '<=', 5)->where('stock', '>', 0)->where('is_active', true)->count();
+
+        return view('admin.products.index', compact('products', 'categories', 'total', 'active', 'inStock', 'lowStock'));
     }
 
     public function create()
