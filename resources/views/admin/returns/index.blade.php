@@ -17,12 +17,18 @@
     <div class="card stat-card"><span class="stat-title">Terminés</span><span class="stat-value">{{ $stats['completed'] }}</span></div>
   </div>
 
-  <div style="display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;">
-    <a href="?" class="btn-primary" style="font-size:12px;text-decoration:none;{{ !request('status') ? '' : 'background:transparent;color:var(--color-text);border-color:var(--color-border);' }}">Tous</a>
-    <a href="?status=pending" class="btn-primary" style="font-size:12px;text-decoration:none;{{ request('status')==='pending' ? '' : 'background:transparent;color:var(--color-text);border-color:var(--color-border);' }}">En attente</a>
-    <a href="?status=approved" class="btn-primary" style="font-size:12px;text-decoration:none;{{ request('status')==='approved' ? '' : 'background:transparent;color:var(--color-text);border-color:var(--color-border);' }}">Approuvés</a>
-    <a href="?status=completed" class="btn-primary" style="font-size:12px;text-decoration:none;{{ request('status')==='completed' ? '' : 'background:transparent;color:var(--color-text);border-color:var(--color-border);' }}">Terminés</a>
+  {{-- Filters --}}
+  <div class="filter-pills">
+    <div class="search-bar" style="margin-right:auto;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" form="ret-filter" placeholder="Rechercher (n°, client)...">
+    </div>
+    <a href="?{{ http_build_query(array_merge(request()->except(['status','page']))) }}" class="filter-pill {{ !request('status') ? 'active' : '' }}">Tous</a>
+    <a href="?status=pending" class="filter-pill {{ request('status')==='pending' ? 'active' : '' }}">En attente</a>
+    <a href="?status=approved" class="filter-pill {{ request('status')==='approved' ? 'active' : '' }}">Approuvés</a>
+    <a href="?status=completed" class="filter-pill {{ request('status')==='completed' ? 'active' : '' }}">Terminés</a>
   </div>
+  <form id="ret-filter" method="GET" style="display:none;"></form>
 
   <div class="card" style="padding:0;overflow:hidden;">
     <table class="admin-table">

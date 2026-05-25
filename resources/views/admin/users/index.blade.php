@@ -59,9 +59,6 @@
     </select>
   </div>
   <form id="users-filter" method="GET" style="display:none;"></form>
-      @endforeach
-    </select>
-  </div>
 
   <!-- Table -->
   <div class="card" style="padding:0;overflow:hidden;">

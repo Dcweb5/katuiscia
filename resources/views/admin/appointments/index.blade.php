@@ -13,12 +13,18 @@
     <div class="alert alert-success" style="margin-bottom:1rem;">{{ session('success') }}</div>
   @endif
 
-  <div style="display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;">
-    <a href="?status=en_attente" class="btn-primary" style="text-decoration:none;font-size:var(--text-sm);">⏳ En attente ({{ $pending }})</a>
-    <a href="?source=formation" class="btn-primary" style="text-decoration:none;font-size:var(--text-sm);background:transparent;color:var(--color-text);border-color:var(--color-border);">🎓 Formation ({{ $countBySource['formation'] }})</a>
-    <a href="?source=grossiste" class="btn-primary" style="text-decoration:none;font-size:var(--text-sm);background:transparent;color:var(--color-text);border-color:var(--color-border);">🤝 Grossiste ({{ $countBySource['grossiste'] }})</a>
-    <a href="?" class="btn-primary" style="text-decoration:none;font-size:var(--text-sm);background:transparent;color:var(--color-text);border-color:var(--color-border);">📋 Tous</a>
+  {{-- Filters --}}
+  <div class="filter-pills">
+    <div class="search-bar" style="margin-right:auto;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" name="search" form="appt-filter" value="{{ request('search') }}" placeholder="Rechercher (nom, email)...">
+    </div>
+    <a href="?{{ http_build_query(array_merge(request()->except(['source','status','page']))) }}" class="filter-pill {{ !request('source') && !request('status') ? 'active' : '' }}">📋 Tous</a>
+    <a href="?status=en_attente" class="filter-pill {{ request('status') === 'en_attente' ? 'active' : '' }}">⏳ En attente ({{ $pending }})</a>
+    <a href="?source=formation" class="filter-pill {{ request('source') === 'formation' ? 'active' : '' }}">🎓 Formation ({{ $countBySource['formation'] }})</a>
+    <a href="?source=grossiste" class="filter-pill {{ request('source') === 'grossiste' ? 'active' : '' }}">🤝 Grossiste ({{ $countBySource['grossiste'] }})</a>
   </div>
+  <form id="appt-filter" method="GET" style="display:none;"></form>
 
   <div class="card" style="padding:0;overflow:hidden;">
     <table class="admin-table">
