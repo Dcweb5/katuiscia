@@ -166,6 +166,16 @@ class CheckoutController extends Controller
             ]);
         }
 
+        // Tracker l'achat dans le lead si existe
+        $lead = \App\Models\Lead::where('email', $data['email'])->first();
+        if ($lead) {
+            $lead->update([
+                'purchased' => true,
+                'total_revenue' => ($lead->total_revenue ?? 0) + $total,
+                'orders_count' => ($lead->orders_count ?? 0) + 1,
+            ]);
+        }
+
         return $order;
     }
 
