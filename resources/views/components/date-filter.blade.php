@@ -7,7 +7,7 @@
       Date
     @endif
   </button>
-  <div class="date-dropdown" style="display:none;position:fixed;top:auto;right:auto;margin-top:6px;background:#fff;border:1px solid var(--color-border);border-radius:12px;padding:1rem;box-shadow:0 8px 30px rgba(0,0,0,0.15);z-index:1000;max-width:calc(100vw - 2rem);">
+  <div class="date-dropdown" style="display:none;position:absolute;top:100%;right:0;margin-top:6px;background:#fff;border:1px solid var(--color-border);border-radius:12px;padding:1rem;box-shadow:0 8px 30px rgba(0,0,0,0.15);z-index:1000;white-space:nowrap;overflow-x:auto;max-width:calc(100vw - 3rem);">
     <div style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
       <div>
         <label style="font-size:11px;color:var(--color-text-muted);display:block;margin-bottom:4px;">Du</label>
@@ -32,17 +32,6 @@
     if (!e.target.closest('.date-filter')) {
       document.querySelectorAll('.date-dropdown.open').forEach(function(d){ d.classList.remove('open'); });
     }
-  });
-  // Position the dropdown on open
-  document.querySelectorAll('.date-filter').forEach(function(f){
-    f.querySelector('.filter-pill').addEventListener('click', function(){
-      var dd = f.querySelector('.date-dropdown');
-      if (!dd.classList.contains('open')) return;
-      // Position under the button
-      var rect = this.getBoundingClientRect();
-      dd.style.top = (rect.bottom + 4) + 'px';
-      dd.style.left = Math.min(rect.left, window.innerWidth - dd.offsetWidth - 16) + 'px';
-    });
   });
 })();
 </script>
