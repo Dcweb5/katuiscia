@@ -19,6 +19,18 @@
     <div class="card stat-card"><span class="stat-title">Paniers abandonnés</span><span class="stat-value">{{ $abandonedCarts }}</span></div>
   </div>
 
+  {{-- Filters --}}
+  <div class="filter-pills">
+    <div class="search-bar" style="margin-right:auto;max-width:280px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" name="search" form="funnels-filter" value="{{ request('search') }}" placeholder="Rechercher (nom, email)...">
+    </div>
+    @foreach([''=>'Tout','today'=>'Aujourd\'hui','7d'=>'7 jours','30d'=>'30 jours'] as $kp=>$lp)
+    <a href="?{{ http_build_query(array_merge(request()->except(['period','page']), $kp ? ['period'=>$kp] : [])) }}" class="filter-pill {{ request('period','') === $kp ? 'active' : '' }}">{{ $lp }}</a>
+    @endforeach
+  </div>
+  <form id="funnels-filter" method="GET" style="display:none;"></form>
+
   <div style="display:grid;grid-template-columns:2fr 1fr;gap:var(--space-xl);margin-bottom:var(--space-xl);">
     <div class="card" style="padding:var(--space-xl);">
       <h3 style="font-family:var(--font-heading);font-size:var(--text-lg);margin:0 0 1rem;">📈 Leads & Revenus (6 mois)</h3>

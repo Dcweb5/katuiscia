@@ -13,6 +13,20 @@
     <button class="btn-primary" onclick="openCreateModal()">+ Nouvel Article</button>
   </div>
 
+  <div class="filter-pills">
+    <div class="search-bar" style="margin-right:auto;max-width:280px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" form="blog-filter" value="{{ request('search') }}" placeholder="Rechercher un article...">
+    </div>
+    <a href="?" class="filter-pill {{ !request('status') ? 'active' : '' }}">Tous</a>
+    <a href="?status=published" class="filter-pill {{ request('status') === 'published' ? 'active' : '' }}">Publiés</a>
+    <a href="?status=draft" class="filter-pill {{ request('status') === 'draft' ? 'active' : '' }}">Brouillons</a>
+    @foreach([''=>'Tout','today'=>'Aujourd\'hui','7d'=>'7 jours','30d'=>'30 jours'] as $kp=>$lp)
+    <a href="?{{ http_build_query(array_merge(request()->except(['period','page']), $kp ? ['period'=>$kp] : [])) }}" class="filter-pill {{ request('period','') === $kp ? 'active' : '' }}">{{ $lp }}</a>
+    @endforeach
+  </div>
+  <form id="blog-filter" method="GET" style="display:none;"></form>
+
   <div class="stats-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:var(--space-xl);">
     <div class="card stat-card"><span class="stat-title">Publiés</span><span class="stat-value">{{ $published }}</span></div>
     <div class="card stat-card"><span class="stat-title">Brouillons</span><span class="stat-value">{{ $drafts }}</span></div>

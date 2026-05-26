@@ -9,9 +9,24 @@ use Illuminate\Support\Str;
 
 class BlogController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $posts = BlogPost::orderBy('created_at', 'desc')->get();
+        $query = BlogPost::orderBy('created_at', 'desc');
+
+        if ($search = $request->query('search')) {
+            $query->where(function($q) use ($search) {
+                $q->where('title','like',"%{$search}%")->orWhere('content','like',"%{$search}%");
+            });
+        }
+        if ($request->query('status') === 'published') $query->where('status','published');
+        elseif ($request->query('status') === 'draft') $query->where('status','draft');
+
+        if ($period = $request->query('period')) {
+            $days = match($period) { 'today' => 1, '7d' => 7, '30d' => 30, default => null };
+            if ($days) $query->where('created_at', '>=', now()->subDays($days));
+        }
+
+        $posts = $query->get();
         $published = BlogPost::where('status', 'published')->count();
         $drafts = BlogPost::where('status', 'draft')->count();
         $categories = ['Soins Capillaires', 'Ingrédients', 'Tutoriels', 'Bien-être', 'Actualités', 'Rituels de Soin'];

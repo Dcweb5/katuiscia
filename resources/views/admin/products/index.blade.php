@@ -36,6 +36,9 @@
       <option value="price_asc" @selected(request('sort') === 'price_asc')>Prix croissant</option>
       <option value="price_desc" @selected(request('sort') === 'price_desc')>Prix décroissant</option>
     </select>
+    @foreach([''=>'Tout','today'=>'Aujourd\'hui','7d'=>'7 jours','30d'=>'30 jours'] as $kp=>$lp)
+    <a href="?{{ http_build_query(array_merge(request()->except(['period','page']), $kp ? ['period'=>$kp] : [])) }}" class="filter-pill {{ request('period','') === $kp ? 'active' : '' }}">{{ $lp }}</a>
+    @endforeach
   </div>
   <form id="products-filter" method="GET" style="display:none;"></form>
 

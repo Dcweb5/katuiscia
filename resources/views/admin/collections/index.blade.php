@@ -7,6 +7,20 @@
     <button class="btn-primary" onclick="openCreateModal()">+ Nouvelle Collection</button>
   </div>
 
+  <div class="filter-pills">
+    <div class="search-bar" style="margin-right:auto;max-width:280px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" form="coll-filter" value="{{ request('search') }}" placeholder="Rechercher une collection...">
+    </div>
+    <a href="?" class="filter-pill {{ !request('status') ? 'active' : '' }}">Toutes</a>
+    <a href="?status=active" class="filter-pill {{ request('status') === 'active' ? 'active' : '' }}">Actives</a>
+    <a href="?status=draft" class="filter-pill {{ request('status') === 'draft' ? 'active' : '' }}">Brouillons</a>
+    @foreach([''=>'Tout','today'=>'Aujourd\'hui','7d'=>'7 jours','30d'=>'30 jours'] as $kp=>$lp)
+    <a href="?{{ http_build_query(array_merge(request()->except(['period','page']), $kp ? ['period'=>$kp] : [])) }}" class="filter-pill {{ request('period','') === $kp ? 'active' : '' }}">{{ $lp }}</a>
+    @endforeach
+  </div>
+  <form id="coll-filter" method="GET" style="display:none;"></form>
+
   @if(session('success'))
     <script>document.addEventListener('DOMContentLoaded',function(){showToast(@json(session('success')),'success');});</script>
   @endif

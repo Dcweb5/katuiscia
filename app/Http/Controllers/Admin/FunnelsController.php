@@ -3,12 +3,25 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lead;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class FunnelsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $query = Lead::orderBy('created_at', 'desc');
+
+        if ($search = $request->query('search')) {
+            $query->where(function($q) use ($search) {
+                $q->where('firstname','like',"%{$search}%")->orWhere('email','like',"%{$search}%");
+            });
+        }
+        if ($period = $request->query('period')) {
+            $days = match($period) { 'today' => 1, '7d' => 7, '30d' => 30, default => null };
+            if ($days) $query->where('created_at', '>=', now()->subDays($days));
+        }
+
         $totalLeads = Lead::count();
         $optedIn = Lead::where('opted_in', true)->count();
         $optInRate = $totalLeads > 0 ? round($optedIn / $totalLeads * 100) : 0;

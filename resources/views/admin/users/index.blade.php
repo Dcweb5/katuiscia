@@ -57,6 +57,13 @@
       <option value="{{ $code }}" @selected(request('country')==$code)>{{ $code }}</option>
       @endforeach
     </select>
+    @foreach([''=>'Tout','today'=>'Aujourd\'hui','7d'=>'7 jours','30d'=>'30 jours'] as $kp=>$lp)
+    <a href="?{{ http_build_query(array_merge(request()->except(['period','page']), $kp ? ['period'=>$kp] : [])) }}" class="filter-pill {{ request('period','') === $kp ? 'active' : '' }}">{{ $lp }}</a>
+    @endforeach
+    <select name="sort" class="admin-input" form="users-filter" style="width:auto;min-width:140px;padding:8px 14px;margin-left:0.5rem;">
+      <option value="newest" @selected(!request('sort')||request('sort')==='newest')>Plus récent</option>
+      <option value="oldest" @selected(request('sort')==='oldest')>Plus ancien</option>
+    </select>
   </div>
   <form id="users-filter" method="GET" style="display:none;"></form>
 

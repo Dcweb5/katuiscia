@@ -23,6 +23,9 @@
     <a href="?status=en_attente" class="filter-pill {{ request('status') === 'en_attente' ? 'active' : '' }}">⏳ En attente ({{ $pending }})</a>
     <a href="?source=formation" class="filter-pill {{ request('source') === 'formation' ? 'active' : '' }}">🎓 Formation ({{ $countBySource['formation'] }})</a>
     <a href="?source=grossiste" class="filter-pill {{ request('source') === 'grossiste' ? 'active' : '' }}">🤝 Grossiste ({{ $countBySource['grossiste'] }})</a>
+    @foreach([''=>'Tout','today'=>'Aujourd\'hui','7d'=>'7 jours','30d'=>'30 jours'] as $kp=>$lp)
+    <a href="?{{ http_build_query(array_merge(request()->except(['period','page']), $kp ? ['period'=>$kp] : [])) }}" class="filter-pill {{ request('period','') === $kp ? 'active' : '' }}">{{ $lp }}</a>
+    @endforeach
   </div>
   <form id="appt-filter" method="GET" style="display:none;"></form>
 

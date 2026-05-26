@@ -9,9 +9,24 @@ use Illuminate\Http\Request;
 
 class CollectionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $collections = Collection::with(['products', 'category'])->orderBy('created_at', 'desc')->get();
+        $query = Collection::with(['products', 'category'])->orderBy('created_at', 'desc');
+
+        if ($search = $request->query('search')) {
+            $query->where(function($q) use ($search) {
+                $q->where('name','like',"%{$search}%")->orWhere('description','like',"%{$search}%");
+            });
+        }
+        if ($request->query('status') === 'active') $query->where('is_active', true);
+        elseif ($request->query('status') === 'draft') $query->where('is_active', false);
+
+        if ($period = $request->query('period')) {
+            $days = match($period) { 'today' => 1, '7d' => 7, '30d' => 30, default => null };
+            if ($days) $query->where('created_at', '>=', now()->subDays($days));
+        }
+
+        $collections = $query->get();
         $products = Product::active()->ordered()->get();
         $categories = \App\Modules\Product\Models\Category::active()->ordered()->get();
         $active = Collection::where('is_active', true)->count();
