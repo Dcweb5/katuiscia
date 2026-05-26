@@ -27,6 +27,15 @@ class OrderManagementController extends Controller
             });
         }
 
+        // Filtre par période
+        if ($period = $request->query('period')) {
+            $days = match($period) { 'today' => 1, '7d' => 7, '30d' => 30, default => null };
+            if ($days) $query->where('created_at', '>=', now()->subDays($days));
+        }
+
+        // Tri
+        if ($request->query('sort') === 'oldest') $query->reorder()->orderBy('created_at');
+
         $orders = $query->paginate(20)->appends($request->query());
 
         $stats = [
