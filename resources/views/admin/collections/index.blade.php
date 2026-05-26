@@ -15,9 +15,7 @@
     <a href="?" class="filter-pill {{ !request('status') ? 'active' : '' }}">Toutes</a>
     <a href="?status=active" class="filter-pill {{ request('status') === 'active' ? 'active' : '' }}">Actives</a>
     <a href="?status=draft" class="filter-pill {{ request('status') === 'draft' ? 'active' : '' }}">Brouillons</a>
-    @foreach([''=>'Tout','today'=>'Aujourd\'hui','7d'=>'7 jours','30d'=>'30 jours'] as $kp=>$lp)
-    <a href="?{{ http_build_query(array_merge(request()->except(['period','page']), $kp ? ['period'=>$kp] : [])) }}" class="filter-pill {{ request('period','') === $kp ? 'active' : '' }}">{{ $lp }}</a>
-    @endforeach
+    @include('components.date-filter', ['formId' => 'coll-filter'])
   </div>
   <form id="coll-filter" method="GET" style="display:none;"></form>
 

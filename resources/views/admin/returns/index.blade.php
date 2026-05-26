@@ -27,9 +27,7 @@
     <a href="?status=pending" class="filter-pill {{ request('status')==='pending' ? 'active' : '' }}">En attente</a>
     <a href="?status=approved" class="filter-pill {{ request('status')==='approved' ? 'active' : '' }}">Approuvés</a>
     <a href="?status=completed" class="filter-pill {{ request('status')==='completed' ? 'active' : '' }}">Terminés</a>
-    @foreach([''=>'Tout','today'=>'Aujourd\'hui','7d'=>'7 jours','30d'=>'30 jours'] as $kp=>$lp)
-    <a href="?{{ http_build_query(array_merge(request()->except(['period','page']), $kp ? ['period'=>$kp] : [])) }}" class="filter-pill {{ request('period','') === $kp ? 'active' : '' }}">{{ $lp }}</a>
-    @endforeach
+    @include('components.date-filter', ['formId' => 'ret-filter'])
   </div>
   <form id="ret-filter" method="GET" style="display:none;"></form>
 

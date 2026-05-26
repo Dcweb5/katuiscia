@@ -28,9 +28,11 @@ class OrderManagementController extends Controller
         }
 
         // Filtre par période
-        if ($period = $request->query('period')) {
-            $days = match($period) { 'today' => 1, '7d' => 7, '30d' => 30, default => null };
-            if ($days) $query->where('created_at', '>=', now()->subDays($days));
+        if ($from = $request->query('date_from')) {
+            $query->where('created_at', '>=', $from . ' 00:00:00');
+        }
+        if ($to = $request->query('date_to')) {
+            $query->where('created_at', '<=', $to . ' 23:59:59');
         }
 
         // Tri

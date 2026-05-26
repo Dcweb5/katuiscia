@@ -29,9 +29,7 @@
     @foreach([''=>'Tous types','percentage'=>'Pourcentage','fixed'=>'Fixe','free_shipping'=>'Livraison gratuite'] as $k=>$l)
     <a href="?{{ http_build_query(array_merge(request()->except(['type','page']), $k ? ['type'=>$k] : [])) }}" class="filter-pill {{ request('type','') === $k ? 'active' : '' }}">{{ $l }}</a>
     @endforeach
-    @foreach([''=>'Tout','today'=>'Aujourd\'hui','7d'=>'7 jours','30d'=>'30 jours'] as $kp=>$lp)
-    <a href="?{{ http_build_query(array_merge(request()->except(['period','page']), $kp ? ['period'=>$kp] : [])) }}" class="filter-pill {{ request('period','') === $kp ? 'active' : '' }}">{{ $lp }}</a>
-    @endforeach
+    @include('components.date-filter', ['formId' => 'coupons-filter'])
   </div>
   <form id="coupons-filter" method="GET" style="display:none;"></form>
 

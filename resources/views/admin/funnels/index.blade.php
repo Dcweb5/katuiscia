@@ -25,9 +25,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input type="text" name="search" form="funnels-filter" value="{{ request('search') }}" placeholder="Rechercher (nom, email)...">
     </div>
-    @foreach([''=>'Tout','today'=>'Aujourd\'hui','7d'=>'7 jours','30d'=>'30 jours'] as $kp=>$lp)
-    <a href="?{{ http_build_query(array_merge(request()->except(['period','page']), $kp ? ['period'=>$kp] : [])) }}" class="filter-pill {{ request('period','') === $kp ? 'active' : '' }}">{{ $lp }}</a>
-    @endforeach
+    @include('components.date-filter', ['formId' => 'funnels-filter'])
   </div>
   <form id="funnels-filter" method="GET" style="display:none;"></form>
 
