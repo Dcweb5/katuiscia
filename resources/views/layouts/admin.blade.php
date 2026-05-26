@@ -20,5 +20,12 @@
     @yield('content')
   </main>
   @yield('scripts')
+  <div id="date-backdrop" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.25);z-index:9999;" onclick="closeDatePickers()"></div>
+  <script>
+    function closeDatePickers() {
+      document.querySelectorAll('.date-dropdown').forEach(function(d){ d.style.display = 'none'; });
+      document.getElementById('date-backdrop').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
