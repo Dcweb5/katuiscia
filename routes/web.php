@@ -53,9 +53,10 @@ Route::get('/auth/google', function () {
 });
 Route::get('/auth/google/callback', function () {
     try {
-        $socialUser = \Laravel\Socialite\Facades\Socialite::driver('google')->user();
+        $socialUser = \Laravel\Socialite\Facades\Socialite::driver('google')->stateless()->user();
     } catch (\Exception $e) {
-        return redirect('/connexion')->with('error', 'Erreur lors de l\'authentification Google.');
+        \Log::error('Google auth callback error: ' . $e->getMessage());
+        return redirect('/connexion')->with('error', 'Erreur lors de l\'authentification Google : ' . $e->getMessage());
     }
 
     $user = \App\Models\User::where('email', $socialUser->getEmail())->first();
