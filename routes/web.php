@@ -48,6 +48,38 @@ Route::get('/suivi-commande', [App\Http\Controllers\TrackOrderController::class,
 Route::post('/suivi-commande', [App\Http\Controllers\TrackOrderController::class, 'track'])->name('track.find');
 
 // ===== AUTH (GUEST — non connecté) =====
+Route::get('/auth/google', function () {
+    return \Laravel\Socialite\Facades\Socialite::driver('google')->redirect();
+});
+Route::get('/auth/google/callback', function () {
+    try {
+        $socialUser = \Laravel\Socialite\Facades\Socialite::driver('google')->user();
+    } catch (\Exception $e) {
+        return redirect('/connexion')->with('error', 'Erreur lors de l\'authentification Google.');
+    }
+
+    $user = \App\Models\User::where('email', $socialUser->getEmail())->first();
+
+    if ($user) {
+        if (!$user->avatar && $socialUser->getAvatar()) {
+            $user->update(['avatar' => $socialUser->getAvatar()]);
+        }
+    } else {
+        $nameParts = explode(' ', $socialUser->getName() ?? $socialUser->getNickname() ?? 'Utilisateur', 2);
+        $user = \App\Models\User::create([
+            'firstname' => $nameParts[0] ?? null,
+            'lastname'  => $nameParts[1] ?? null,
+            'name'      => $socialUser->getName() ?? $socialUser->getNickname() ?? 'Utilisateur',
+            'email'     => $socialUser->getEmail(),
+            'password'  => \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(32)),
+            'avatar'    => $socialUser->getAvatar(),
+            'loyalty_points' => 100,
+        ]);
+    }
+
+    auth()->login($user, true);
+    return redirect($user->is_admin ? '/admin' : '/compte');
+});
 Route::middleware('guest')->group(function () {
     Route::get('/connexion', [WebAuthController::class, 'showLoginForm'])->name('login');
     Route::post('/connexion', [WebAuthController::class, 'login']);
