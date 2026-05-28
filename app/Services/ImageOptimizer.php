@@ -9,31 +9,35 @@ class ImageOptimizer
 {
     public static function store(UploadedFile $file, string $folder, int $maxWidth = 1600): string
     {
-        $extension = 'webp';
-        $filename = Str::uuid() . '.' . $extension;
+        $filename = Str::uuid() . '.webp';
         $path = storage_path('app/public/' . $folder);
 
         if (!is_dir($path)) {
             mkdir($path, 0755, true);
         }
 
-        $img = Image::decode($file->getRealPath());
+        // Essayer d'obtenir le chemin du fichier (certaines configs retournent un chemin relatif)
+        $filePath = $file->getRealPath() ?: $file->getPathname();
+        if (!$filePath || !file_exists($filePath)) {
+            // Fallback: utiliser le contenu binaire
+            $img = Image::decode($file->get());
+        } else {
+            $img = Image::decode($filePath);
+        }
 
-        // Redimensionner si plus large que le max
         if ($img->width() > $maxWidth) {
             $img->resize($maxWidth, null);
         }
 
-        // Sauvegarder en WebP qualité 90%
         $img->save($path . '/' . $filename, quality: 90);
 
-        // Générer miniature 300px pour les listings (qualité 75%)
-        $thumb = Image::decode($file->getRealPath());
+        // Miniature 300px
+        $thumbData = $file->get();
+        $thumb = Image::decode($thumbData);
         if ($thumb->width() > 300) {
             $thumb->resize(300, null);
         }
-        $thumbPath = $path . '/thumb_' . $filename;
-        $thumb->save($thumbPath, quality: 75);
+        $thumb->save($path . '/thumb_' . $filename, quality: 75);
 
         return $folder . '/' . $filename;
     }
