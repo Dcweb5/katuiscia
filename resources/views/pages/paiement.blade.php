@@ -23,22 +23,49 @@
     <div class="flex-1 reveal-k-k delay-1">
       <form method="POST" action="{{ route('checkout.store') }}">
         @csrf
-        <div class="card p-6 space-y-4">
+        <div class="card p-6" style="border:1px solid #ede4db;">
           <h3 class="font-heading text-lg mb-4">Contact</h3>
-          <input type="email" name="email" class="admin-input" placeholder="Email *" value="{{ old('email', auth()->user()->email ?? '') }}" required>
+          <div class="admin-form-group">
+            <label class="admin-label">Email *</label>
+            <input type="email" name="email" class="admin-input" placeholder="votre@email.com" value="{{ old('email', auth()->user()->email ?? '') }}" required>
+          </div>
         </div>
 
-        <div class="card p-6 space-y-4" style="margin-top:var(--space-md);">
+        <div class="card p-6" style="margin-top:var(--space-md);border:1px solid #ede4db;">
           <h3 class="font-heading text-lg mb-4">Adresse de livraison</h3>
-          <div class="grid grid-cols-2 gap-4">
-            <input type="text" name="firstname" class="admin-input" placeholder="Prénom *" value="{{ old('firstname', auth()->user()->firstname ?? '') }}" required>
-            <input type="text" name="lastname" class="admin-input" placeholder="Nom *" value="{{ old('lastname', auth()->user()->lastname ?? '') }}" required>
-            <input type="text" name="address" class="admin-input" placeholder="Adresse *" value="{{ old('address') }}" style="grid-column:1/-1;" required>
-            <input type="text" name="address2" class="admin-input" placeholder="Appartement, étage..." value="{{ old('address2') }}" style="grid-column:1/-1;">
-            <input type="text" name="postal_code" class="admin-input" placeholder="Code postal *" value="{{ old('postal_code', auth()->user()->postal_code ?? '') }}" required>
-            <input type="text" name="city" class="admin-input" placeholder="Ville *" value="{{ old('city', auth()->user()->city ?? '') }}" required>
-            <input type="text" name="country" class="admin-input" placeholder="Pays *" value="{{ old('country', auth()->user()->country ?? 'FR') }}" required>
-            <input type="text" name="phone" class="admin-input" placeholder="Téléphone" value="{{ old('phone', auth()->user()->phone ?? '') }}">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="admin-form-group">
+              <label class="admin-label">Prénom *</label>
+              <input type="text" name="firstname" class="admin-input" placeholder="" value="{{ old('firstname', auth()->user()->firstname ?? '') }}" required>
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-label">Nom *</label>
+              <input type="text" name="lastname" class="admin-input" value="{{ old('lastname', auth()->user()->lastname ?? '') }}" required>
+            </div>
+            <div class="admin-form-group" style="grid-column:1/-1;">
+              <label class="admin-label">Adresse *</label>
+              <input type="text" name="address" class="admin-input" value="{{ old('address') }}" required>
+            </div>
+            <div class="admin-form-group" style="grid-column:1/-1;">
+              <label class="admin-label">Complément</label>
+              <input type="text" name="address2" class="admin-input" placeholder="Appartement, étage..." value="{{ old('address2') }}">
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-label">Code postal *</label>
+              <input type="text" name="postal_code" class="admin-input" value="{{ old('postal_code', auth()->user()->postal_code ?? '') }}" required>
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-label">Ville *</label>
+              <input type="text" name="city" class="admin-input" value="{{ old('city', auth()->user()->city ?? '') }}" required>
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-label">Pays *</label>
+              <input type="text" name="country" class="admin-input" value="{{ old('country', auth()->user()->country ?? 'FR') }}" required>
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-label">Téléphone</label>
+              <input type="text" name="phone" class="admin-input" value="{{ old('phone', auth()->user()->phone ?? '') }}">
+            </div>
           </div>
         </div>
 
@@ -78,9 +105,12 @@
           <span class="text-success">OFFERTE</span>
         </div>
         <hr class="border-border-k">
-        <div style="display:flex;gap:var(--space-sm);">
-          <input type="text" id="coupon-code" placeholder="Code promo" class="w-full p-3 border border-border-k rounded-md text-sm" value="{{ session('coupon.code', '') }}">
-          <button type="button" id="apply-coupon" class="btn-katuiscia" style="font-size:12px;white-space:nowrap;">Appliquer</button>
+        <div style="margin-bottom:1rem;">
+          <label class="admin-label">Code promo</label>
+          <div style="display:flex;gap:0.5rem;">
+            <input type="text" id="coupon-code" class="admin-input" style="flex:1;" placeholder="Entrez votre code..." value="{{ session('coupon.code', '') }}">
+            <button type="button" id="apply-coupon" class="btn-katuiscia" style="font-size:12px;white-space:nowrap;">Appliquer</button>
+          </div>
         </div>
         <div id="coupon-message" style="display:none;font-size:12px;margin-top:4px;"></div>
         @php $cpDiscount = session('coupon.discount', 0); $cpTotal = max(0, $cart->total - $cpDiscount); @endphp
@@ -123,15 +153,15 @@ document.getElementById('apply-coupon').addEventListener('click', async function
   if (data.valid) {
     msg.style.color = 'var(--color-success)';
     msg.textContent = '✅ ' + data.message;
-    document.getElementById('coupon-hidden').value = code;
-    document.getElementById('coupon-discount').value = data.discount_raw || 0;
+    document.querySelector('input[name="coupon_code"]').value = code;
+    document.querySelector('input[name="coupon_discount"]').value = data.discount_raw || 0;
     var newTotal = Math.max(0, cartTotal - (data.discount_raw || 0));
     document.getElementById('total-line').innerHTML = '<span>Total</span><span>' + newTotal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' \u20AC</span>';
   } else {
     msg.style.color = 'var(--color-error)';
     msg.textContent = data.message;
-    document.getElementById('coupon-hidden').value = '';
-    document.getElementById('coupon-discount').value = '0';
+    document.querySelector('input[name="coupon_code"]').value = '';
+    document.querySelector('input[name="coupon_discount"]').value = '0';
     document.getElementById('total-line').innerHTML = '<span>Total</span><span>' + cartTotal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' \u20AC</span>';
   }
 });

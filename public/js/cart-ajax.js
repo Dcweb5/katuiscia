@@ -148,7 +148,6 @@
       e.preventDefault(); e.stopPropagation();
       var row = delBtn.closest('[data-item-id]');
       if (!row) return;
-      if (!confirm('Retirer ce produit ?')) return;
       var itemId = parseInt(row.dataset.itemId);
       removeItem(itemId);
       return;

@@ -40,9 +40,12 @@
         <span id="cart-discount" style="display:none;"></span>
         <div class="flex justify-between text-sm"><span class="text-text-muted">Livraison</span><span class="text-success">OFFERTE</span></div>
         <hr class="border-border-k">
-        <div style="display:flex;gap:var(--space-sm);">
-          <input type="text" id="coupon-code" class="w-full p-3 border border-border-k rounded-md text-sm" placeholder="Code promo">
-          <button type="button" id="apply-coupon" class="btn-katuiscia" style="font-size:12px;white-space:nowrap;">Appliquer</button>
+        <div style="margin-bottom:1rem;">
+          <label class="admin-label">Code promo</label>
+          <div style="display:flex;gap:0.5rem;">
+            <input type="text" id="coupon-code" class="admin-input" style="flex:1;" placeholder="Entrez votre code...">
+            <button type="button" id="apply-coupon" class="btn-katuiscia" style="font-size:12px;white-space:nowrap;">Appliquer</button>
+          </div>
         </div>
         <div id="coupon-message" style="display:none;font-size:12px;"></div>
         <div class="flex justify-between font-heading text-lg"><span>Total</span><span id="cart-total-display">{{ number_format($cart->total, 0, ',', ' ') }} €</span></div>
