@@ -42,7 +42,7 @@ class CheckoutController extends Controller
             'address2' => 'nullable|string|max:500',
             'postal_code' => 'required|string|max:20',
             'city' => 'required|string|max:255',
-            'country' => 'required|string|max:100',
+            'country' => 'required|string|max:2',
             'phone' => 'nullable|string|max:20',
             'payment_method' => 'required|in:card,cod',
             'coupon_code' => 'nullable|string|max:50',
@@ -74,7 +74,7 @@ class CheckoutController extends Controller
         if ($validated['payment_method'] === 'cod') {
             // Paiement à la livraison : flow classique
             $order = $this->createOrder($validated, $cart, $discount, $couponCode, $total);
-            $order->update(['payment_status' => 'paid', 'paid_at' => now()]);
+            $order->update(['payment_status' => 'paid', 'status' => 'confirmed', 'paid_at' => now()]);
             $this->clearCart($cart);
             if (auth()->check()) auth()->user()->increment('loyalty_points', (int) $total);
             try { $this->generateInvoice($order); } catch (\Exception $e) { \Log::error('COD invoice failed: ' . $e->getMessage()); }
@@ -226,9 +226,15 @@ class CheckoutController extends Controller
         // Générer la facture
         try { $this->generateInvoice($order); } catch (\Exception $e) { \Log::error('Invoice failed: ' . $e->getMessage()); }
 
-        // Vider le panier après confirmation
+        // Vider le panier après confirmation (multiple fallbacks)
         $cart = \App\Models\Cart::where('user_id', $order->user_id)->first()
-            ?? \App\Models\Cart::where('session_id', session()->getId())->first();
+            ?? \App\Models\Cart::where('session_id', session()->getId())->first()
+            ?? \App\Models\Cart::where('user_id', auth()->id())->first();
+        // Fallback ultime : vider tous les paniers de cette session
+        if (!$cart) {
+            $carts = \App\Models\Cart::where('session_id', session()->getId())->get();
+            foreach ($carts as $c) { $c->items()->delete(); $c->delete(); }
+        }
         if ($cart) {
             $cart->items()->delete();
             $cart->delete();

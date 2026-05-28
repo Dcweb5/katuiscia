@@ -51,20 +51,25 @@
               <input type="text" name="address2" class="k-input" placeholder="Appartement, étage..." value="{{ old('address2') }}">
             </div>
             <div class="admin-form-group">
+              <label class="k-label">Pays *</label>
+              <select name="country" class="k-input" required onchange="updatePostalPhone(this.value)">
+                <option value="">Sélectionnez un pays</option>
+                @foreach(['FR'=>'🇫🇷 France','BE'=>'🇧🇪 Belgique','CH'=>'🇨🇭 Suisse','LU'=>'🇱🇺 Luxembourg','DE'=>'🇩🇪 Allemagne','ES'=>'🇪🇸 Espagne','IT'=>'🇮🇹 Italie','PT'=>'🇵🇹 Portugal','GB'=>'🇬🇧 Royaume-Uni','US'=>'🇺🇸 États-Unis','CA'=>'🇨🇦 Canada','DZ'=>'🇩🇿 Algérie','CM'=>'🇨🇲 Cameroun','CI'=>'🇨🇮 Côte d\'Ivoire','CD'=>'🇨🇩 RD Congo','SN'=>'🇸🇳 Sénégal','MA'=>'🇲🇦 Maroc','TN'=>'🇹🇳 Tunisie'] as $code=>$name)
+                <option value="{{ $code }}" @selected(old('country', auth()->user()->country ?? 'FR') == $code)>{{ $name }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="admin-form-group">
               <label class="k-label">Code postal *</label>
-              <input type="text" name="postal_code" class="k-input" value="{{ old('postal_code', auth()->user()->postal_code ?? '') }}" required>
+              <input type="text" name="postal_code" id="input-postal" class="k-input" value="{{ old('postal_code', auth()->user()->postal_code ?? '') }}" required placeholder="Ex: 75001">
             </div>
             <div class="admin-form-group">
               <label class="k-label">Ville *</label>
               <input type="text" name="city" class="k-input" value="{{ old('city', auth()->user()->city ?? '') }}" required>
             </div>
             <div class="admin-form-group">
-              <label class="k-label">Pays *</label>
-              <input type="text" name="country" class="k-input" value="{{ old('country', auth()->user()->country ?? 'FR') }}" required>
-            </div>
-            <div class="admin-form-group">
               <label class="k-label">Téléphone</label>
-              <input type="text" name="phone" class="k-input" value="{{ old('phone', auth()->user()->phone ?? '') }}">
+              <input type="tel" name="phone" id="input-phone" class="k-input" value="{{ old('phone', auth()->user()->phone ?? '') }}" placeholder="+33 6 12 34 56 78">
             </div>
           </div>
         </div>
@@ -134,6 +139,18 @@
 
 @section('scripts')
 <script type="module" src="{{ asset('js/main.js') }}"></script>
+<script>
+var postalPatterns = { FR: /^\d{5}$/, BE: /^\d{4}$/, CH: /^\d{4}$/, LU: /^\d{4}$/, DE: /^\d{5}$/, ES: /^\d{5}$/, IT: /^\d{5}$/, PT: /^\d{4}-\d{3}$/, GB: /^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/i, US: /^\d{5}(-\d{4})?$/, CA: /^[A-Z]\d[A-Z] ?\d[A-Z]\d$/i };
+function updatePostalPhone(country) {
+  var postal = document.getElementById('input-postal');
+  var phone = document.getElementById('input-phone');
+  var p = postalPatterns[country];
+  if (p) { postal.pattern = p.source; postal.title = 'Format : ' + {FR:'5 chiffres',BE:'4 chiffres',GB:'ex: SW1A 1AA',US:'5 chiffres',CA:'ex: K1A 0B1'}[country] || p.source; }
+  else { postal.removeAttribute('pattern'); postal.removeAttribute('title'); }
+  var phonePrefix = {FR:'+33','BE':'+32','CH':'+41','LU':'+352','DE':'+49','ES':'+34','IT':'+39','GB':'+44','US':'+1','CA':'+1'}[country];
+  if (phonePrefix && !phone.value) phone.placeholder = phonePrefix + ' 6 12 34 56 78';
+}
+document.addEventListener('DOMContentLoaded', function(){ updatePostalPhone(document.querySelector('select[name="country"]').value); });
 <script>
 var csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
 var cartTotal = {{ $cart->total }};
