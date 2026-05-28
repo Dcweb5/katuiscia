@@ -26,8 +26,8 @@
         <div class="card p-6" style="border:1px solid #ede4db;">
           <h3 class="font-heading text-lg mb-4">Contact</h3>
           <div class="admin-form-group">
-            <label class="admin-label">Email *</label>
-            <input type="email" name="email" class="admin-input" placeholder="votre@email.com" value="{{ old('email', auth()->user()->email ?? '') }}" required>
+            <label class="k-label">Email *</label>
+            <input type="email" name="email" class="k-input" placeholder="votre@email.com" value="{{ old('email', auth()->user()->email ?? '') }}" required>
           </div>
         </div>
 
@@ -35,36 +35,36 @@
           <h3 class="font-heading text-lg mb-4">Adresse de livraison</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="admin-form-group">
-              <label class="admin-label">Prénom *</label>
-              <input type="text" name="firstname" class="admin-input" placeholder="" value="{{ old('firstname', auth()->user()->firstname ?? '') }}" required>
+              <label class="k-label">Prénom *</label>
+              <input type="text" name="firstname" class="k-input" placeholder="" value="{{ old('firstname', auth()->user()->firstname ?? '') }}" required>
             </div>
             <div class="admin-form-group">
-              <label class="admin-label">Nom *</label>
-              <input type="text" name="lastname" class="admin-input" value="{{ old('lastname', auth()->user()->lastname ?? '') }}" required>
+              <label class="k-label">Nom *</label>
+              <input type="text" name="lastname" class="k-input" value="{{ old('lastname', auth()->user()->lastname ?? '') }}" required>
             </div>
             <div class="admin-form-group" style="grid-column:1/-1;">
-              <label class="admin-label">Adresse *</label>
-              <input type="text" name="address" class="admin-input" value="{{ old('address') }}" required>
+              <label class="k-label">Adresse *</label>
+              <input type="text" name="address" class="k-input" value="{{ old('address') }}" required>
             </div>
             <div class="admin-form-group" style="grid-column:1/-1;">
-              <label class="admin-label">Complément</label>
-              <input type="text" name="address2" class="admin-input" placeholder="Appartement, étage..." value="{{ old('address2') }}">
+              <label class="k-label">Complément</label>
+              <input type="text" name="address2" class="k-input" placeholder="Appartement, étage..." value="{{ old('address2') }}">
             </div>
             <div class="admin-form-group">
-              <label class="admin-label">Code postal *</label>
-              <input type="text" name="postal_code" class="admin-input" value="{{ old('postal_code', auth()->user()->postal_code ?? '') }}" required>
+              <label class="k-label">Code postal *</label>
+              <input type="text" name="postal_code" class="k-input" value="{{ old('postal_code', auth()->user()->postal_code ?? '') }}" required>
             </div>
             <div class="admin-form-group">
-              <label class="admin-label">Ville *</label>
-              <input type="text" name="city" class="admin-input" value="{{ old('city', auth()->user()->city ?? '') }}" required>
+              <label class="k-label">Ville *</label>
+              <input type="text" name="city" class="k-input" value="{{ old('city', auth()->user()->city ?? '') }}" required>
             </div>
             <div class="admin-form-group">
-              <label class="admin-label">Pays *</label>
-              <input type="text" name="country" class="admin-input" value="{{ old('country', auth()->user()->country ?? 'FR') }}" required>
+              <label class="k-label">Pays *</label>
+              <input type="text" name="country" class="k-input" value="{{ old('country', auth()->user()->country ?? 'FR') }}" required>
             </div>
             <div class="admin-form-group">
-              <label class="admin-label">Téléphone</label>
-              <input type="text" name="phone" class="admin-input" value="{{ old('phone', auth()->user()->phone ?? '') }}">
+              <label class="k-label">Téléphone</label>
+              <input type="text" name="phone" class="k-input" value="{{ old('phone', auth()->user()->phone ?? '') }}">
             </div>
           </div>
         </div>
@@ -106,9 +106,9 @@
         </div>
         <hr class="border-border-k">
         <div style="margin-bottom:1rem;">
-          <label class="admin-label">Code promo</label>
+          <label class="k-label">Code promo</label>
           <div style="display:flex;gap:0.5rem;">
-            <input type="text" id="coupon-code" class="admin-input" style="flex:1;" placeholder="Entrez votre code..." value="{{ session('coupon.code', '') }}">
+            <input type="text" id="coupon-code" class="k-input" style="flex:1;" placeholder="Entrez votre code..." value="{{ session('coupon.code', '') }}">
             <button type="button" id="apply-coupon" class="btn-katuiscia" style="font-size:12px;white-space:nowrap;">Appliquer</button>
           </div>
         </div>

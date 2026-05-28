@@ -41,9 +41,9 @@
         <div class="flex justify-between text-sm"><span class="text-text-muted">Livraison</span><span class="text-success">OFFERTE</span></div>
         <hr class="border-border-k">
         <div style="margin-bottom:1rem;">
-          <label class="admin-label">Code promo</label>
+          <label class="k-label">Code promo</label>
           <div style="display:flex;gap:0.5rem;">
-            <input type="text" id="coupon-code" class="admin-input" style="flex:1;" placeholder="Entrez votre code...">
+            <input type="text" id="coupon-code" class="k-input" style="flex:1;" placeholder="Entrez votre code...">
             <button type="button" id="apply-coupon" class="btn-katuiscia" style="font-size:12px;white-space:nowrap;">Appliquer</button>
           </div>
         </div>

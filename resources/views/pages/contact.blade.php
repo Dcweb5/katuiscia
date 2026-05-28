@@ -5,18 +5,6 @@
 
 @section('head')
 <style>
-.contact-input {
-  display:block;width:100%;padding:12px 16px;
-  border:2px solid #d1d5db;border-radius:10px;
-  font-size:15px;font-family:inherit;background:#fff;
-  transition:border-color 0.15s,box-shadow 0.15s;
-  outline:none;box-sizing:border-box;
-}
-.contact-input:focus { border-color:var(--color-warm);box-shadow:0 0 0 3px rgba(196,150,122,0.12); }
-.contact-label {
-  display:block;font-size:12px;font-weight:600;color:#374151;
-  margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;
-}
 .contact-toast {
   position:fixed;top:20px;right:20px;z-index:99999;
   padding:16px 24px;border-radius:10px;font-size:14px;font-weight:500;
@@ -48,18 +36,18 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
-          <label class="contact-label">Nom complet *</label>
-          <input type="text" name="name" value="{{ old('name') }}" class="contact-input" placeholder="Votre nom" required>
+          <label class="k-label">Nom complet *</label>
+          <input type="text" name="name" value="{{ old('name') }}" class="k-input" placeholder="Votre nom" required>
         </div>
         <div>
-          <label class="contact-label">Email *</label>
-          <input type="email" name="email" value="{{ old('email') }}" class="contact-input" placeholder="votre@email.com" required>
+          <label class="k-label">Email *</label>
+          <input type="email" name="email" value="{{ old('email') }}" class="k-input" placeholder="votre@email.com" required>
         </div>
       </div>
 
       <div style="margin:1.25rem 0;">
-        <label class="contact-label">Sujet</label>
-        <select name="subject" class="contact-input" style="appearance:auto;">
+        <label class="k-label">Sujet</label>
+        <select name="subject" class="k-input" style="appearance:auto;">
           <option value="">Selectionner un sujet</option>
           <option value="commande" @selected(old('subject')=='commande')>Question sur une commande</option>
           <option value="produit" @selected(old('subject')=='produit')>Information produit</option>
@@ -72,8 +60,8 @@
       </div>
 
       <div style="margin-bottom:1.5rem;">
-        <label class="contact-label">Message *</label>
-        <textarea name="message" rows="5" class="contact-input" style="resize:vertical;" placeholder="Votre message..." required>{{ old('message') }}</textarea>
+        <label class="k-label">Message *</label>
+        <textarea name="message" rows="5" class="k-input" style="resize:vertical;" placeholder="Votre message..." required>{{ old('message') }}</textarea>
       </div>
 
       <button type="submit" class="btn-katuiscia-filled w-full py-4 text-sm tracking-widest uppercase font-semibold rounded-xl">
