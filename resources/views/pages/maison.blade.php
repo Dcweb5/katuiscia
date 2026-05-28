@@ -23,7 +23,7 @@
     <section class="founder section" id="story">
       <div class="founder__inner">
         <div class="founder__image reveal-k">
-          <img src="{{ asset('assets/images/Dolly Batchawa.JPG') }}" alt="Dolly Batchawa, fondatrice de KATUISCIA">
+          <img src="{{ asset('assets/images/Dolly Batchawa.webp') }}" alt="Dolly Batchawa, fondatrice de KATUISCIA">
           <div class="founder__image-tag">
             <span class="founder__image-tag-name">Dolly Batchawa</span>
             <span class="founder__image-tag-title">Fondatrice & PDG</span>
