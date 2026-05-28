@@ -49,11 +49,17 @@ Route::post('/suivi-commande', [App\Http\Controllers\TrackOrderController::class
 
 // ===== AUTH (GUEST — non connecté) =====
 Route::get('/auth/google', function () {
-    return \Laravel\Socialite\Facades\Socialite::driver('google')->redirect();
+    $client = new \GuzzleHttp\Client(['verify' => !app()->isLocal()]);
+    return \Laravel\Socialite\Facades\Socialite::driver('google')
+        ->setHttpClient($client)
+        ->redirect();
 });
 Route::get('/auth/google/callback', function () {
     try {
-        $socialUser = \Laravel\Socialite\Facades\Socialite::driver('google')->stateless()->user();
+        $client = new \GuzzleHttp\Client(['verify' => !app()->isLocal()]);
+        $socialUser = \Laravel\Socialite\Facades\Socialite::driver('google')->stateless()
+            ->setHttpClient($client)
+            ->user();
     } catch (\Exception $e) {
         \Log::error('Google auth callback error: ' . $e->getMessage());
         return redirect('/connexion')->with('error', 'Erreur lors de l\'authentification Google : ' . $e->getMessage());
@@ -79,6 +85,7 @@ Route::get('/auth/google/callback', function () {
     }
 
     auth()->login($user, true);
+    session()->save();
     return redirect($user->is_admin ? '/admin' : '/compte');
 });
 Route::middleware('guest')->group(function () {
