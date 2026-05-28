@@ -5,6 +5,7 @@ namespace App\Modules\Product\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -27,6 +28,34 @@ class Product extends Model
             'is_featured' => 'boolean',
             'order' => 'integer',
         ];
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($product) {
+            $base = empty($product->slug) ? Str::slug($product->name) : $product->slug;
+            $product->slug = static::uniqueSlug($base);
+        });
+        static::updating(function ($product) {
+            if ($product->isDirty('name')) {
+                $base = $product->isDirty('slug') ? $product->slug : Str::slug($product->name);
+                $product->slug = static::uniqueSlug($base, $product->id);
+            }
+        });
+    }
+
+    public static function uniqueSlug($base, $excludeId = null)
+    {
+        $slug = $base;
+        $counter = 1;
+        while (true) {
+            $query = static::where('slug', $slug);
+            if ($excludeId) $query->where('id', '!=', $excludeId);
+            if (!$query->exists()) break;
+            $slug = $base . '-' . ++$counter;
+        }
+        return $slug;
     }
 
     public function categories(): BelongsToMany

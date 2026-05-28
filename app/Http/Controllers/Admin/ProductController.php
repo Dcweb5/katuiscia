@@ -85,10 +85,6 @@ class ProductController extends Controller
             'categories.*' => 'exists:categories,id',
         ]);
 
-        if (empty($validated['slug'])) {
-            $validated['slug'] = Str::slug($validated['name']);
-        }
-
         $product = Product::create($validated);
 
         if (!empty($validated['categories'])) {
@@ -145,10 +141,6 @@ class ProductController extends Controller
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
         ]);
-
-        if (empty($validated['slug'])) {
-            $validated['slug'] = Str::slug($validated['name']);
-        }
 
         $product->update($validated);
 
