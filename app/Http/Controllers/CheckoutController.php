@@ -136,6 +136,7 @@ class CheckoutController extends Controller
     {
         $order = Order::create([
             'user_id' => auth()->id(),
+            'cart_id' => $cart->id,
             'order_number' => 'KAT-' . strtoupper(substr(uniqid(), -6)),
             'email' => $data['email'],
             'firstname' => $data['firstname'],
@@ -226,18 +227,13 @@ class CheckoutController extends Controller
         // Générer la facture
         try { $this->generateInvoice($order); } catch (\Exception $e) { \Log::error('Invoice failed: ' . $e->getMessage()); }
 
-        // Vider le panier après confirmation (multiple fallbacks)
-        $cart = \App\Models\Cart::where('user_id', $order->user_id)->first()
-            ?? \App\Models\Cart::where('session_id', session()->getId())->first()
-            ?? \App\Models\Cart::where('user_id', auth()->id())->first();
-        // Fallback ultime : vider tous les paniers de cette session
-        if (!$cart) {
-            $carts = \App\Models\Cart::where('session_id', session()->getId())->get();
-            foreach ($carts as $c) { $c->items()->delete(); $c->delete(); }
-        }
-        if ($cart) {
-            $cart->items()->delete();
-            $cart->delete();
+        // Vider le panier via l'ID stocké sur la commande (garanti correct)
+        if ($order->cart_id) {
+            $cart = \App\Models\Cart::find($order->cart_id);
+            if ($cart) {
+                $cart->items()->delete();
+                $cart->delete();
+            }
         }
         session()->forget('coupon');
     }

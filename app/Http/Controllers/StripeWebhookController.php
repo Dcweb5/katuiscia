@@ -40,15 +40,13 @@ class StripeWebhookController extends Controller
                     $order->user->increment('loyalty_points', (int) $order->total);
                 }
 
-                // Vider le panier
-                if ($order->user_id) {
-                    $cart = \App\Models\Cart::where('user_id', $order->user_id)->first();
-                } else {
-                    $cart = \App\Models\Cart::where('email', $order->email)->first();
-                }
-                if ($cart) {
-                    $cart->items()->delete();
-                    $cart->delete();
+                // Vider le panier (via cart_id stocké sur la commande)
+                if ($order->cart_id) {
+                    $cart = \App\Models\Cart::find($order->cart_id);
+                    if ($cart) {
+                        $cart->items()->delete();
+                        $cart->delete();
+                    }
                 }
 
                 // Générer et envoyer la facture
