@@ -37,8 +37,10 @@
     <div class="relative flex justify-center items-center min-h-[500px] reveal-k-k delay-2" id="hero-slideshow">
       @foreach($heroProducts as $i => $product)
       <a href="{{ url('produit/'.$product->slug) }}" class="hero-slide {{ $i === 0 ? 'active' : '' }}" data-name="{{ $product->name }}" data-price="{{ number_format($product->final_price, 0, ',', ' ') }} €">
-        <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
-             class="max-w-[380px] w-full rounded-2xl shadow-xl transition-transform duration-500 ease-out-expo" loading="eager" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+        <div style="width:380px;max-width:90vw;height:500px;display:flex;align-items:center;justify-content:center;margin:0 auto;">
+          <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+               style="max-width:100%;max-height:100%;object-fit:contain;border-radius:20px;box-shadow:0 8px 30px rgba(61,43,43,0.12);" loading="eager" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+        </div>
       </a>
       @endforeach
 
