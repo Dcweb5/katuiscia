@@ -25,15 +25,15 @@
 
   <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:var(--space-lg);">
     @forelse($categories as $category)
-    <div class="card" style="position:relative; overflow:hidden;">
+    <div class="card" style="position:relative; overflow:hidden; cursor:pointer;" onclick="this.classList.toggle('expanded')">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:var(--space-md);">
         <div>
           <h3 style="font-family:var(--font-heading); font-size:var(--text-lg); margin-bottom:4px;">{{ $category->name }}</h3>
           <span style="font-size:var(--text-xs); color:var(--color-text-muted); text-transform:uppercase; letter-spacing:var(--tracking-wider);">
-            {{ $category->slug }} • {{ $category->products_count }} produit(s)
+            {{ $category->slug }} · {{ $category->products_count }} produit(s)
           </span>
         </div>
-        <div style="display:flex; gap:8px;">
+        <div style="display:flex; gap:8px;" onclick="event.stopPropagation()">
           <a href="{{ route('admin.categories.edit', $category) }}" class="action-btn" title="Modifier">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:16px; height:16px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           </a>
@@ -48,6 +48,30 @@
       <p style="font-size:var(--text-sm); color:var(--color-text-light); line-height:1.6;">
         {{ $category->description ?? 'Aucune description.' }}
       </p>
+
+      {{-- Expandable products --}}
+      <div class="cat-products" style="max-height:0;overflow:hidden;transition:max-height 0.3s ease;">
+        @if($category->products->isNotEmpty())
+        <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--color-border);">
+          <strong style="font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text-muted);display:block;margin-bottom:0.75rem;">Produits</strong>
+          <div style="display:flex;flex-direction:column;gap:0.5rem;">
+            @foreach($category->products as $product)
+            <div style="display:flex;align-items:center;gap:0.75rem;padding:8px;border-radius:8px;background:var(--color-bg);" onclick="event.stopPropagation()">
+              <img src="{{ $product->image_url }}" style="width:36px;height:36px;border-radius:6px;object-fit:cover;flex-shrink:0;" onerror="this.style.display='none'">
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $product->name }}</div>
+                <div style="font-size:11px;color:var(--color-text-muted);">{{ number_format($product->final_price, 0, ',', ' ') }} €</div>
+              </div>
+              <a href="{{ route('admin.products.edit', $product) }}" class="action-btn" title="Modifier le produit" style="width:auto;height:auto;padding:4px 10px;font-size:11px;">✏️ Modifier</a>
+            </div>
+            @endforeach
+          </div>
+        </div>
+        @else
+        <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--color-border);text-align:center;color:var(--color-text-muted);font-size:12px;">Aucun produit dans cette catégorie.</div>
+        @endif
+      </div>
+
       @if(!$category->is_active)
       <span class="status-badge" style="position:absolute; top:12px; right:12px; background:var(--color-gray-medium); color:var(--color-text-muted); font-size:10px;">Inactive</span>
       @endif
@@ -59,4 +83,11 @@
     @endforelse
   </div>
 </div>
+
+<style>
+.card.expanded .cat-products { max-height:800px !important; }
+</style>
+<script>
+  document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'admin-categories') l.classList.add('active'); });
+</script>
 @endsection
