@@ -31,13 +31,15 @@ class ImageOptimizer
 
         $img->save($path . '/' . $filename, quality: 90);
 
-        // Miniature 300px
-        $thumbData = $file->get();
-        $thumb = Image::decode($thumbData);
-        if ($thumb->width() > 300) {
-            $thumb->resize(300, null);
+        // Miniature 300px — décoder depuis le fichier déjà sauvegardé
+        $savedPath = $path . '/' . $filename;
+        if (file_exists($savedPath)) {
+            $thumb = Image::decode($savedPath);
+            if ($thumb->width() > 300) {
+                $thumb->resize(300, null);
+            }
+            $thumb->save($path . '/thumb_' . $filename, quality: 75);
         }
-        $thumb->save($path . '/thumb_' . $filename, quality: 75);
 
         return $folder . '/' . $filename;
     }
