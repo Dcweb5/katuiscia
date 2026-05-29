@@ -338,15 +338,15 @@
   }
 
   .hero-slide.active {
-    @apply relative opacity-100 scale-100 rotate-2 pointer-events-auto;
+    @apply relative opacity-100 scale-100 pointer-events-auto;
   }
 
   .hero-slide.exiting {
-    @apply opacity-0 scale-95 -rotate-1;
+    @apply opacity-0 scale-95;
   }
 
   .hero-slide.active:hover img {
-    @apply -rotate-2 scale-[1.03];
+    @apply scale-[1.02];
   }
 
   /* Hero Dots */
