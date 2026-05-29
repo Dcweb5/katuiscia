@@ -43,7 +43,7 @@
                 <button type="submit" class="action-btn" title="{{ $m->is_read ? 'Marquer non lu' : 'Marquer lu' }}">{{ $m->is_read ? '📩' : '📬' }}</button>
               </form>
               <button type="button" class="action-btn" title="Répondre" onclick="openReply({{ $m->id }})">✉️</button>
-              <form method="POST" action="{{ route('admin.contacts.destroy', $m) }}" style="display:inline;" onsubmit="return confirm('Supprimer ce message ?')">
+              <form method="POST" action="{{ route('admin.contacts.destroy', $m) }}" style="display:inline;" onsubmit="event.preventDefault();showConfirm('Supprimer ce message ?',()=>this.submit())">
                 @csrf @method('DELETE')
                 <button type="submit" class="action-btn" title="Supprimer">🗑</button>
               </form>
@@ -124,9 +124,11 @@ function updateBulkBtn() {
 
 function bulkDelete() {
   const ids = [...document.querySelectorAll('.msg-check:checked')].map(c => c.value);
-  if (!ids.length || !confirm('Supprimer les '+ids.length+' message(s) sélectionné(s) ?')) return;
-  document.getElementById('bulkIds').value = ids.join(',');
-  document.getElementById('bulkDeleteForm').submit();
+  if (!ids.length) return;
+  showConfirm('Supprimer les '+ids.length+' message(s) selectionne(s) ?', function(){
+    document.getElementById('bulkIds').value = ids.join(',');
+    document.getElementById('bulkDeleteForm').submit();
+  });
 }
 
 function openReply(id) {

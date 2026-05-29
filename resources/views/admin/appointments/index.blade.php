@@ -62,7 +62,7 @@
           <td>
             <div style="display:flex;gap:4px;">
               <a href="{{ route('admin.appointments.show', $a) }}" class="action-btn" title="Détail">👁</a>
-              <form method="POST" action="{{ route('admin.appointments.destroy', $a) }}" style="display:inline;" onsubmit="return confirm('Supprimer ce rendez-vous ?')">
+              <form method="POST" action="{{ route('admin.appointments.destroy', $a) }}" style="display:inline;" onsubmit="event.preventDefault();showConfirm('Supprimer ce rendez-vous ?',()=>this.submit())">
                 @csrf @method('DELETE')
                 <button type="submit" class="action-btn" title="Supprimer">🗑</button>
               </form>

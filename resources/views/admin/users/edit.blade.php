@@ -66,7 +66,7 @@
             </button>
           </form>
           @if(auth()->id() !== $user->id)
-          <form method="POST" action="{{ route('admin.users.destroy', $user) }}" onsubmit="return confirm('Supprimer définitivement cet utilisateur ?')">
+          <form method="POST" action="{{ route('admin.users.destroy', $user) }}" onsubmit="event.preventDefault();showConfirm('Supprimer définitivement cet utilisateur ?',()=>this.submit())">
             @csrf @method('DELETE')
             <button type="submit" class="btn-katuiscia" style="color:var(--color-error);border-color:var(--color-error);font-size:12px;">Supprimer</button>
           </form>

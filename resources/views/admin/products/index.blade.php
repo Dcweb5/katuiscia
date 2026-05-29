@@ -80,7 +80,7 @@
           <td>
             <div style="display:flex;gap:4px;">
               <a href="{{ route('admin.products.edit', $product) }}" class="action-btn" title="Modifier">✏️</a>
-              <form method="POST" action="{{ route('admin.products.destroy', $product) }}" style="display:inline;" onsubmit="return confirm('Supprimer ce produit ?')">
+              <form method="POST" action="{{ route('admin.products.destroy', $product) }}" style="display:inline;" onsubmit="event.preventDefault();showConfirm('Supprimer ce produit ?',()=>this.submit())">
                 @csrf @method('DELETE')
                 <button type="submit" class="action-btn" title="Supprimer">🗑</button>
               </form>

@@ -58,7 +58,7 @@
           <td>
             <div style="display:flex;gap:4px;">
               <button class="action-btn" title="Modifier" onclick="openEditModal({{ $post->id }})">✏️</button>
-              <form method="POST" action="{{ route('admin.blog.destroy', $post) }}" style="display:inline;" onsubmit="return confirm('Supprimer cet article ?')">
+              <form method="POST" action="{{ route('admin.blog.destroy', $post) }}" style="display:inline;" onsubmit="event.preventDefault();showConfirm('Supprimer cet article ?',()=>this.submit())">
                 @csrf @method('DELETE')
                 <button type="submit" class="action-btn" title="Supprimer">🗑</button>
               </form>

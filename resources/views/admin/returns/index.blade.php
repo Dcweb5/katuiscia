@@ -93,13 +93,15 @@
 <script>
 function updateStatus(sel, id) {
   if (!sel.value) return;
-  if (!confirm('Changer le statut en "' + sel.options[sel.selectedIndex].text + '" ?')) { sel.value = ''; return; }
-  var f = document.getElementById('return-form');
-  f.action = '{{ url('admin/retours') }}/' + id;
-  var input = document.createElement('input');
-  input.type = 'hidden'; input.name = 'status'; input.value = sel.value;
-  f.appendChild(input);
-  f.submit();
+  var label = sel.options[sel.selectedIndex].text;
+  showConfirm('Changer le statut en "' + label + '" ?', function(){
+    var f = document.getElementById('return-form');
+    f.action = '{{ url('admin/retours') }}/' + id;
+    var input = document.createElement('input');
+    input.type = 'hidden'; input.name = 'status'; input.value = sel.value;
+    f.appendChild(input);
+    f.submit();
+  });
 }
 document.querySelectorAll('.sidebar-link[data-page]').forEach(l => { if(l.dataset.page === 'admin-retours') l.classList.add('active'); });
 </script>

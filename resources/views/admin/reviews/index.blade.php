@@ -46,7 +46,7 @@
               @if(!$r->is_approved)
               <form method="POST" action="{{ route('admin.reviews.approve', $r) }}" onclick="event.stopPropagation()">@csrf @method('PUT')<button type="submit" class="action-btn" title="Approuver (+50 pts)" style="color:var(--color-success);">✓</button></form>
               @endif
-              <form method="POST" action="{{ route('admin.reviews.destroy', $r) }}" onsubmit="return confirm('Supprimer ?')" onclick="event.stopPropagation()">@csrf @method('DELETE')<button type="submit" class="action-btn action-btn--danger">×</button></form>
+              <form method="POST" action="{{ route('admin.reviews.destroy', $r) }}" onsubmit="event.preventDefault();showConfirm('Supprimer ?',()=>this.submit())" onclick="event.stopPropagation()">@csrf @method('DELETE')<button type="submit" class="action-btn action-btn--danger">×</button></form>
             </div>
           </td>
         </tr>

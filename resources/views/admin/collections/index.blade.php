@@ -71,7 +71,7 @@
                 @csrf @method('PUT')
                 <button type="submit" class="action-btn" title="{{ $collection->is_active ? 'Désactiver' : 'Activer' }}">{{ $collection->is_active ? '👁' : '👁‍🗨' }}</button>
               </form>
-              <form method="POST" action="{{ route('admin.collections.destroy', $collection) }}" style="display:inline;" onsubmit="return confirm('Supprimer cette collection ?')">
+              <form method="POST" action="{{ route('admin.collections.destroy', $collection) }}" style="display:inline;" onsubmit="event.preventDefault();showConfirm('Supprimer cette collection ?',()=>this.submit())">
                 @csrf @method('DELETE')
                 <button type="submit" class="action-btn" title="Supprimer">🗑</button>
               </form>
