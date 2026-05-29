@@ -16,13 +16,13 @@ class ImageOptimizer
             mkdir($path, 0755, true);
         }
 
-        // Essayer d'obtenir le chemin du fichier (certaines configs retournent un chemin relatif)
+        // Essayer d'obtenir le chemin du fichier
         $filePath = $file->getRealPath() ?: $file->getPathname();
-        if (!$filePath || !file_exists($filePath)) {
-            // Fallback: utiliser le contenu binaire
-            $img = Image::decode($file->get());
-        } else {
+        if ($filePath && file_exists($filePath) && is_file($filePath)) {
             $img = Image::decode($filePath);
+        } else {
+            // Fallback: décoder le contenu binaire directement
+            $img = Image::decodeBinary($file->get());
         }
 
         if ($img->width() > $maxWidth) {

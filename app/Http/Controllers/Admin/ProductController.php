@@ -95,14 +95,18 @@ class ProductController extends Controller
         if ($request->hasFile('images')) {
             $uploadedPaths = [];
             foreach ($request->file('images') as $i => $image) {
-                $path = ImageOptimizer::store($image, 'products', 1200);
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'path' => $path,
-                    'is_primary' => $i === 0,
-                    'order' => $i,
-                ]);
-                $uploadedPaths[] = $path;
+                try {
+                    $path = ImageOptimizer::store($image, 'products', 1200);
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'path' => $path,
+                        'is_primary' => $i === 0,
+                        'order' => $i,
+                    ]);
+                    $uploadedPaths[] = $path;
+                } catch (\Exception $e) {
+                    \Log::error('Product image upload failed: ' . $e->getMessage());
+                }
             }
             // Synchroniser les colonnes image_primary / image_secondary du produit
             if (!empty($uploadedPaths)) {
@@ -153,7 +157,9 @@ class ProductController extends Controller
             $existingCount = $product->images()->count();
             foreach ($request->file('images') as $i => $image) {
                 if ($existingCount + $i >= 5) break; // Max 5 images
-                $path = ImageOptimizer::store($image, 'products', 1200);
+                try {
+                    $path = ImageOptimizer::store($image, 'products', 1200);
+                } catch (\Exception $e) { continue; }
                 ProductImage::create([
                     'product_id' => $product->id,
                     'path' => $path,
@@ -198,7 +204,9 @@ class ProductController extends Controller
 
         foreach ($request->file('images') as $i => $image) {
             if ($existingCount + $i >= 5) break;
-            $path = ImageOptimizer::store($image, 'products', 1200);
+            try {
+                $path = ImageOptimizer::store($image, 'products', 1200);
+            } catch (\Exception $e) { continue; }
             $img = ProductImage::create([
                 'product_id' => $product->id,
                 'path' => $path,
