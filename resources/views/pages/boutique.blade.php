@@ -127,7 +127,7 @@
             <a href="{{ url('produit/' . $product->slug) }}" style="text-decoration:none; color:inherit; flex-grow:1;">
               <span class="product-card__category">{{ $product->categories->first()->name ?? 'Produit' }}</span>
               <h3 class="product-card__name">{{ $product->name }}</h3>
-              <p class="product-card__description">{{ $product->description }}</p>
+              <p class="product-card__description">{{ Str::limit($product->description, 80) }}</p>
               <span class="product-card__price">{{ number_format($product->price, 0, ',', ' ') }} €</span>
             </a>
           </div>

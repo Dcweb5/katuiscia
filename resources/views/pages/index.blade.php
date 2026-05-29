@@ -201,7 +201,7 @@
       <div class="card-info"><a href="{{ url('produit/'.$product->slug) }}" class="no-underline text-inherit flex-1">
         <span class="card-category">{{ $product->categories->first()?->name ?? 'Soin de la peau' }}</span>
         <h3 class="card-name">{{ $product->name }}</h3>
-        <p class="card-desc">{{ $product->description }}</p>
+        <p class="card-desc">{{ Str::limit($product->description, 80) }}</p>
         <span class="card-price">{{ number_format($product->final_price, 0, ',', ' ') }} €</span>
       </a></div>
     </div>
