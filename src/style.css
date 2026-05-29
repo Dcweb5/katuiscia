@@ -333,16 +333,11 @@
 
   /* ==== HERO SLIDESHOW ==== */
   .hero-slide {
-    @apply absolute opacity-0 scale-[0.92] rotate-2
-           transition-all duration-700 ease-out-expo pointer-events-none;
+    @apply hidden;
   }
 
   .hero-slide.active {
-    @apply relative opacity-100 scale-100 pointer-events-auto;
-  }
-
-  .hero-slide.exiting {
-    @apply opacity-0 scale-95;
+    @apply block;
   }
 
   .hero-slide.active:hover img {

@@ -34,12 +34,12 @@
       @endif
     </div>
 
-    <div class="relative flex justify-center items-center min-h-[500px] reveal-k-k delay-2" id="hero-slideshow">
+    <div class="relative flex justify-center items-center min-h-[500px] reveal-k-k delay-2" id="hero-slideshow" style="overflow:hidden;">
       @foreach($heroProducts as $i => $product)
       <a href="{{ url('produit/'.$product->slug) }}" class="hero-slide {{ $i === 0 ? 'active' : '' }}" data-name="{{ $product->name }}" data-price="{{ number_format($product->final_price, 0, ',', ' ') }} €">
-        <div style="width:380px;max-width:90vw;height:500px;display:flex;align-items:center;justify-content:center;margin:0 auto;">
+        <div style="width:380px;max-width:90vw;aspect-ratio:3/4;overflow:hidden;border-radius:20px;box-shadow:0 8px 30px rgba(61,43,43,0.12);margin:0 auto;">
           <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
-               style="max-width:100%;max-height:100%;object-fit:contain;border-radius:20px;box-shadow:0 8px 30px rgba(61,43,43,0.12);" loading="eager" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+               style="width:100%;height:100%;object-fit:cover;" loading="eager" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
         </div>
       </a>
       @endforeach
