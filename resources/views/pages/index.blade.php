@@ -34,9 +34,9 @@
       @endif
     </div>
 
-    <div class="relative flex justify-center items-center min-h-[500px] reveal-k-k delay-2" id="hero-slideshow" style="overflow:hidden;">
+    <div class="relative flex justify-center items-center min-h-[500px] reveal-k-k delay-2" id="hero-slideshow">
       @foreach($heroProducts as $i => $product)
-      <a href="{{ url('produit/'.$product->slug) }}" class="hero-slide {{ $i === 0 ? 'active' : '' }}" data-name="{{ $product->name }}" data-price="{{ number_format($product->final_price, 0, ',', ' ') }} €">
+      <a href="{{ url('produit/'.$product->slug) }}" class="hero-slide {{ $i === 0 ? 'active' : '' }}" data-name="{{ $product->name }}" data-price="{{ number_format($product->final_price, 0, ',', ' ') }} €" style="{{ $i === 0 ? '' : 'display:none;' }}">
         <div style="width:380px;max-width:90vw;aspect-ratio:3/4;overflow:hidden;border-radius:20px;box-shadow:0 8px 30px rgba(61,43,43,0.12);margin:0 auto;">
           <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                style="width:100%;height:100%;object-fit:cover;" loading="eager" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
@@ -52,11 +52,11 @@
 
       @if($heroProducts->count() > 2)
       <img src="{{ $heroProducts->get(2)->image_url }}" alt=""
-           class="absolute top-0 -right-8 w-[130px] rounded-xl shadow-lg z-20 hidden lg:block animate-float" aria-hidden="true" data-parallax="-0.05" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+           class="absolute top-4 right-[5%] w-[110px] rounded-xl shadow-lg z-20 hidden lg:block animate-float" aria-hidden="true" data-parallax="-0.05" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
       @endif
       @if($heroProducts->count() > 3)
       <img src="{{ $heroProducts->get(3)->image_url }}" alt=""
-           class="absolute bottom-8 -left-10 w-[110px] rounded-xl shadow-lg z-20 hidden lg:block animate-float-delayed" aria-hidden="true" data-parallax="-0.08" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+           class="absolute bottom-12 left-[2%] w-[100px] rounded-xl shadow-lg z-20 hidden lg:block animate-float-delayed" aria-hidden="true" data-parallax="-0.08" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
       @endif
     </div>
   </div>
@@ -279,4 +279,28 @@
 
 @section('scripts')
 <script type="module" src="{{ asset('js/index-dynamics.js') }}"></script>
+<script>
+(function(){
+  var slides = document.querySelectorAll('.hero-slide');
+  var dots = document.querySelectorAll('.hero-dot');
+  var current = 0;
+  var total = slides.length;
+  if (total <= 1) return;
+
+  function showSlide(n) {
+    slides.forEach(function(s,i){ s.style.display = i === n ? '' : 'none'; });
+    dots.forEach(function(d,i){ d.classList.toggle('active', i === n); });
+    var tagName = document.getElementById('hero-tag-name');
+    var tagPrice = document.getElementById('hero-tag-price');
+    var active = slides[n];
+    if (tagName && active) tagName.textContent = active.dataset.name || '';
+    if (tagPrice && active) tagPrice.textContent = active.dataset.price || '';
+    current = n;
+  }
+
+  dots.forEach(function(d){ d.addEventListener('click', function(){ showSlide(parseInt(this.dataset.slide)); }); });
+  setInterval(function(){ showSlide((current + 1) % total); }, 5000);
+})();
+</script>
+<script src="{{ asset('js/cart-ajax.js') }}"></script>
 @endsection
