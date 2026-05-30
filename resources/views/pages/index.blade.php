@@ -36,7 +36,7 @@
 
     <div class="relative flex justify-center items-center min-h-[500px] reveal-k-k delay-2" id="hero-slideshow">
       @foreach($heroProducts as $i => $product)
-      <a href="{{ url('produit/'.$product->slug) }}" class="hero-slide {{ $i === 0 ? 'active' : '' }}" data-name="{{ $product->name }}" data-price="{{ number_format($product->final_price, 0, ',', ' ') }} €" style="{{ $i === 0 ? '' : 'display:none;' }}">
+      <a href="{{ url('produit/'.$product->slug) }}" class="hero-slide {{ $i === 0 ? 'active' : '' }}" data-name="{{ $product->name }}" data-price="{{ number_format($product->final_price, 0, ',', ' ') }} €" style="{{ $i === 0 ? 'display:block;' : 'display:none;' }}">
         <div style="width:380px;max-width:90vw;aspect-ratio:3/4;overflow:hidden;border-radius:20px;box-shadow:0 8px 30px rgba(61,43,43,0.12);margin:0 auto;">
           <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                style="width:100%;height:100%;object-fit:cover;" loading="eager" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
@@ -288,7 +288,10 @@
   if (total <= 1) return;
 
   function showSlide(n) {
-    slides.forEach(function(s,i){ s.style.display = i === n ? '' : 'none'; });
+    slides.forEach(function(s,i){
+      s.style.display = i === n ? 'block' : 'none';
+      s.classList.toggle('active', i === n);
+    });
     dots.forEach(function(d,i){ d.classList.toggle('active', i === n); });
     var tagName = document.getElementById('hero-tag-name');
     var tagPrice = document.getElementById('hero-tag-price');
