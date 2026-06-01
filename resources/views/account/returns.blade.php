@@ -50,12 +50,31 @@
 
     {{-- Progress bar --}}
     @php $steps = ['Demandé','Approuvé','Reçu','Remboursé']; $statuses = ['pending','approved','received','completed']; $current = array_search($r->status, $statuses); $current = $current !== false ? $current : 0; @endphp
-    <div style="display:flex;align-items:center;gap:0;margin-bottom:var(--space-sm);">
+    <div style="display:flex;align-items:center;gap:0;margin-bottom:var(--space-md);">
       @foreach($steps as $i => $step)
       <div style="flex:1;text-align:center;"><div style="width:12px;height:12px;border-radius:50%;background:{{ $i <= $current ? 'var(--color-warm)' : 'var(--color-border)' }};margin:0 auto 4px;"></div><span style="font-size:10px;color:{{ $i <= $current ? 'var(--color-warm)' : 'var(--color-text-muted)' }};">{{ $step }}</span></div>
       @if($i < 3)<div style="flex:0.5;height:2px;background:{{ $i < $current ? 'var(--color-warm)' : 'var(--color-border)' }};"></div>@endif
       @endforeach
     </div>
+
+    <!-- Timeline de suivi des actions -->
+    <details style="margin-top:16px;margin-bottom:16px;padding-top:12px;border-top:1px dashed var(--color-border);cursor:pointer;outline:none;">
+      <summary style="font-size:12px;color:var(--color-warm);font-weight:600;outline:none;user-select:none;">⏳ Consulter le suivi détaillé de mon retour (Timeline)</summary>
+      <div style="margin-top:14px;padding-left:1.25rem;border-left:2px solid var(--color-warm);display:flex;flex-direction:column;gap:14px;font-size:12px;cursor:default;" onclick="event.stopPropagation();">
+        @if($r->histories && $r->histories->isNotEmpty())
+          @foreach($r->histories as $history)
+          <div style="position:relative;">
+            <!-- pastille -->
+            <div style="position:absolute;left:calc(-1.25rem - 5px);top:3px;width:8px;height:8px;border-radius:50%;background:var(--color-warm);border:2px solid white;box-shadow:0 0 0 2px var(--color-warm);"></div>
+            <div style="color:var(--color-text-muted);font-size:10px;">{{ $history->created_at->format('d/m/Y \à H:i:s') }}</div>
+            <div style="color:var(--color-dark);font-weight:600;margin-top:2px;">{{ $history->comment }}</div>
+          </div>
+          @endforeach
+        @else
+          <p style="color:var(--color-text-muted);font-size:12px;">Aucun historique pour ce retour.</p>
+        @endif
+      </div>
+    </details>
 
     @if(in_array($r->status, ['pending','approved']))
     <form method="POST" action="{{ route('returns.cancel', $r) }}" onsubmit="return confirm('Annuler cette demande ?')">
@@ -82,7 +101,7 @@
         <select name="order_id" class="admin-input" required onchange="updateOrderItems(this.value)">
           <option value="">Sélectionnez...</option>
           @foreach($orders as $o)
-          <option value="{{ $o->id }}">{{ $o->order_number }} — {{ $o->created_at->format('d/m/Y') }} ({{ number_format($o->total,0,',',' ') }} €)</option>
+          <option value="{{ $o->id }}">{{ $o->order_number }} — {{ $o->created_at->format('d/m/Y') }} ({{ number_format($o->total, 2, ',', ' ') }} €)</option>
           @endforeach
         </select>
       </div>

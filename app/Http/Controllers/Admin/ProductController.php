@@ -8,6 +8,7 @@ use App\Modules\Product\Models\Category;
 use App\Modules\Product\Models\Product;
 use App\Services\ImageOptimizer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -83,6 +84,9 @@ class ProductController extends Controller
             'is_featured' => 'nullable|boolean',
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
+            'key_ingredients' => 'nullable|string',
+            'application_ritual' => 'nullable|string',
+            'promo_expires_at' => 'nullable|date',
         ]);
 
         $product = Product::create($validated);
@@ -123,7 +127,30 @@ class ProductController extends Controller
     {
         $product->load('categories', 'images');
         $categories = Category::ordered()->get();
-        return view('admin.products.edit', compact('product', 'categories'));
+
+        // Stats & Ventes du produit
+        $ordersSold = DB::table('order_items')
+            ->join('orders', 'order_items.order_id', '=', 'orders.id')
+            ->where('order_items.product_id', $product->id)
+            ->whereIn('orders.status', ['confirmed', 'preparing', 'shipped', 'delivered'])
+            ->select('orders.id', 'orders.order_number', 'orders.firstname', 'orders.lastname', 'orders.created_at', 'order_items.quantity', 'order_items.price', 'orders.status')
+            ->orderBy('orders.created_at', 'desc')
+            ->get();
+
+        $stockSold = $ordersSold->sum('quantity');
+
+        $returnsCount = \App\Models\ReturnRequest::where(function($query) use ($product) {
+            $query->whereIn('order_item_id', function($q) use ($product) {
+                $q->select('id')->from('order_items')->where('product_id', $product->id);
+            })->orWhere(function($q) use ($product) {
+                $q->whereNull('order_item_id')
+                  ->whereIn('order_id', function($sub) use ($product) {
+                      $sub->select('order_id')->from('order_items')->where('product_id', $product->id);
+                  });
+            });
+        })->count();
+
+        return view('admin.products.edit', compact('product', 'categories', 'ordersSold', 'stockSold', 'returnsCount'));
     }
 
     public function update(Request $request, Product $product)
@@ -144,6 +171,9 @@ class ProductController extends Controller
             'is_featured' => 'nullable|boolean',
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
+            'key_ingredients' => 'nullable|string',
+            'application_ritual' => 'nullable|string',
+            'promo_expires_at' => 'nullable|date',
         ]);
 
         $product->update($validated);

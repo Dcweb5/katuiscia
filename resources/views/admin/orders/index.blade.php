@@ -45,7 +45,7 @@
           <td>{{ $o->firstname }} {{ $o->lastname }}<br><small style="color:var(--color-text-muted);">{{ $o->email }}</small></td>
           <td>{{ $o->created_at->format('d/m/Y H:i') }}</td>
           <td>{{ $o->items->count() }}</td>
-          <td><strong>{{ number_format($o->total, 2, ',', ' ') }} €</strong>@if($o->discount > 0)<br><small style="color:var(--color-success);">-{{ number_format($o->discount, 0) }}€</small>@endif</td>
+          <td><strong>{{ number_format($o->total, 2, ',', ' ') }} €</strong>@if($o->discount > 0)<br><small style="color:var(--color-success);">-{{ number_format($o->discount, 2, ',', ' ') }} €</small>@endif</td>
           <td>
             @php $colors = ['pending'=>'var(--color-warm)','confirmed'=>'#3b82f6','preparing'=>'#f59e0b','shipped'=>'#8b5cf6','delivered'=>'var(--color-success)','cancelled'=>'var(--color-error)']; @endphp
             <span class="status-badge" style="background:{{ $colors[$o->status] ?? '#ccc' }};color:white;font-size:10px;font-weight:600;">{{ $statuses[$o->status] ?? $o->status }}</span>

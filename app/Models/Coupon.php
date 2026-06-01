@@ -9,7 +9,7 @@ class Coupon extends Model
     protected $fillable = [
         'code', 'type', 'value', 'min_order_amount',
         'max_uses', 'used_count', 'starts_at', 'expires_at',
-        'is_active', 'description',
+        'is_active', 'description', 'user_id',
     ];
 
     protected function casts(): array
@@ -23,6 +23,11 @@ class Coupon extends Model
             'starts_at' => 'datetime',
             'expires_at' => 'datetime',
         ];
+    }
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function isValid(float $cartTotal): bool
@@ -48,7 +53,7 @@ class Coupon extends Model
     {
         return match ($this->type) {
             'free_shipping' => 'Livraison offerte',
-            'fixed' => number_format($this->value ?? 0, 0, ',', ' ') . ' € de réduction',
+            'fixed' => number_format($this->value ?? 0, 2, ',', ' ') . ' € de réduction',
             default => $this->value . '% de réduction',
         };
     }

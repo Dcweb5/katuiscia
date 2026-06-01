@@ -1,2 +1,7 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /mon-compte/
+Disallow: /checkout/
+Disallow: /panier
+
+Sitemap: https://katuiscia.com/sitemap.xml

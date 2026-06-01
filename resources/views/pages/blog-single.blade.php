@@ -1,7 +1,9 @@
 @extends('layouts.public')
 @section('title', $post->title . ' — KATUISCIA')
+@section('description', $post->excerpt ?? Str::limit(strip_tags($post->content), 150))
 
 @section('head')
+<meta name="keywords" content="{{ $post->tags }}">
 <style>
 /* ===== ARTICLE HERO ===== */
 .article-hero {

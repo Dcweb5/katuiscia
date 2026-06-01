@@ -4,20 +4,21 @@
 
 @section('content')
 <div class="dashboard-content">
-  <a href="{{ route('admin.users.index') }}" style="display:inline-flex;align-items:center;gap:8px;color:var(--color-text-muted);font-size:14px;margin-bottom:var(--space-lg);text-decoration:none;">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:16px;height:16px;"><path d="m15 18-6-6 6-6"/></svg> Retour aux utilisateurs
-  </a>
+  <div class="admin-form-container--large">
+    <a href="{{ route('admin.users.index') }}" style="display:inline-flex;align-items:center;gap:8px;color:var(--color-text-muted);font-size:14px;margin-bottom:var(--space-lg);text-decoration:none;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:16px;height:16px;"><path d="m15 18-6-6 6-6"/></svg> Retour aux utilisateurs
+    </a>
 
-  <h1 class="page-title">Modifier — {{ $user->firstname }} {{ $user->lastname }}</h1>
+    <h1 class="page-title">Modifier — {{ $user->firstname }} {{ $user->lastname }}</h1>
 
-  @if(session('success'))
-  <div style="padding:12px 16px;background:rgba(90,143,110,0.1);border:1px solid var(--color-success);border-radius:8px;color:var(--color-success);margin-bottom:var(--space-lg);">{{ session('success') }}</div>
-  @endif
-  @if($errors->any())
-  <div style="padding:12px 16px;background:rgba(199,80,80,0.1);border:1px solid var(--color-error);border-radius:8px;color:var(--color-error);margin-bottom:var(--space-lg);"><ul>@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul></div>
-  @endif
+    @if(session('success'))
+    <div style="padding:12px 16px;background:rgba(90,143,110,0.1);border:1px solid var(--color-success);border-radius:8px;color:var(--color-success);margin-bottom:var(--space-lg);">{{ session('success') }}</div>
+    @endif
+    @if($errors->any())
+    <div style="padding:12px 16px;background:rgba(199,80,80,0.1);border:1px solid var(--color-error);border-radius:8px;color:var(--color-error);margin-bottom:var(--space-lg);"><ul>@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul></div>
+    @endif
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-xl);align-items:start;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-xl);align-items:start;">
     <form method="POST" action="{{ route('admin.users.update', $user) }}">
       @csrf @method('PUT')
       <div class="card">
@@ -36,8 +37,8 @@
           <label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" name="is_admin" value="1" @checked(old('is_admin', $user->is_admin)) style="accent-color:var(--color-warm);"> Admin</label>
           <label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" name="is_active" value="1" @checked(old('is_active', $user->is_active)) style="accent-color:var(--color-warm);"> Actif</label>
         </div>
-        <div style="margin-top:var(--space-lg);">
-          <button type="submit" class="btn-primary">Enregistrer</button>
+        <div class="admin-form-actions" style="margin-top:var(--space-lg); justify-content: flex-start;">
+          <button type="submit" class="btn-katuiscia-filled">Enregistrer</button>
         </div>
       </div>
     </form>
@@ -74,6 +75,7 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
 </div>
 @endsection

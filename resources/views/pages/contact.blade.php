@@ -11,6 +11,81 @@
   box-shadow:0 8px 30px rgba(0,0,0,0.18);max-width:420px;
   transform:translateX(0);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
 }
+.custom-select-container {
+  position: relative;
+  width: 100%;
+}
+.custom-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: inherit;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+  box-sizing: border-box;
+}
+.custom-select-trigger::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #C4967A;
+  border-bottom: 2px solid #C4967A;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.2s ease;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+.custom-select-container.open .custom-select-trigger::after {
+  transform: translateY(2px) rotate(-135deg);
+}
+.custom-select-container.open .custom-select-trigger {
+  border-color: var(--color-warm);
+  box-shadow: 0 0 0 3px rgba(196,150,122,0.12);
+}
+.custom-select-options {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 2px solid var(--color-warm);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(61,43,43,0.1);
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+  max-height: 250px;
+  overflow-y: auto;
+}
+.custom-select-container.open .custom-select-options {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.custom-select-option {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--color-dark);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.custom-select-option:hover {
+  background-color: var(--color-warm) !important;
+  color: #fff !important;
+}
+.custom-select-option.selected {
+  background-color: var(--color-warm);
+  color: #fff;
+}
 </style>
 @endsection
 
@@ -34,7 +109,7 @@
       </div>
       @endif
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div class="grid grid-cols-1 md:grid-cols-2" style="gap: 1.5rem;">
         <div>
           <label class="k-label">Nom complet *</label>
           <input type="text" name="name" value="{{ old('name') }}" class="k-input" placeholder="Votre nom" required>
@@ -47,16 +122,20 @@
 
       <div style="margin:1.25rem 0;">
         <label class="k-label">Sujet</label>
-        <select name="subject" class="k-input" style="appearance:auto;">
-          <option value="">Selectionner un sujet</option>
-          <option value="commande" @selected(old('subject')=='commande')>Question sur une commande</option>
-          <option value="produit" @selected(old('subject')=='produit')>Information produit</option>
-          <option value="retour" @selected(old('subject')=='retour')>Retour / Remboursement</option>
-          <option value="partenariat" @selected(old('subject')=='partenariat')>Partenariat / Grossiste</option>
-          <option value="formation" @selected(old('subject')=='formation')>Formation</option>
-          <option value="presse" @selected(old('subject')=='presse')>Presse</option>
-          <option value="autre" @selected(old('subject')=='autre')>Autre</option>
-        </select>
+        <div class="custom-select-container">
+          <div class="custom-select-trigger">Selectionner un sujet</div>
+          <div class="custom-select-options">
+            <div class="custom-select-option" data-value="">Selectionner un sujet</div>
+            <div class="custom-select-option" data-value="commande">Question sur une commande</div>
+            <div class="custom-select-option" data-value="produit">Information produit</div>
+            <div class="custom-select-option" data-value="retour">Retour / Remboursement</div>
+            <div class="custom-select-option" data-value="partenariat">Partenariat / Grossiste</div>
+            <div class="custom-select-option" data-value="formation">Formation</div>
+            <div class="custom-select-option" data-value="presse">Presse</div>
+            <div class="custom-select-option" data-value="autre">Autre</div>
+          </div>
+          <input type="hidden" name="subject" id="subject-hidden-input" value="{{ old('subject') }}">
+        </div>
       </div>
 
       <div style="margin-bottom:1.5rem;">
@@ -103,14 +182,19 @@
     </div>
 
     <div class="flex gap-4">
-      <a href="#" class="w-11 h-11 rounded-full border border-border-k flex items-center justify-center text-dark hover:bg-dark hover:text-cream hover:border-dark transition-all" aria-label="Instagram">
+      <a href="https://www.instagram.com/katuiscia_business_innovation?igsh=bndrYzc1emtibzRz&utm_source=qr" target="_blank" class="w-11 h-11 rounded-full border border-border-k flex items-center justify-center text-dark hover:bg-dark hover:text-cream hover:border-dark transition-all" aria-label="Instagram">
         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></svg>
       </a>
-      <a href="#" class="w-11 h-11 rounded-full border border-border-k flex items-center justify-center text-dark hover:bg-dark hover:text-cream hover:border-dark transition-all" aria-label="Facebook">
+      <a href="https://www.facebook.com/profile.php?id=61589520655219" target="_blank" class="w-11 h-11 rounded-full border border-border-k flex items-center justify-center text-dark hover:bg-dark hover:text-cream hover:border-dark transition-all" aria-label="Facebook">
         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
       </a>
-      <a href="#" class="w-11 h-11 rounded-full border border-border-k flex items-center justify-center text-dark hover:bg-dark hover:text-cream hover:border-dark transition-all" aria-label="TikTok">
+      <a href="https://www.tiktok.com/@katuiscia3?_r=1&_t=ZN-96qrPmEc9Mk" target="_blank" class="w-11 h-11 rounded-full border border-border-k flex items-center justify-center text-dark hover:bg-dark hover:text-cream hover:border-dark transition-all" aria-label="TikTok">
         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+      </a>
+      <a href="https://wa.me/33667650850" target="_blank" class="w-11 h-11 rounded-full border border-border-k flex items-center justify-center text-dark hover:bg-dark hover:text-cream hover:border-dark transition-all" aria-label="WhatsApp">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+        </svg>
       </a>
     </div>
   </div>
@@ -129,4 +213,48 @@
 
 @section('scripts')
 <script type="module" src="{{ asset('js/main.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const container = document.querySelector('.custom-select-container');
+  if (!container) return;
+  const trigger = container.querySelector('.custom-select-trigger');
+  const options = container.querySelectorAll('.custom-select-option');
+  const hiddenInput = container.querySelector('#subject-hidden-input');
+
+  trigger.addEventListener('click', function (e) {
+    e.stopPropagation();
+    container.classList.toggle('open');
+  });
+
+  options.forEach(opt => {
+    opt.addEventListener('click', function (e) {
+      e.stopPropagation();
+      const value = this.getAttribute('data-value');
+      const text = this.textContent;
+
+      options.forEach(o => o.classList.remove('selected'));
+      this.classList.add('selected');
+
+      trigger.textContent = text;
+      hiddenInput.value = value;
+      container.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function () {
+    container.classList.remove('open');
+  });
+
+  // Repopulate if old value is present
+  const defaultValue = hiddenInput.value;
+  if (defaultValue) {
+    const activeOpt = [...options].find(o => o.getAttribute('data-value') === defaultValue);
+    if (activeOpt) {
+      options.forEach(o => o.classList.remove('selected'));
+      activeOpt.classList.add('selected');
+      trigger.textContent = activeOpt.textContent;
+    }
+  }
+});
+</script>
 @endsection

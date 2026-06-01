@@ -104,7 +104,9 @@
             @endif
           </td>
           <td>
-            @if($user->is_active)
+            @if($user->locked_until && $user->locked_until->isFuture())
+            <span class="status-badge" style="background:var(--color-error);color:white;" title="Bloqué temporairement jusqu'au {{ $user->locked_until->format('d/m/Y H:i') }}">🔒 Bloqué</span>
+            @elseif($user->is_active)
             <span class="status-badge status-badge--success">Actif</span>
             @else
             <span class="status-badge" style="background:var(--color-gray-medium);color:var(--color-text-muted);">Inactif</span>
@@ -112,17 +114,26 @@
           </td>
           <td style="font-size:var(--text-xs);color:var(--color-text-muted);">{{ $user->created_at->format('d/m/Y') }}</td>
           <td>
-            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+            <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
               <a href="{{ route('admin.users.edit', $user) }}" class="action-btn" title="Modifier">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px;height:14px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
               </a>
 
+              @if($user->locked_until && $user->locked_until->isFuture())
+              <form method="POST" action="{{ route('admin.users.unblock', $user) }}" style="display:inline;">
+                @csrf @method('PUT')
+                <button type="submit" class="action-btn" title="Débloquer le compte" style="font-size:11px;background:rgba(90,143,110,0.1);color:var(--color-success);border:1px solid var(--color-success);padding:4px 8px;border-radius:4px;cursor:pointer;">
+                  🔓 Débloquer
+                </button>
+              </form>
+              @else
               <form method="POST" action="{{ route('admin.users.toggle-active', $user) }}" style="display:inline;">
                 @csrf @method('PUT')
                 <button type="submit" class="action-btn" title="{{ $user->is_active ? 'Désactiver' : 'Activer' }}" style="font-size:11px;">
                   {{ $user->is_active ? '🔒' : '🔓' }}
                 </button>
               </form>
+              @endif
 
               @if(!$user->is_admin || auth()->id() !== $user->id)
               <form method="POST" action="{{ route('admin.users.toggle-admin', $user) }}" style="display:inline;">

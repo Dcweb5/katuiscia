@@ -60,7 +60,7 @@
               <img src="{{ $product->image_url }}" style="width:36px;height:36px;border-radius:6px;object-fit:cover;flex-shrink:0;" onerror="this.style.display='none'">
               <div style="flex:1;min-width:0;">
                 <div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $product->name }}</div>
-                <div style="font-size:11px;color:var(--color-text-muted);">{{ number_format($product->final_price, 0, ',', ' ') }} €</div>
+                <div style="font-size:11px;color:var(--color-text-muted);">{{ number_format($product->final_price, 2, ',', ' ') }} €</div>
               </div>
               <a href="{{ route('admin.products.edit', $product) }}" class="action-btn" title="Modifier le produit" style="width:auto;height:auto;padding:4px 10px;font-size:11px;">✏️ Modifier</a>
             </div>

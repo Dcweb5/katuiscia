@@ -7,12 +7,12 @@
   {{-- Chat window --}}
   <div id="chat-window" style="display:none;position:absolute;bottom:62px;right:0;width:360px;max-height:480px;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.12);overflow:hidden;">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--color-warm);color:#fff;font-weight:600;font-size:15px;">
-      <span>💬 KATUISCIA</span>
+      <span>💬 Sophie — KATUISCIA</span>
       <button onclick="toggleChat()" style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer;line-height:1;">&times;</button>
     </div>
     <div id="chat-messages" style="flex:1;overflow-y:auto;padding:16px;min-height:250px;max-height:300px;display:flex;flex-direction:column;gap:10px;background:#faf7f2;font-size:14px;line-height:1.5;">
       <div style="align-self:flex-start;background:#fff;padding:10px 14px;border-radius:12px 12px 12px 4px;max-width:85%;color:var(--color-dark);box-shadow:0 1px 4px rgba(0,0,0,0.04);">
-        Bonjour ! Je suis l'assistant KATUISCIA. Comment puis-je vous aider ?
+        Bonjour ! Je suis Sophie, conseillère KATUISCIA. Comment puis-je vous aider aujourd'hui ?
       </div>
     </div>
     <div style="display:flex;gap:8px;padding:12px;border-top:1px solid #ede4db;background:#fff;">
@@ -56,10 +56,10 @@ function sendMessage() {
     body: JSON.stringify({message: msg})
   }).then(r => r.json()).then(data => {
     document.querySelector('.bot-typing')?.remove();
-    appendMessage(data.reply, 'bot');
+    appendMessage(data.reply || 'Bonjour, je rencontre un petit contretemps pour accéder à vos informations. N\'hésitez pas à m\'écrire à contact@katuiscia.com.', 'bot');
   }).catch(() => {
     document.querySelector('.bot-typing')?.remove();
-    appendMessage('Désolé, une erreur est survenue.', 'bot');
+    appendMessage('Bonjour, je rencontre un petit contretemps pour accéder à vos informations. N\'hésitez pas à m\'écrire à contact@katuiscia.com.', 'bot');
   });
 }
 function appendMessage(text, type) {
@@ -67,7 +67,7 @@ function appendMessage(text, type) {
   var isUser = type === 'user';
   div.style.cssText = 'align-self:'+(isUser?'flex-end':'flex-start')+';background:'+(isUser?'var(--color-warm);color:#fff':'#fff;color:var(--color-dark)')+';padding:10px 14px;border-radius:'+(isUser?'12px 12px 4px 12px':'12px 12px 12px 4px')+';max-width:85%;box-shadow:0 1px 4px rgba(0,0,0,0.04);font-size:14px;';
   div.textContent = text;
-  if (type === 'bot-typing') { div.classList.add('bot-typing'); div.textContent = 'KATUISCIA réfléchit...'; div.style.background = '#fff'; div.style.color = 'var(--color-text-muted)'; div.style.fontStyle = 'italic'; }
+  if (type === 'bot-typing') { div.classList.add('bot-typing'); div.textContent = 'Sophie écrit...'; div.style.background = '#fff'; div.style.color = 'var(--color-text-muted)'; div.style.fontStyle = 'italic'; }
   document.getElementById('chat-messages').appendChild(div);
   div.scrollIntoView({behavior:'smooth'});
 }

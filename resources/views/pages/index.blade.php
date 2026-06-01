@@ -5,6 +5,106 @@
 
 @section('head')
 <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+<style>
+  /* ==== HERO CAROUSEL — cadre carré incliné ==== */
+  #hero-slideshow {
+    overflow: visible !important;
+  }
+
+  /* Cadre des slides : carré avec arrondis, légèrement incliné */
+  .hero-slide {
+    display: none;
+    width: 380px !important;
+    height: 380px !important;
+    border-radius: 22px !important;
+    overflow: hidden !important;
+    box-shadow: 0 24px 60px rgba(61,43,43,0.18), 0 8px 24px rgba(61,43,43,0.10) !important;
+    transform: rotate(3deg) !important;
+    transition: transform 0.65s cubic-bezier(0.23,1,0.32,1),
+                box-shadow 0.65s cubic-bezier(0.23,1,0.32,1) !important;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .hero-slide.active {
+    display: block !important;
+  }
+
+  /* Au survol : cadre se redresse et légère montée */
+  .hero-slide.active:hover {
+    transform: rotate(0deg) translateY(-6px) !important;
+    box-shadow: 0 32px 70px rgba(61,43,43,0.22), 0 12px 30px rgba(61,43,43,0.12) !important;
+  }
+
+  /* Image dans le slide : remplie en cover */
+  .hero-slide img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+    transition: transform 0.65s cubic-bezier(0.23,1,0.32,1) !important;
+    max-width: none !important;
+  }
+
+  .hero-slide.active:hover img {
+    transform: scale(1.06) !important;
+  }
+
+  /* Slide sortant (transition out) */
+  .hero-slide.exiting {
+    display: block !important;
+    position: absolute !important;
+    opacity: 0 !important;
+    transform: rotate(3deg) scale(0.92) !important;
+    pointer-events: none !important;
+  }
+
+  /* ==== IMAGES FLOTTANTES — carrés fixes avec arrondis ==== */
+  .hero-float {
+    position: absolute;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    box-shadow: 0 12px 32px rgba(61,43,43,0.15), 0 4px 12px rgba(61,43,43,0.08) !important;
+    z-index: 20;
+    flex-shrink: 0;
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-float {
+      display: block;
+    }
+  }
+
+  .hero-float img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+    max-width: none !important;
+  }
+
+  /* Image flottante haut-droite */
+  .hero-float--top {
+    width: 118px !important;
+    height: 118px !important;
+    top: 15px !important;
+    right: -28px !important;
+  }
+
+  /* Image flottante bas-gauche */
+  .hero-float--bottom {
+    width: 105px !important;
+    height: 105px !important;
+    bottom: 45px !important;
+    left: -36px !important;
+  }
+
+  /* Section hero sans overflow hidden pour laisser dépasser les images */
+  #hero {
+    overflow: visible !important;
+  }
+</style>
 @endsection
 
 @section('content')
@@ -29,18 +129,15 @@
       <div class="bg-white p-5 rounded-2xl shadow-md inline-flex flex-col gap-1 max-w-[280px]">
         <span class="text-xs text-text-muted tracking-wide uppercase">Produit en vedette</span>
         <span class="font-heading text-xl font-medium text-dark transition-all duration-300" id="hero-tag-name">{{ $heroProducts->first()->name }}</span>
-        <span class="text-md font-semibold text-warm transition-all duration-300" id="hero-tag-price">{{ number_format($heroProducts->first()->final_price, 0, ',', ' ') }} €</span>
+        <span class="text-md font-semibold text-warm transition-all duration-300" id="hero-tag-price">{{ number_format($heroProducts->first()->final_price, 2, ',', ' ') }} €</span>
       </div>
       @endif
     </div>
 
     <div class="relative flex justify-center items-center min-h-[500px] reveal-k-k delay-2" id="hero-slideshow">
       @foreach($heroProducts as $i => $product)
-      <a href="{{ url('produit/'.$product->slug) }}" class="hero-slide {{ $i === 0 ? 'active' : '' }}" data-name="{{ $product->name }}" data-price="{{ number_format($product->final_price, 0, ',', ' ') }} €" style="{{ $i === 0 ? 'display:block;' : 'display:none;' }}">
-        <div style="width:380px;max-width:90vw;aspect-ratio:3/4;overflow:hidden;border-radius:20px;box-shadow:0 8px 30px rgba(61,43,43,0.12);margin:0 auto;">
-          <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
-               style="width:100%;height:100%;object-fit:cover;" loading="eager" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
-        </div>
+      <a href="{{ url('produit/'.$product->slug) }}" class="hero-slide {{ $i === 0 ? 'active' : '' }}" data-name="{{ $product->name }}" data-price="{{ number_format($product->final_price, 2, ',', ' ') }} €">
+        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" loading="{{ $i === 0 ? 'eager' : 'lazy' }}" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
       </a>
       @endforeach
 
@@ -50,13 +147,19 @@
         @endforeach
       </div>
 
-      @if($heroProducts->count() > 2)
-      <img src="{{ $heroProducts->get(2)->image_url }}" alt=""
-           class="absolute top-4 right-[5%] w-[110px] rounded-xl shadow-lg z-20 hidden lg:block animate-float" aria-hidden="true" data-parallax="-0.05" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+      @if($floatingProducts->isNotEmpty() && $floatingProducts->count() > 0)
+      <div class="hero-float hero-float--top hidden lg:block animate-float" aria-hidden="true" data-parallax="-0.05">
+        <a href="{{ url('produit/' . $floatingProducts->get(0)->slug) }}" class="block w-full h-full">
+          <img src="{{ $floatingProducts->get(0)->image_url }}" alt="{{ $floatingProducts->get(0)->name }}" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+        </a>
+      </div>
       @endif
-      @if($heroProducts->count() > 3)
-      <img src="{{ $heroProducts->get(3)->image_url }}" alt=""
-           class="absolute bottom-12 left-[2%] w-[100px] rounded-xl shadow-lg z-20 hidden lg:block animate-float-delayed" aria-hidden="true" data-parallax="-0.08" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+      @if($floatingProducts->isNotEmpty() && $floatingProducts->count() > 1)
+      <div class="hero-float hero-float--bottom hidden lg:block animate-float-delayed" aria-hidden="true" data-parallax="-0.08">
+        <a href="{{ url('produit/' . $floatingProducts->get(1)->slug) }}" class="block w-full h-full">
+          <img src="{{ $floatingProducts->get(1)->image_url }}" alt="{{ $floatingProducts->get(1)->name }}" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+        </a>
+      </div>
       @endif
     </div>
   </div>
@@ -73,9 +176,9 @@
   <div class="showcase-track flex overflow-x-auto lg:overflow-visible lg:justify-center gap-6 lg:gap-12 max-w-[1200px] mx-auto px-4 pb-12 snap-x snap-mandatory hide-scrollbar">
     @foreach($bestsellers as $product)
     <a href="{{ url('produit/'.$product->slug) }}" class="showcase-item group flex-none w-[280px] lg:w-[320px] snap-center relative flex flex-col items-center text-center transition-transform duration-300 ease-out-expo hover:-translate-y-2 reveal-k-k @if($loop->iteration > 1) delay-{{ $loop->iteration - 1 }} @endif">
-      <div class="w-full h-[350px] lg:h-[400px] bg-gray-med rounded-2xl flex items-center justify-center p-8 transition-colors group-hover:bg-[#E2DFD9]">
+      <div class="w-full aspect-[3/4] bg-gray-med rounded-2xl overflow-hidden transition-colors group-hover:bg-[#E2DFD9] relative">
         <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
-             class="max-h-full object-contain drop-shadow-xl transition-transform duration-500 group-hover:scale-110" loading="lazy" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
       </div>
       <div class="absolute -bottom-5 bg-white px-8 py-3 rounded-xl shadow-md flex flex-col min-w-[220px]">
         <span class="text-xs text-text-muted tracking-wider uppercase">🔥 Best-seller</span>
@@ -85,9 +188,9 @@
     @endforeach
     @if($latestProduct)
     <a href="{{ url('produit/'.$latestProduct->slug) }}" class="showcase-item group flex-none w-[280px] lg:w-[320px] snap-center relative flex flex-col items-center text-center transition-transform duration-300 ease-out-expo hover:-translate-y-2 reveal-k-k delay-3">
-      <div class="w-full h-[350px] lg:h-[400px] bg-gray-med rounded-2xl flex items-center justify-center p-8 transition-colors group-hover:bg-[#E2DFD9]">
+      <div class="w-full aspect-[3/4] bg-gray-med rounded-2xl overflow-hidden transition-colors group-hover:bg-[#E2DFD9] relative">
         <img src="{{ $latestProduct->image_url }}" alt="{{ $latestProduct->name }}"
-             class="max-h-full object-contain drop-shadow-xl transition-transform duration-500 group-hover:scale-110" loading="lazy" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
+             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
       </div>
       <div class="absolute -bottom-5 bg-white px-8 py-3 rounded-xl shadow-md flex flex-col min-w-[220px]">
         <span class="text-xs text-text-muted tracking-wider uppercase">🆕 Nouveauté</span>
@@ -117,31 +220,35 @@
     {{-- Large card --}}
     <div class="lg:row-span-2 relative rounded-xl overflow-hidden bg-white shadow-card group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 reveal-k-k">
       @if($selectionLargeType === 'collection')
-      <div class="w-full h-full overflow-hidden"><a href="{{ url('collection/'.$selectionLarge->slug) }}" class="block w-full h-full">
-        @if($selectionLarge->image_url)
-        <img src="{{ $selectionLarge->image_url }}" alt="{{ $selectionLarge->name }}"
-             class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" style="min-height:400px;" loading="lazy">
-        @else
-        <div style="width:100%;height:100%;min-height:400px;background:linear-gradient(135deg, #faf7f2, #ede4db);display:flex;align-items:center;justify-content:center;font-size:4rem;">📚</div>
-        @endif
-      </a></div>
-      <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-dark/60 to-transparent text-white">
+      <div class="w-full h-full overflow-hidden">
+        <a href="{{ url('collection/'.$selectionLarge->slug) }}" class="block w-full h-full relative">
+          <video autoplay loop muted playsinline class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" style="min-height:400px; width: 100%; height: 100%;">
+            <source src="{{ asset('assets/videos/spot.mp4') }}" type="video/mp4">
+            Votre navigateur ne supporte pas la lecture de vidéos.
+          </video>
+        </a>
+      </div>
+      <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-dark/60 to-transparent text-white pointer-events-none">
         <span class="text-xs text-gray-200">📚 Collection</span>
         <h3 class="font-heading text-xl font-medium">{{ $selectionLarge->name }}</h3>
         <p class="text-sm text-gray-200">{{ $selectionLarge->description }}</p>
       </div>
-      <span class="absolute top-4 right-4 bg-white text-dark text-sm font-semibold px-4 py-1.5 rounded-full">{{ number_format($selectionLarge->price, 0, ',', ' ') }} €</span>
+      <span class="absolute top-4 right-4 bg-white text-dark text-sm font-semibold px-4 py-1.5 rounded-full z-10">{{ number_format($selectionLarge->price, 2, ',', ' ') }} €</span>
       @else
-      <div class="w-full h-full overflow-hidden"><a href="{{ url('produit/'.$selectionLarge->slug) }}" class="block w-full h-full">
-        <img src="{{ $selectionLarge->image_url }}" alt="{{ $selectionLarge->name }}"
-             class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" style="min-height:400px;" loading="lazy" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
-      </a></div>
-      <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-dark/60 to-transparent text-white">
+      <div class="w-full h-full overflow-hidden">
+        <a href="{{ url('produit/'.$selectionLarge->slug) }}" class="block w-full h-full relative">
+          <video autoplay loop muted playsinline class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" style="min-height:400px; width: 100%; height: 100%;">
+            <source src="{{ asset('assets/videos/spot.mp4') }}" type="video/mp4">
+            Votre navigateur ne supporte pas la lecture de vidéos.
+          </video>
+        </a>
+      </div>
+      <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-dark/60 to-transparent text-white pointer-events-none">
         <span class="text-xs text-gray-200">🔥 Plus vendu</span>
         <h3 class="font-heading text-xl font-medium">{{ $selectionLarge->name }}</h3>
         <p class="text-sm text-gray-200">{{ $selectionLarge->description }}</p>
       </div>
-      <span class="absolute top-4 right-4 bg-white text-dark text-sm font-semibold px-4 py-1.5 rounded-full">{{ number_format($selectionLarge->final_price, 0, ',', ' ') }} €</span>
+      <span class="absolute top-4 right-4 bg-white text-dark text-sm font-semibold px-4 py-1.5 rounded-full z-10">{{ number_format($selectionLarge->final_price, 2, ',', ' ') }} €</span>
       @endif
     </div>
 
@@ -159,7 +266,7 @@
       <div class="p-4 flex flex-col gap-1">
         <span class="text-xs text-text-muted tracking-wider uppercase">📚 Collection</span>
         <h3 class="font-heading text-xl font-medium text-dark">{{ $item->name }}</h3>
-        <span class="text-md font-semibold text-dark mt-1">{{ number_format($item->price, 0, ',', ' ') }} €</span>
+        <span class="text-md font-semibold text-dark mt-1">{{ number_format($item->price, 2, ',', ' ') }} €</span>
       </div>
       @else
       <a href="{{ url('produit/'.$item->slug) }}" class="block w-full h-[220px] overflow-hidden">
@@ -169,7 +276,7 @@
       <div class="p-4 flex flex-col gap-1">
         <span class="text-xs text-text-muted tracking-wider uppercase">{{ $item->categories->first()?->name ?? 'Soin' }}</span>
         <h3 class="font-heading text-xl font-medium text-dark">{{ $item->name }}</h3>
-        <span class="text-md font-semibold text-dark mt-1">{{ number_format($item->final_price, 0, ',', ' ') }} €</span>
+        <span class="text-md font-semibold text-dark mt-1">{{ number_format($item->final_price, 2, ',', ' ') }} €</span>
       </div>
       @endif
     </div>
@@ -204,7 +311,7 @@
         <span class="card-category">{{ $product->categories->first()?->name ?? 'Soin de la peau' }}</span>
         <h3 class="card-name">{{ $product->name }}</h3>
         <p class="card-desc">{{ Str::limit($product->description, 80) }}</p>
-        <span class="card-price">{{ number_format($product->final_price, 0, ',', ' ') }} €</span>
+        <span class="card-price">{{ number_format($product->final_price, 2, ',', ' ') }} €</span>
       </a></div>
     </div>
     @endforeach
@@ -279,31 +386,4 @@
 
 @section('scripts')
 <script type="module" src="{{ asset('js/index-dynamics.js') }}"></script>
-<script>
-(function(){
-  var slides = document.querySelectorAll('.hero-slide');
-  var dots = document.querySelectorAll('.hero-dot');
-  var current = 0;
-  var total = slides.length;
-  if (total <= 1) return;
-
-  function showSlide(n) {
-    slides.forEach(function(s,i){
-      s.style.display = i === n ? 'block' : 'none';
-      s.classList.toggle('active', i === n);
-    });
-    dots.forEach(function(d,i){ d.classList.toggle('active', i === n); });
-    var tagName = document.getElementById('hero-tag-name');
-    var tagPrice = document.getElementById('hero-tag-price');
-    var active = slides[n];
-    if (tagName && active) tagName.textContent = active.dataset.name || '';
-    if (tagPrice && active) tagPrice.textContent = active.dataset.price || '';
-    current = n;
-  }
-
-  dots.forEach(function(d){ d.addEventListener('click', function(){ showSlide(parseInt(this.dataset.slide)); }); });
-  setInterval(function(){ showSlide((current + 1) % total); }, 5000);
-})();
-</script>
-<script src="{{ asset('js/cart-ajax.js') }}"></script>
 @endsection

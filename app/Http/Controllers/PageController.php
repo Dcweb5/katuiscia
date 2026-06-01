@@ -76,9 +76,20 @@ class PageController extends Controller
             $boutiqueProducts = $boutiqueProducts->concat($extra);
         }
 
+        // Récupération de deux produits aléatoires pour les images flottantes
+        $floatingProducts = Product::active()
+            ->whereNotIn('id', $heroProducts->pluck('id')->toArray())
+            ->inRandomOrder()
+            ->take(2)
+            ->get();
+        if ($floatingProducts->count() < 2) {
+            $floatingProducts = Product::active()->inRandomOrder()->take(2)->get();
+        }
+
         return view('pages.index', compact(
             'heroProducts', 'bestsellers', 'latestProduct',
-            'selectionLarge', 'selectionLargeType', 'selectionSmall', 'selectionType', 'boutiqueProducts'
+            'selectionLarge', 'selectionLargeType', 'selectionSmall', 'selectionType', 'boutiqueProducts',
+            'floatingProducts'
         ));
     }
 
@@ -96,7 +107,41 @@ class PageController extends Controller
         if ($slug) {
             $product = Product::with(['categories', 'images'])->where('slug', $slug)->active()->firstOrFail();
         }
-        $related = Product::with(['categories', 'images'])->active()->where('id', '!=', $product?->id)->ordered()->take(4)->get();
+
+        $related = collect();
+        if ($product) {
+            $categoryIds = $product->categories->pluck('id')->toArray();
+            
+            $query = Product::with(['categories', 'images'])
+                ->active()
+                ->where('id', '!=', $product->id);
+            
+            $query->where(function ($q) use ($product, $categoryIds) {
+                if (!empty($product->need)) {
+                    $q->where('need', $product->need);
+                }
+                if (!empty($categoryIds)) {
+                    $q->orWhereHas('categories', function ($catQuery) use ($categoryIds) {
+                        $catQuery->whereIn('categories.id', $categoryIds);
+                    });
+                }
+            });
+
+            $related = $query->inRandomOrder()->take(3)->get();
+
+            // Fallback if less than 3 suggestions found
+            if ($related->count() < 3) {
+                $excludeIds = $related->pluck('id')->merge([$product->id])->toArray();
+                $extra = Product::with(['categories', 'images'])
+                    ->active()
+                    ->whereNotIn('id', $excludeIds)
+                    ->inRandomOrder()
+                    ->take(3 - $related->count())
+                    ->get();
+                $related = $related->concat($extra);
+            }
+        }
+
         return view('pages.produit', compact('product', 'related'));
     }
 
@@ -140,6 +185,12 @@ class PageController extends Controller
         $post->increment('views');
         $recentPosts = \App\Models\BlogPost::published()->where('id', '!=', $post->id)->orderBy('created_at', 'desc')->take(3)->get();
         return view('pages.blog-single', compact('post', 'recentPosts'));
+    }
+
+    public function collections()
+    {
+        $collections = \App\Models\Collection::active()->with(['products', 'category'])->get();
+        return view('pages.collections', compact('collections'));
     }
 
     public function collectionShow($slug)

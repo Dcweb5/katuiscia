@@ -14,25 +14,26 @@
 
 @section('content')
 <div class="dashboard-content">
-  <a href="{{ route('admin.products.index') }}" style="display:inline-flex; align-items:center; gap:8px; color:var(--color-text-muted); font-size:14px; margin-bottom:var(--space-lg); text-decoration:none;">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:16px; height:16px;"><path d="m15 18-6-6 6-6"/></svg>
-    Retour aux produits
-  </a>
+  <div class="admin-form-container--large">
+    <a href="{{ route('admin.products.index') }}" style="display:inline-flex; align-items:center; gap:8px; color:var(--color-text-muted); font-size:14px; margin-bottom:var(--space-lg); text-decoration:none;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:16px; height:16px;"><path d="m15 18-6-6 6-6"/></svg>
+      Retour aux produits
+    </a>
 
-  <h1 class="page-title">Nouveau Produit</h1>
-  <p class="page-subtitle">Remplissez les informations du produit.</p>
+    <h1 class="page-title">Nouveau Produit</h1>
+    <p class="page-subtitle">Remplissez les informations du produit.</p>
 
-  @if($errors->any())
-  <div style="padding:12px 16px; background:rgba(199,80,80,0.1); border:1px solid var(--color-error); border-radius:8px; color:var(--color-error); margin-bottom:var(--space-lg); font-size:14px;">
-    <ul style="margin:0; padding-left:20px;">
-      @foreach($errors->all() as $error)
-      <li>{{ $error }}</li>
-      @endforeach
-    </ul>
-  </div>
-  @endif
+    @if($errors->any())
+    <div style="padding:12px 16px; background:rgba(199,80,80,0.1); border:1px solid var(--color-error); border-radius:8px; color:var(--color-error); margin-bottom:var(--space-lg); font-size:14px;">
+      <ul style="margin:0; padding-left:20px;">
+        @foreach($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+      </ul>
+    </div>
+    @endif
 
-  <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data" style="max-width:800px;">
+    <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
     @csrf
 
     <div class="card" style="margin-bottom:var(--space-xl);">
@@ -102,6 +103,11 @@
             <option value="0">Brouillon</option>
           </select>
         </div>
+
+        <div class="admin-form-group" style="grid-column:1/-1;">
+          <label class="admin-label">Date limite de promotion (Laisser vide si pas de limite temporelle)</label>
+          <input type="datetime-local" name="promo_expires_at" class="admin-input" value="{{ old('promo_expires_at') }}">
+        </div>
       </div>
 
       <div class="admin-form-group" style="margin-top:var(--space-md);">
@@ -112,6 +118,16 @@
       <div class="admin-form-group">
         <label class="admin-label">Description détaillée</label>
         <textarea name="long_description" class="admin-input" rows="4" placeholder="Description complète du produit..." style="resize:vertical;">{{ old('long_description') }}</textarea>
+      </div>
+
+      <div class="admin-form-group">
+        <label class="admin-label">Ingrédients Clés (Optionnel)</label>
+        <textarea name="key_ingredients" class="admin-input" rows="3" placeholder="Ex: Lavande sauvage: Calme l'épiderme..." style="resize:vertical;">{{ old('key_ingredients') }}</textarea>
+      </div>
+
+      <div class="admin-form-group">
+        <label class="admin-label">Rituel d'Application (Optionnel)</label>
+        <textarea name="application_ritual" class="admin-input" rows="3" placeholder="Ex: Appliquer délicatement chaque soir..." style="resize:vertical;">{{ old('application_ritual') }}</textarea>
       </div>
     </div>
 
@@ -139,11 +155,12 @@
       </div>
     </div>
 
-    <div style="display:flex; gap:var(--space-sm); justify-content:flex-end;">
-      <a href="{{ route('admin.products.index') }}" style="padding:10px 20px; border:1px solid var(--color-border); border-radius:var(--radius-sm); background:transparent; cursor:pointer; font-size:var(--text-sm); text-decoration:none; color:inherit;">Annuler</a>
-      <button type="submit" class="btn-primary">Créer le produit</button>
+    <div class="admin-form-actions">
+      <a href="{{ route('admin.products.index') }}" class="btn-katuiscia">Annuler</a>
+      <button type="submit" class="btn-katuiscia-filled">Créer le produit</button>
     </div>
   </form>
+  </div>
 </div>
 
 <script>
@@ -158,9 +175,25 @@ function previewImages(event) {
 function handleFiles(files) {
   const remaining = MAX_IMAGES - uploadedFiles.length;
   const newFiles = files.slice(0, remaining);
+  const maxSize = 2 * 1024 * 1024; // 2 Mo
   
   newFiles.forEach(function(file) {
-    if (!file.type.match(/^image\/(jpeg|png|webp)$/)) return;
+    if (file.size > maxSize) {
+      if (typeof showToast === 'function') {
+        showToast("L'image \"" + file.name + "\" est trop volumineuse (max 2 Mo). Veuillez la compresser avant de l'ajouter.", "error");
+      } else {
+        alert("L'image \"" + file.name + "\" est trop volumineuse (max 2 Mo). Veuillez la compresser avant de l'ajouter.");
+      }
+      return;
+    }
+    if (!file.type.match(/^image\/(jpeg|png|webp)$/)) {
+      if (typeof showToast === 'function') {
+        showToast("Le format de \"" + file.name + "\" n'est pas supporté (JPG, PNG, WebP uniquement).", "error");
+      } else {
+        alert("Le format de \"" + file.name + "\" n'est pas supporté (JPG, PNG, WebP uniquement).");
+      }
+      return;
+    }
     uploadedFiles.push(file);
   });
 

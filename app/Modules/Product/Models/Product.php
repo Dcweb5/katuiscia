@@ -16,6 +16,7 @@ class Product extends Model
         'image_primary', 'image_secondary',
         'ingredients', 'size',
         'order', 'is_active', 'is_featured',
+        'key_ingredients', 'application_ritual', 'promo_expires_at',
     ];
 
     protected function casts(): array
@@ -148,19 +149,16 @@ class Product extends Model
 
     public function getDisplayPriceAttribute(): string
     {
-        return number_format($this->final_price, 0, ',', ' ') . ' €';
+        return number_format($this->final_price, 2, ',', ' ') . ' €';
     }
 
     public function getFinalPriceAttribute(): float
     {
-        if ($this->sale_price && $this->sale_price < $this->price) {
-            return $this->sale_price;
-        }
         return $this->price;
     }
 
     public function getHasDiscountAttribute(): bool
     {
-        return !is_null($this->sale_price) && $this->sale_price < $this->price;
+        return !is_null($this->sale_price) && $this->sale_price > $this->price;
     }
 }

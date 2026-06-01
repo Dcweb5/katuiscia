@@ -54,16 +54,16 @@
       <div style="width:44px; height:44px; border-radius:var(--radius-md); background:var(--color-mint); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0;">📦</div>
       <div>
         <span style="font-size:var(--text-xs); color:var(--color-text-muted); text-transform:uppercase; letter-spacing:0.05em;">Commandes</span>
-        <strong style="font-size:var(--text-lg); color:var(--color-dark); display:block;">0</strong>
-        <span style="font-size:10px; color:var(--color-text-muted);">En cours</span>
+        <strong style="font-size:var(--text-lg); color:var(--color-dark); display:block;">{{ $ordersCount }}</strong>
+        <span style="font-size:10px; color:var(--color-text-muted);">{{ $activeOrdersCount }} en cours</span>
       </div>
     </div>
     <div class="stat-icon-card">
       <div style="width:44px; height:44px; border-radius:var(--radius-md); background:#e0d8ff; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0;">⭐</div>
       <div>
         <span style="font-size:var(--text-xs); color:var(--color-text-muted); text-transform:uppercase; letter-spacing:0.05em;">Avis</span>
-        <strong style="font-size:var(--text-lg); color:var(--color-dark); display:block;">0</strong>
-        <span style="font-size:10px; color:var(--color-text-muted);">Publiés</span>
+        <strong style="font-size:var(--text-lg); color:var(--color-dark); display:block;">{{ $reviewsCount }}</strong>
+        <span style="font-size:10px; color:var(--color-text-muted);">Rédigés</span>
       </div>
     </div>
     <div class="stat-icon-card">
@@ -102,18 +102,27 @@
         <a href="{{ url('compte/commandes') }}" style="font-size:var(--text-xs); color:var(--color-warm); text-decoration:none;">Tout voir →</a>
       </div>
       <div class="order-timeline">
+        @forelse($recentOrders as $ro)
+        @php
+          $stepLabel = ['pending' => 'En attente de paiement', 'confirmed' => 'Confirmée', 'preparing' => 'En préparation', 'shipped' => 'Expédiée', 'delivered' => 'Livrée', 'cancelled' => 'Annulée'];
+          $stepColor = ['pending' => 'var(--color-warm)', 'confirmed' => '#3b82f6', 'preparing' => '#f59e0b', 'shipped' => '#8b5cf6', 'delivered' => 'var(--color-success)', 'cancelled' => 'var(--color-error)'];
+        @endphp
         <div style="position:relative; margin-bottom:var(--space-lg);">
-          <div class="order-dot active"></div>
-          <strong style="font-size:var(--text-sm);">Commande #KAT-10512</strong>
-          <span style="display:block; font-size:11px; color:var(--color-success);">En transit — Arrivée prévue demain</span>
-          <span style="display:block; font-size:10px; color:var(--color-text-muted);">Nectar Lumineux x2 • 250 €</span>
+          <div class="order-dot @if($ro->status !== 'cancelled') active @endif" style="background: {{ $stepColor[$ro->status] ?? 'var(--color-warm)' }}; border-color: {{ $stepColor[$ro->status] ?? 'var(--color-warm)' }}"></div>
+          <strong style="font-size:var(--text-sm);">Commande #{{ $ro->order_number }}</strong>
+          <span style="display:block; font-size:11px; color:{{ $stepColor[$ro->status] ?? 'var(--color-text-muted)' }};">
+            {{ $stepLabel[$ro->status] ?? $ro->status }} — {{ $ro->created_at->format('d/m/Y') }}
+          </span>
+          <span style="display:block; font-size:10px; color:var(--color-text-muted); margin-top:2px;">
+            @foreach($ro->items as $item)
+              {{ $item->product_name }} x{{ $item->quantity }}@if(!$loop->last) • @endif
+            @endforeach
+            • {{ number_format($ro->total, 2, ',', ' ') }} €
+          </span>
         </div>
-        <div style="position:relative;">
-          <div class="order-dot"></div>
-          <strong style="font-size:var(--text-sm);">Commande #KAT-10495</strong>
-          <span style="display:block; font-size:11px; color:var(--color-text-muted);">Livrée le 24 Oct</span>
-          <span style="display:block; font-size:10px; color:var(--color-text-muted);">Sérum Botanique Éclat • 110 €</span>
-        </div>
+        @empty
+        <p style="font-size:var(--text-sm); color:var(--color-text-muted); padding:var(--space-md) 0; text-align:center;">Aucune commande récente.</p>
+        @endforelse
       </div>
     </div>
   </div>

@@ -9,7 +9,7 @@ class ReturnController extends Controller
 {
     public function index(Request $request)
     {
-        $query = ReturnRequest::with(['user', 'order', 'item', 'images'])->orderBy('created_at', 'desc');
+        $query = ReturnRequest::with(['user', 'order', 'item', 'images', 'histories'])->orderBy('created_at', 'desc');
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);

@@ -56,9 +56,9 @@
           <td style="font-size:var(--text-sm);">{{ $collection->products->count() }} produit(s)</td>
           <td>
             @if($collection->original_price && $collection->original_price > $collection->price)
-            <span style="text-decoration:line-through;color:var(--color-text-muted);font-size:12px;">{{ number_format($collection->original_price, 0, ',', ' ') }} €</span>
+            <span style="text-decoration:line-through;color:var(--color-text-muted);font-size:12px;">{{ number_format($collection->original_price, 2, ',', ' ') }} €</span>
             @endif
-            <strong>{{ number_format($collection->price, 0, ',', ' ') }} €</strong>
+            <strong>{{ number_format($collection->price, 2, ',', ' ') }} €</strong>
           </td>
           <td style="font-size:var(--text-sm);">{{ $collection->category?->name ?? '—' }}</td>
           <td>
@@ -87,7 +87,7 @@
 </div>
 
 {{-- MODAL --}}
-<dialog id="collection-modal" style="border:none;border-radius:12px;padding:0;box-shadow:0 20px 60px rgba(0,0,0,0.2);max-width:700px;width:95%;">
+<dialog id="collection-modal">
   <div style="padding:0;">
     <div style="display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;border-bottom:1px solid var(--color-border);background:#fafafa;">
       <h2 style="font-family:var(--font-heading);font-size:var(--text-xl);margin:0;" id="modal-title">Nouvelle Collection</h2>
@@ -133,8 +133,16 @@
 
       <div class="admin-form-group">
         <label class="admin-label">Image</label>
-        <input type="file" name="image" id="input-image" class="admin-input" accept="image/*">
-        <div id="current-image" style="display:none;margin-top:0.5rem;"></div>
+        <div class="upload-zone" id="upload-zone" style="border: 2px dashed var(--color-border); border-radius: var(--radius-md); padding: 1.5rem; text-align: center; cursor: pointer; transition: all 0.3s; background: #fafafa;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:32px; height:32px; color:var(--color-text-muted); margin:0 auto 8px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <p style="font-size:13px; color:var(--color-text-muted); margin:0;">Glissez-déposez votre image ou <span style="color:var(--color-warm); font-weight:500;">parcourir</span></p>
+          <small style="color:var(--color-text-muted); display:block; margin-top:4px;">Formats supportés : JPG, PNG, WebP • Max 2 Mo</small>
+          <input type="file" name="image" id="input-image" accept="image/*" onchange="handleSingleFileSelect(this)" style="display:none;">
+        </div>
+        <div id="image-preview" style="margin-top:0.75rem; display:flex; align-items:center; gap:12px;">
+          <div id="current-image" style="display:none;"></div>
+          <div id="new-image-preview" style="display:none;"></div>
+        </div>
       </div>
 
       <div class="admin-form-group">
@@ -155,18 +163,35 @@
         <label for="input-active" style="font-size:14px;">Actif</label>
       </div>
 
-      <div style="display:flex;gap:0.75rem;justify-content:flex-end;padding-top:1rem;border-top:1px solid var(--color-border);">
-        <button type="button" onclick="closeModal()" class="action-btn" style="padding:0.5rem 1rem;">Annuler</button>
-        <button type="submit" name="action" value="draft" class="btn-primary" style="background:transparent;color:var(--color-text);border:1px solid var(--color-border);">Sauvegarder brouillon</button>
-        <button type="submit" name="action" value="publish" class="btn-primary">Publier</button>
+      <div class="admin-form-actions" style="padding-top:1rem;border-top:1px solid var(--color-border);">
+        <button type="button" onclick="closeModal()" class="btn-katuiscia">Annuler</button>
+        <button type="submit" name="action" value="draft" class="btn-katuiscia">Sauvegarder brouillon</button>
+        <button type="submit" name="action" value="publish" class="btn-katuiscia-filled">Publier</button>
       </div>
     </form>
   </div>
 </dialog>
 
 <style>
-::backdrop { background:rgba(0,0,0,0.4); }
+dialog#collection-modal {
+  position: fixed;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  margin: 0 !important;
+  max-width: 700px;
+  width: 95%;
+  border: none;
+  border-radius: 12px;
+  padding: 0;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+dialog#collection-modal::backdrop {
+  background: rgba(61,43,43,0.35);
+  backdrop-filter: blur(4px);
+}
 .product-check-label:hover { background:#faf7f2; }
+.upload-zone:hover, .upload-zone.dragover { border-color: var(--color-warm) !important; background: rgba(196,150,122,0.05) !important; }
 </style>
 
 <script>
@@ -193,7 +218,7 @@ function updatePricePreview() {
   document.querySelectorAll('.product-check').forEach(function(cb){ cb.onchange = updatePricePreview; });
 }
 
-function formatPrice(p) { return new Intl.NumberFormat('fr-FR').format(Math.round(p * 100) / 100); }
+function formatPrice(p) { return new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(p); }
 
 updatePricePreview();
 
@@ -208,6 +233,8 @@ function openCreateModal() {
   document.getElementById('input-image').value = '';
   document.getElementById('input-active').checked = true;
   document.getElementById('current-image').style.display = 'none';
+  document.getElementById('new-image-preview').style.display = 'none';
+  document.getElementById('new-image-preview').innerHTML = '';
   document.querySelectorAll('.product-check').forEach(c => c.checked = false);
   document.getElementById('collection-modal').showModal();
 }
@@ -225,6 +252,8 @@ function openEditModal(id) {
   document.getElementById('input-desc').value = c.description || '';
   document.getElementById('input-image').value = '';
   document.getElementById('input-active').checked = c.is_active;
+  document.getElementById('new-image-preview').style.display = 'none';
+  document.getElementById('new-image-preview').innerHTML = '';
   if (c.image_url) {
     document.getElementById('current-image').style.display = '';
     document.getElementById('current-image').innerHTML = '<img src="'+c.image_url+'" style="max-height:80px;border-radius:6px;"> <small style="color:var(--color-text-muted);margin-left:0.5rem;">Image actuelle</small>';
@@ -251,5 +280,63 @@ document.getElementById('collection-form').addEventListener('submit', function(e
 document.querySelectorAll('.sidebar-link[data-page]').forEach(function(l) {
   if(l.dataset.page === 'admin-collections') l.classList.add('active');
 });
+
+function handleSingleFileSelect(inputOrFiles) {
+  var files = inputOrFiles.files ? Array.from(inputOrFiles.files) : Array.from(inputOrFiles);
+  var file = files[0];
+  if (!file) return;
+  var maxSize = 2 * 1024 * 1024; // 2 Mo
+  if (file.size > maxSize) {
+    if (typeof showToast === 'function') {
+      showToast("L'image \"" + file.name + "\" est trop volumineuse (max 2 Mo). Veuillez la compresser avant de l'ajouter.", "error");
+    } else {
+      alert("L'image \"" + file.name + "\" est trop volumineuse (max 2 Mo). Veuillez la compresser avant de l'ajouter.");
+    }
+    document.getElementById('input-image').value = '';
+    document.getElementById('new-image-preview').style.display = 'none';
+    document.getElementById('new-image-preview').innerHTML = '';
+    return;
+  }
+  
+  if (!inputOrFiles.files) {
+    var dt = new DataTransfer();
+    dt.items.add(file);
+    document.getElementById('input-image').files = dt.files;
+  }
+  
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var previewDiv = document.getElementById('new-image-preview');
+    previewDiv.innerHTML = '<img src="' + e.target.result + '" style="max-height:80px;border-radius:6px;"> <small style="color:var(--color-text-muted);margin-left:0.5rem;">Nouvelle image</small>';
+    previewDiv.style.display = '';
+  };
+  reader.readAsDataURL(file);
+}
+
+// Ecouteurs d'evenements Drag & drop
+var zone = document.getElementById('upload-zone');
+if (zone) {
+  zone.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.classList.add('dragover');
+  });
+  zone.addEventListener('dragleave', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.classList.remove('dragover');
+  });
+  zone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.classList.remove('dragover');
+    handleSingleFileSelect(e.dataTransfer.files);
+  });
+  zone.addEventListener('click', function(e) {
+    if (e.target.tagName !== 'INPUT') {
+      document.getElementById('input-image').click();
+    }
+  });
+}
 </script>
 @endsection

@@ -21,7 +21,7 @@
              style="width:64px;height:64px;border-radius:var(--radius-md);object-fit:cover;" onerror="this.src='{{ asset('assets/images/K ICONE.png') }}'">
         <div>
           <strong style="font-size:var(--text-sm);">{{ $p->name }}</strong>
-          <p style="font-size:11px;color:var(--color-text-muted);">{{ $p->categories->first()->name ?? '' }} • {{ number_format($p->price,0,',',' ') }} €</p>
+          <p style="font-size:11px;color:var(--color-text-muted);">{{ $p->categories->first()->name ?? '' }} • {{ number_format($p->price, 2, ',', ' ') }} €</p>
         </div>
       </div>
       <button class="btn-primary" style="width:100%;" onclick="openCreateModal({{ $p->id }}, '{{ addslashes($p->name) }}', '{{ $img ? asset('storage/'.$img->path) : asset($p->image_primary ?: 'assets/images/K ICONE.png') }}')">Donner mon avis (+50 pts)</button>

@@ -4,7 +4,7 @@
 <div class="dashboard-content">
   <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:var(--space-2xl);flex-wrap:wrap;gap:1rem;">
     <div><h1 class="page-title">Sections de l'accueil</h1><p class="page-subtitle">Configurez les produits affichés dans chaque section.</p></div>
-    <button type="submit" form="sections-form" class="btn-primary">Publier les changements</button>
+    <button type="submit" form="sections-form" class="btn-katuiscia-filled">Publier les changements</button>
   </div>
 
   <form id="sections-form" method="POST" action="{{ route('admin.sections.store') }}">

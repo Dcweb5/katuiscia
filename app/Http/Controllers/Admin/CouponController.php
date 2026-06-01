@@ -110,11 +110,15 @@ class CouponController extends Controller
             return response()->json(['valid' => false, 'message' => 'Code promo invalide.']);
         }
 
+        if ($coupon->user_id && (!auth()->check() || auth()->id() !== $coupon->user_id)) {
+            return response()->json(['valid' => false, 'message' => 'Ce code promo est réservé à son bénéficiaire.']);
+        }
+
         if (!$coupon->isValid((float) $request->cart_total)) {
             $msg = 'Ce code promo n\'est plus valide.';
             if ($coupon->expires_at && now()->gt($coupon->expires_at)) $msg = 'Ce code promo a expiré.';
             elseif ($coupon->min_order_amount && $request->cart_total < $coupon->min_order_amount)
-                $msg = 'Minimum ' . number_format($coupon->min_order_amount, 0, ',', ' ') . ' € d\'achat requis.';
+                $msg = 'Minimum ' . number_format($coupon->min_order_amount, 2, ',', ' ') . ' € d\'achat requis.';
             elseif ($coupon->max_uses && $coupon->used_count >= $coupon->max_uses)
                 $msg = 'Ce code promo a atteint sa limite d\'utilisation.';
             return response()->json(['valid' => false, 'message' => $msg]);

@@ -114,4 +114,13 @@ class UserManagementController extends Controller
         $user->delete();
         return redirect()->route('admin.users.index')->with('success', 'Utilisateur supprimé.');
     }
+
+    public function unblock(User $user)
+    {
+        $user->update([
+            'login_attempts' => 0,
+            'locked_until' => null,
+        ]);
+        return back()->with('success', 'Le compte de l\'utilisateur ' . $user->name . ' a été débloqué avec succès.');
+    }
 }

@@ -55,6 +55,33 @@
         <div style="display:flex;justify-content:space-between;font-weight:700;font-family:var(--font-heading);font-size:var(--text-lg);margin-top:var(--space-sm);"><span>Total</span><span>{{ number_format($order->total, 2, ',', ' ') }} €</span></div>
       </div>
       <div class="card"><h3 style="font-family:var(--font-heading);font-size:var(--text-lg);margin-bottom:var(--space-lg);">Paiement</h3><p style="font-size:var(--text-sm);">{{ $order->payment_method === 'cod' ? 'Paiement à la livraison' : 'Carte bancaire' }}</p></div>
+
+      <!-- TIMELINE HISTORIQUE -->
+      <div class="card" style="margin-top:var(--space-xl);">
+        <h3 style="font-family:var(--font-heading);font-size:var(--text-lg);margin-bottom:var(--space-lg);">⏳ Historique des Actions</h3>
+        @if($order->histories->isNotEmpty())
+        <div style="display:flex;flex-direction:column;gap:1.25rem;position:relative;padding-left:1.5rem;border-left:2px solid var(--color-border);margin-left:0.5rem;padding-top:0.25rem;">
+          @foreach($order->histories as $history)
+          <div style="position:relative;">
+            <!-- Dot -->
+            <div style="position:absolute;left:calc(-1.5rem - 6px);top:4px;width:10px;height:10px;border-radius:50%;background:var(--color-warm);border:2px solid white;box-shadow:0 0 0 2px var(--color-warm);"></div>
+            
+            <div style="font-size:12px;color:var(--color-text-muted);">
+              {{ $history->created_at->format('d/m/Y \à H:i:s') }}
+            </div>
+            <div style="font-size:13px;font-weight:600;color:var(--color-dark);margin-top:2px;">
+              {{ $history->comment }}
+            </div>
+            <div style="font-size:11px;color:var(--color-text-light);margin-top:1px;">
+              Statut : <span style="font-weight:600;color:var(--color-warm);">{{ strtoupper($history->status) }}</span>
+            </div>
+          </div>
+          @endforeach
+        </div>
+        @else
+        <p style="color:var(--color-text-muted);font-size:13px;text-align:center;">Aucune action enregistrée.</p>
+        @endif
+      </div>
     </div>
   </div>
 </div>

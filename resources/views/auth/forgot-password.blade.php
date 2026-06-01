@@ -67,14 +67,15 @@
                  value="{{ old('email', session('__previous_email')) }}" required autocomplete="email" autofocus>
         </div>
 
+
         @if(!session('email_sent'))
         {{-- Première demande : bouton Envoyer --}}
-        <button type="submit" class="btn-auth fade-in-up delay-4">Envoyer le lien</button>
+        <button type="submit" class="btn-auth fade-in-up delay-4">Envoyer la demande</button>
         @else
         {{-- Email déjà envoyé : bouton Renvoyer avec timer --}}
         <p style="text-align:center;font-size:13px;color:var(--color-text-muted);margin-bottom:var(--space-sm);">Vous n'avez pas reçu l'email ?</p>
         <button type="button" id="resend-btn" class="btn-auth" style="width:100%;opacity:0.5;cursor:not-allowed;" disabled>
-          <span id="resend-text">Renvoyer le lien</span>
+          <span id="resend-text">Renvoyer</span>
           <span id="resend-timer"></span>
         </button>
         @endif
@@ -101,7 +102,7 @@ dots.forEach(d => d.addEventListener('click', () => showSlide(parseInt(d.dataset
 setInterval(() => showSlide(current + 1), 5000);
 
 // Timer de renvoi
-var cooldown = {{ session('cooldown', 0) }};
+var cooldown = Math.ceil(parseFloat("{{ session('cooldown', 0) }}"));
 var resendBtn = document.getElementById('resend-btn');
 
 if (resendBtn && cooldown > 0) {
@@ -110,7 +111,7 @@ if (resendBtn && cooldown > 0) {
   
   function updateResendTimer() {
     var min = Math.floor(remaining / 60);
-    var sec = remaining % 60;
+    var sec = Math.ceil(remaining % 60);
     document.getElementById('resend-timer').textContent = ' (' + (min > 0 ? min + ' min ' + sec + ' s' : sec + ' s') + ')';
   }
   
@@ -122,7 +123,7 @@ if (resendBtn && cooldown > 0) {
       resendBtn.disabled = false;
       resendBtn.style.opacity = '1';
       resendBtn.style.cursor = 'pointer';
-      document.getElementById('resend-text').textContent = 'Renvoyer le lien';
+      document.getElementById('resend-text').textContent = 'Renvoyer';
       document.getElementById('resend-timer').textContent = '';
       return;
     }

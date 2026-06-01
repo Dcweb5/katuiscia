@@ -31,8 +31,26 @@ class FinanceController extends Controller
         $avgBasket = round($allOrders->count() > 0 ? $completed->avg('total') : 0, 2);
         $totalOrders = $allOrders->count();
 
-        // Refunds (cancelled)
-        $refunds = Order::where('status', 'cancelled')->where('created_at', '>=', $since)->sum('total');
+        // Refunds (cancelled orders + completed return requests)
+        $cancelledRefunds = Order::where('status', 'cancelled')->where('created_at', '>=', $since)->sum('total');
+
+        $completedReturns = \App\Models\ReturnRequest::where('status', 'completed')
+            ->where('created_at', '>=', $since)
+            ->with(['order', 'item'])
+            ->get();
+
+        $returnsRefunds = 0;
+        foreach ($completedReturns as $ret) {
+            if ($ret->order_item_id && $ret->item) {
+                // Specific item was returned and refunded
+                $returnsRefunds += $ret->item->price * $ret->item->quantity;
+            } elseif ($ret->order) {
+                // Whole order was returned and refunded
+                $returnsRefunds += $ret->order->total;
+            }
+        }
+
+        $refunds = $cancelledRefunds + $returnsRefunds;
 
         // Monthly evolution
         $monthly = Order::whereIn('status', ['confirmed', 'preparing', 'shipped', 'delivered'])

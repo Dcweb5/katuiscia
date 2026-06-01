@@ -45,9 +45,16 @@ class SocialiteController extends Controller
         $user = User::where('email', $socialUser->getEmail())->first();
 
         if ($user) {
-            // User exists: update avatar if not set
+            // User exists: update avatar and verify email if not set
+            $updates = [];
             if (!$user->avatar && $socialUser->getAvatar()) {
-                $user->update(['avatar' => $socialUser->getAvatar()]);
+                $updates['avatar'] = $socialUser->getAvatar();
+            }
+            if (!$user->email_verified_at) {
+                $updates['email_verified_at'] = now();
+            }
+            if (!empty($updates)) {
+                $user->update($updates);
             }
         } else {
             // Create new user from social data
@@ -63,6 +70,7 @@ class SocialiteController extends Controller
                 'password'  => Hash::make(Str::random(32)),
                 'avatar'    => $socialUser->getAvatar(),
                 'loyalty_points' => 100,
+                'email_verified_at' => now(),
             ]);
         }
 

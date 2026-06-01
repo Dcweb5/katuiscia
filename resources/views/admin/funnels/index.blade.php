@@ -14,8 +14,8 @@
     <div class="card stat-card"><span class="stat-title">Leads</span><span class="stat-value">{{ $totalLeads }}</span></div>
     <div class="card stat-card"><span class="stat-title">Taux opt-in</span><span class="stat-value">{{ $optInRate }}%</span></div>
     <div class="card stat-card"><span class="stat-title">Conversion</span><span class="stat-value">{{ $conversionRate }}%</span></div>
-    <div class="card stat-card"><span class="stat-title">CA total</span><span class="stat-value">{{ number_format($totalRevenue,0,',',' ') }} €</span></div>
-    <div class="card stat-card"><span class="stat-title">Panier moyen</span><span class="stat-value">{{ $avgOrderValue }} €</span></div>
+    <div class="card stat-card"><span class="stat-title">CA total</span><span class="stat-value">{{ number_format($totalRevenue, 2, ',', ' ') }} €</span></div>
+    <div class="card stat-card"><span class="stat-title">Panier moyen</span><span class="stat-value">{{ number_format($avgOrderValue, 2, ',', ' ') }} €</span></div>
     <div class="card stat-card"><span class="stat-title">Paniers abandonnés</span><span class="stat-value">{{ $abandonedCarts }}</span></div>
   </div>
 
@@ -40,7 +40,7 @@
         <thead><tr><th>Lead</th><th>CA</th><th>cmd</th></tr></thead>
         <tbody>
           @forelse($topLeads as $l)
-          <tr><td style="font-size:12px;">{{ $l->firstname }}<br><small style="color:var(--color-text-muted);">{{ $l->email }}</small></td><td>{{ number_format($l->total_revenue,0,',',' ') }} €</td><td>{{ $l->orders_count }}</td></tr>
+          <tr><td style="font-size:12px;">{{ $l->firstname }}<br><small style="color:var(--color-text-muted);">{{ $l->email }}</small></td><td>{{ number_format($l->total_revenue, 2, ',', ' ') }} €</td><td>{{ $l->orders_count }}</td></tr>
           @empty
           <tr><td colspan="3" style="text-align:center;padding:1.5rem;color:var(--color-text-muted);font-size:12px;">Aucun achat via quiz</td></tr>
           @endforelse
@@ -56,7 +56,7 @@
         <thead><tr><th>Source</th><th>Leads</th><th>CA</th></tr></thead>
         <tbody>
           @forelse($bySource as $s)
-          <tr><td>{{ $s->source }}</td><td>{{ $s->total }}</td><td>{{ number_format($s->revenue,0,',',' ') }} €</td></tr>
+          <tr><td>{{ $s->source }}</td><td>{{ $s->total }}</td><td>{{ number_format($s->revenue, 2, ',', ' ') }} €</td></tr>
           @empty
           <tr><td colspan="3" style="text-align:center;padding:2rem;color:var(--color-text-muted);font-size:12px;">UTM non tracés.</td></tr>
           @endforelse
@@ -92,7 +92,7 @@
           <td style="font-size:11px;">{{ ['seche'=>'Sèche','mixte'=>'Mixte','grasse'=>'Grasse','sensible'=>'Sensible','normale'=>'Normale'][$lead->quiz_responses['skin_type'] ?? ''] ?? '—' }}</td>
           <td style="font-size:11px;">{{ $lead->quiz_responses['budget'] ?? '—' }}</td>
           <td style="font-size:11px;">{{ $lead->utm_source ?: 'Direct' }}</td>
-          <td>{{ $lead->total_revenue > 0 ? number_format($lead->total_revenue,0,',',' ').' €' : '—' }}</td>
+          <td>{{ $lead->total_revenue > 0 ? number_format($lead->total_revenue, 2, ',', ' ') . ' €' : '—' }}</td>
           <td>{{ $lead->opted_in ? '✅' : '—' }}</td>
           <td style="font-size:11px;color:var(--color-text-muted);">{{ $lead->created_at->format('d/m/Y') }}</td>
         </tr>

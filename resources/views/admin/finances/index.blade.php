@@ -17,16 +17,16 @@
   <div class="stats-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-bottom:var(--space-xl);">
     <div class="card stat-card" style="padding:1.25rem;">
       <span class="stat-title">Chiffre d'affaires</span>
-      <span class="stat-value" style="font-family:var(--font-display);">{{ number_format($totalRevenue, 0, ',', ' ') }} €</span>
+      <span class="stat-value" style="font-family:var(--font-display);">{{ number_format($totalRevenue, 2, ',', ' ') }} €</span>
     </div>
     <div class="card stat-card" style="padding:1.25rem;">
       <span class="stat-title">Marge brute</span>
-      <span class="stat-value">{{ number_format($margin, 0, ',', ' ') }} €</span>
+      <span class="stat-value">{{ number_format($margin, 2, ',', ' ') }} €</span>
       <span style="font-size:11px;color:var(--color-success);">~60%</span>
     </div>
     <div class="card stat-card" style="padding:1.25rem;">
       <span class="stat-title">Panier moyen</span>
-      <span class="stat-value">{{ number_format($avgBasket, 0, ',', ' ') }} €</span>
+      <span class="stat-value">{{ number_format($avgBasket, 2, ',', ' ') }} €</span>
     </div>
     <div class="card stat-card" style="padding:1.25rem;">
       <span class="stat-title">Commandes</span>
@@ -34,7 +34,7 @@
     </div>
     <div class="card stat-card" style="padding:1.25rem;">
       <span class="stat-title">Remboursements</span>
-      <span class="stat-value" style="color:var(--color-error);">{{ number_format($refunds, 0, ',', ' ') }} €</span>
+      <span class="stat-value" style="color:var(--color-error);">{{ number_format($refunds, 2, ',', ' ') }} €</span>
     </div>
   </div>
 
@@ -58,7 +58,7 @@
         <tr>
           <td style="font-weight:500;">{{ $p->product_name }}</td>
           <td>{{ $p->qty }}</td>
-          <td style="font-family:var(--font-display);">{{ number_format($p->revenue, 0, ',', ' ') }} €</td>
+          <td style="font-family:var(--font-display);">{{ number_format($p->revenue, 2, ',', ' ') }} €</td>
         </tr>
         @empty
         <tr><td colspan="3" style="text-align:center;padding:3rem;color:var(--color-text-muted);">Aucune vente sur cette période.</td></tr>

@@ -40,12 +40,22 @@
             <div style="display:flex;gap:4px;">
               <form method="POST" action="{{ route('admin.contacts.read', $m) }}" style="display:inline;">
                 @csrf @method('PUT')
-                <button type="submit" class="action-btn" title="{{ $m->is_read ? 'Marquer non lu' : 'Marquer lu' }}">{{ $m->is_read ? '📩' : '📬' }}</button>
+                <button type="submit" class="action-btn" title="{{ $m->is_read ? 'Marquer non lu' : 'Marquer lu' }}">
+                  @if($m->is_read)
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                  @else
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  @endif
+                </button>
               </form>
-              <button type="button" class="action-btn" title="Répondre" onclick="openReply({{ $m->id }})">✉️</button>
+              <button type="button" class="action-btn" title="Répondre" onclick="openReply({{ $m->id }})">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              </button>
               <form method="POST" action="{{ route('admin.contacts.destroy', $m) }}" style="display:inline;" onsubmit="event.preventDefault();showConfirm('Supprimer ce message ?',()=>this.submit())">
                 @csrf @method('DELETE')
-                <button type="submit" class="action-btn" title="Supprimer">🗑</button>
+                <button type="submit" class="action-btn" title="Supprimer">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                </button>
               </form>
             </div>
           </td>
@@ -90,9 +100,9 @@
           <textarea name="reply_body" rows="6" class="admin-input" style="width:100%;" placeholder="Écrivez votre réponse..." required></textarea>
         </div>
       </div>
-      <div style="display:flex;gap:0.75rem;justify-content:flex-end;padding:1rem 1.5rem;border-top:1px solid var(--color-border);">
-        <button type="button" onclick="closeReply({{ $m->id }})" class="action-btn" style="padding:0.5rem 1rem;">Annuler</button>
-        <button type="submit" class="btn-primary">Envoyer la réponse</button>
+      <div class="admin-form-actions" style="padding:1.5rem;border-top:1px solid var(--color-border);margin-top:0;">
+        <button type="button" onclick="closeReply({{ $m->id }})" class="btn-katuiscia">Annuler</button>
+        <button type="submit" class="btn-katuiscia-filled">Envoyer la réponse</button>
       </div>
     </form>
   </div>
@@ -102,10 +112,7 @@
 </div>
 @endforeach
 
-<style>
-.msg-unread { font-weight:600; background:rgba(196,150,122,0.04); }
-.msg-expanded { white-space:normal !important; overflow:visible !important; text-overflow:unset !important; max-width:none !important; }
-</style>
+
 
 <script>
 function toggleExpand(el) {

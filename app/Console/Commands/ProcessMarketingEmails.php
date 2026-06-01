@@ -125,7 +125,7 @@ class ProcessMarketingEmails extends Command
             ."<h2 style='color:#c4967a;'>KATUISCIA</h2>"
             ."<p>Bonjour{$name},</p>"
             ."<p>Votre <strong>{$product}</strong> vous attend encore dans votre panier !</p>"
-            ."<p style='font-size:18px;'>Total : <strong>".number_format($total,0,',',' ')." €</strong></p>"
+            ."<p style='font-size:18px;'>Total : <strong>".number_format($total,2,',',' ')." €</strong></p>"
             ."<a href='".url('panier')."' style='display:inline-block;background:#c4967a;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;'>Finaliser ma commande</a>"
             ."<p style='color:#8b7b6e;font-size:12px;margin-top:20px;'>Livraison offerte + retour 30 jours. Aucun risque.</p></div>";
     }

@@ -27,20 +27,21 @@
 
 @section('content')
 <div class="dashboard-content">
-  <a href="{{ route('admin.products.index') }}" style="display:inline-flex;align-items:center;gap:8px;color:var(--color-text-muted);font-size:14px;margin-bottom:var(--space-lg);text-decoration:none;">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:16px;height:16px;"><path d="m15 18-6-6 6-6"/></svg> Retour aux produits
-  </a>
+  <div class="admin-form-container--large">
+    <a href="{{ route('admin.products.index') }}" style="display:inline-flex;align-items:center;gap:8px;color:var(--color-text-muted);font-size:14px;margin-bottom:var(--space-lg);text-decoration:none;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:16px;height:16px;"><path d="m15 18-6-6 6-6"/></svg> Retour aux produits
+    </a>
 
-  <h1 class="page-title">Modifier — {{ $product->name }}</h1>
+    <h1 class="page-title">Modifier — {{ $product->name }}</h1>
 
-  @if(session('success'))
-  <div style="padding:12px 16px;background:rgba(90,143,110,0.1);border:1px solid var(--color-success);border-radius:8px;color:var(--color-success);margin-bottom:var(--space-lg);">{{ session('success') }}</div>
-  @endif
-  @if($errors->any())
-  <div style="padding:12px 16px;background:rgba(199,80,80,0.1);border:1px solid var(--color-error);border-radius:8px;color:var(--color-error);margin-bottom:var(--space-lg);"><ul style="margin:0;padding-left:20px;">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul></div>
-  @endif
+    @if(session('success'))
+    <div style="padding:12px 16px;background:rgba(90,143,110,0.1);border:1px solid var(--color-success);border-radius:8px;color:var(--color-success);margin-bottom:var(--space-lg);">{{ session('success') }}</div>
+    @endif
+    @if($errors->any())
+    <div style="padding:12px 16px;background:rgba(199,80,80,0.1);border:1px solid var(--color-error);border-radius:8px;color:var(--color-error);margin-bottom:var(--space-lg);"><ul style="margin:0;padding-left:20px;">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul></div>
+    @endif
 
-  <form method="POST" action="{{ route('admin.products.update', $product) }}" enctype="multipart/form-data" style="max-width:800px;">
+    <form method="POST" action="{{ route('admin.products.update', $product) }}" enctype="multipart/form-data">
     @csrf @method('PUT')
 
     <div class="card" style="margin-bottom:var(--space-xl);">
@@ -56,9 +57,21 @@
         <div class="admin-form-group"><label class="admin-label">Contenance</label><input type="text" name="size" class="admin-input" value="{{ old('size', $product->size) }}"></div>
         <div class="admin-form-group"><label class="admin-label">Besoin</label><select name="need" class="admin-input"><option value="">—</option><option value="hydratation" @selected(old('need',$product->need)=='hydratation')>Hydratation</option><option value="eclat" @selected(old('need',$product->need)=='eclat')>Éclat</option><option value="restauration" @selected(old('need',$product->need)=='restauration')>Restauration</option></select></div>
         <div class="admin-form-group"><label class="admin-label">Statut</label><select name="is_active" class="admin-input"><option value="1" @selected(old('is_active',$product->is_active)==true)>Publié</option><option value="0" @selected(old('is_active',$product->is_active)==false)>Brouillon</option></select></div>
+        <div class="admin-form-group" style="grid-column:1/-1;">
+          <label class="admin-label">Date limite de promotion (Laisser vide si pas de limite temporelle)</label>
+          <input type="datetime-local" name="promo_expires_at" class="admin-input" value="{{ old('promo_expires_at', $product->promo_expires_at ? \Carbon\Carbon::parse($product->promo_expires_at)->format('Y-m-d\TH:i') : '') }}">
+        </div>
       </div>
       <div class="admin-form-group" style="margin-top:var(--space-md);"><label class="admin-label">Description courte</label><textarea name="description" class="admin-input" rows="2" style="resize:vertical;">{{ old('description', $product->description) }}</textarea></div>
       <div class="admin-form-group"><label class="admin-label">Description détaillée</label><textarea name="long_description" class="admin-input" rows="4" style="resize:vertical;">{{ old('long_description', $product->long_description) }}</textarea></div>
+      <div class="admin-form-group">
+        <label class="admin-label">Ingrédients Clés (Optionnel)</label>
+        <textarea name="key_ingredients" class="admin-input" rows="3" placeholder="Ex: Lavande sauvage: Calme l'épiderme..." style="resize:vertical;">{{ old('key_ingredients', $product->key_ingredients) }}</textarea>
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-label">Rituel d'Application (Optionnel)</label>
+        <textarea name="application_ritual" class="admin-input" rows="3" placeholder="Ex: Appliquer délicatement chaque soir..." style="resize:vertical;">{{ old('application_ritual', $product->application_ritual) }}</textarea>
+      </div>
     </div>
 
     <!-- IMAGES (pas de formulaires imbriqués — tout en JS) -->
@@ -111,11 +124,71 @@
       </div>
     </div>
 
-    <div style="display:flex;gap:var(--space-sm);justify-content:flex-end;">
-      <a href="{{ route('admin.products.index') }}" style="padding:10px 20px;border:1px solid var(--color-border);border-radius:var(--radius-sm);background:transparent;font-size:var(--text-sm);text-decoration:none;color:inherit;">Annuler</a>
-      <button type="submit" class="btn-primary">Enregistrer</button>
+    <div class="admin-form-actions">
+      <a href="{{ route('admin.products.index') }}" class="btn-katuiscia">Annuler</a>
+      <button type="submit" class="btn-katuiscia-filled">Enregistrer</button>
     </div>
   </form>
+
+  <!-- STATS & HISTORIQUE DES VENTES -->
+  <div class="card" style="margin-bottom:var(--space-xl);margin-top:2rem;">
+    <h3 style="font-family:var(--font-heading);font-size:var(--text-lg);margin-bottom:var(--space-lg);">📈 Analyse des Ventes</h3>
+    
+    <div class="stats-grid" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:1rem;margin-bottom:var(--space-xl);">
+      <div class="card stat-card" style="background:var(--color-gray);padding:1rem;border:none;box-shadow:none;">
+        <span class="stat-title" style="font-size:11px;">Unités vendues</span>
+        <span class="stat-value" style="font-size:1.5rem;font-weight:700;color:var(--color-dark);">{{ $stockSold }}</span>
+      </div>
+      <div class="card stat-card" style="background:var(--color-gray);padding:1rem;border:none;box-shadow:none;">
+        <span class="stat-title" style="font-size:11px;">Retours demandés</span>
+        <span class="stat-value" style="font-size:1.5rem;font-weight:700;{{ $returnsCount > 0 ? 'color:var(--color-error);' : 'color:var(--color-dark);' }}">{{ $returnsCount }}</span>
+      </div>
+      <div class="card stat-card" style="background:var(--color-gray);padding:1rem;border:none;box-shadow:none;">
+        <span class="stat-title" style="font-size:11px;">Revenus générés</span>
+        <span class="stat-value" style="font-size:1.5rem;font-weight:700;color:var(--color-success);">
+          {{ number_format($ordersSold->sum(fn($o) => $o->quantity * $o->price), 2, ',', ' ') }} €
+        </span>
+      </div>
+    </div>
+
+    <h4 style="font-size:14px;font-weight:600;margin-bottom:var(--space-md);color:var(--color-dark);">Historique des commandes individuelles</h4>
+    @if($ordersSold->isNotEmpty())
+    <div style="overflow-x:auto;">
+      <table class="admin-table" style="font-size:13px;">
+        <thead>
+          <tr>
+            <th>Date & Heure</th>
+            <th>N° Commande</th>
+            <th>Client</th>
+            <th style="text-align:center;">Quantité</th>
+            <th style="text-align:right;">Prix Unitaire</th>
+            <th style="text-align:right;">Total</th>
+            <th style="text-align:center;">Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($ordersSold as $o)
+          <tr>
+            <td>{{ \Carbon\Carbon::parse($o->created_at)->format('d/m/Y H:i') }}</td>
+            <td><a href="{{ route('admin.orders.show', $o->id) }}" style="color:var(--color-warm);font-family:monospace;font-weight:600;text-decoration:none;">{{ $o->order_number }}</a></td>
+            <td>{{ $o->firstname }} {{ $o->lastname }}</td>
+            <td style="text-align:center;font-weight:600;">{{ $o->quantity }}</td>
+            <td style="text-align:right;">{{ number_format($o->price, 2, ',', ' ') }} €</td>
+            <td style="text-align:right;font-weight:600;">{{ number_format($o->quantity * $o->price, 2, ',', ' ') }} €</td>
+            <td style="text-align:center;">
+              @php $statusLabels = ['pending'=>'En attente','confirmed'=>'Confirmée','preparing'=>'Préparation','shipped'=>'Expédiée','delivered'=>'Livrée','cancelled'=>'Annulée']; @endphp
+              <span style="font-size:11px;font-weight:500;padding:2px 8px;border-radius:12px;background:{{ $o->status === 'delivered' ? 'rgba(76,175,80,0.1)' : 'rgba(196,150,122,0.1)' }};color:{{ $o->status === 'delivered' ? '#2e7d32' : 'var(--color-warm)' }}">{{ $statusLabels[$o->status] ?? $o->status }}</span>
+            </td>
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+    @else
+    <p style="color:var(--color-text-muted);text-align:center;padding:1.5rem;">Aucune vente enregistrée pour ce produit.</p>
+    @endif
+  </div>
+  </div>
 </div>
 
 @php
@@ -227,8 +300,31 @@ var newFiles = [];
 function handleNewFiles(event) {
   var files = Array.from(event.target.files || []);
   var remaining = 5 - {{ $imagesCount }} - newFiles.length;
-  files = files.slice(0, Math.max(0, remaining));
-  files.forEach(function(f) { newFiles.push(f); });
+  var maxSize = 2 * 1024 * 1024; // 2 Mo
+  
+  var validFiles = [];
+  files.forEach(function(file) {
+    if (file.size > maxSize) {
+      if (typeof showToast === 'function') {
+        showToast("L'image \"" + file.name + "\" est trop volumineuse (max 2 Mo). Veuillez la compresser avant de l'ajouter.", "error");
+      } else {
+        alert("L'image \"" + file.name + "\" est trop volumineuse (max 2 Mo). Veuillez la compresser avant de l'ajouter.");
+      }
+      return;
+    }
+    if (!file.type.match(/^image\/(jpeg|png|webp)$/)) {
+      if (typeof showToast === 'function') {
+        showToast("Le format de \"" + file.name + "\" n'est pas supporté (JPG, PNG, WebP uniquement).", "error");
+      } else {
+        alert("Le format de \"" + file.name + "\" n'est pas supporté (JPG, PNG, WebP uniquement).");
+      }
+      return;
+    }
+    validFiles.push(file);
+  });
+  
+  validFiles = validFiles.slice(0, Math.max(0, remaining));
+  validFiles.forEach(function(f) { newFiles.push(f); });
   renderNewPreview();
   updateFileInput();
 }

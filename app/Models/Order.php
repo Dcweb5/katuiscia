@@ -9,7 +9,7 @@ class Order extends Model
     protected $fillable = [
         'user_id', 'cart_id', 'order_number', 'email',
         'firstname', 'lastname', 'address', 'address2',
-        'postal_code', 'city', 'country', 'phone',
+        'postal_code', 'city', 'country', 'region', 'phone',
         'subtotal', 'discount', 'shipping', 'total',
         'coupon_code', 'status', 'stripe_session_id', 'payment_status', 'paid_at', 'payment_gateway',
         'tracking_number', 'payment_method', 'notes',
@@ -34,6 +34,42 @@ class Order extends Model
                 $order->order_number = 'KAT-' . strtoupper(substr(uniqid(), -6));
             }
         });
+
+        static::created(function ($order) {
+            $order->histories()->create([
+                'status' => $order->status,
+                'comment' => 'Commande créée et initialisée.',
+            ]);
+        });
+
+        static::updated(function ($order) {
+            if ($order->wasChanged('status')) {
+                $statusLabels = [
+                    'pending' => 'En attente de paiement',
+                    'confirmed' => 'Commande confirmée',
+                    'preparing' => 'Commande en préparation',
+                    'shipped' => 'Commande expédiée',
+                    'delivered' => 'Commande livrée',
+                    'cancelled' => 'Commande annulée',
+                ];
+                $label = $statusLabels[$order->status] ?? $order->status;
+                $order->histories()->create([
+                    'status' => $order->status,
+                    'comment' => "Statut changé en : {$label}.",
+                ]);
+            }
+            if ($order->wasChanged('tracking_number') && $order->tracking_number) {
+                $order->histories()->create([
+                    'status' => $order->status,
+                    'comment' => "Numéro de suivi ajouté : {$order->tracking_number}.",
+                ]);
+            }
+        });
+    }
+
+    public function histories()
+    {
+        return $this->hasMany(OrderHistory::class)->orderBy('created_at', 'desc');
     }
 
     public function items()

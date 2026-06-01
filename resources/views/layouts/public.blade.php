@@ -12,8 +12,26 @@
   <link rel="stylesheet" href="{{ asset('css/global.css') }}">
   <link rel="stylesheet" href="{{ asset('css/components.css') }}">
   @yield('head')
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    
+    // Read local consent choice
+    var consentChoice = localStorage.getItem('katuiscia_cookies');
+    var isGranted = consentChoice === 'accepted';
+    
+    gtag('consent', 'default', {
+      'ad_storage': isGranted ? 'granted' : 'denied',
+      'ad_user_data': isGranted ? 'granted' : 'denied',
+      'ad_personalization': isGranted ? 'granted' : 'denied',
+      'analytics_storage': isGranted ? 'granted' : 'denied'
+    });
+  </script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1LFTT4JZ9R"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1LFTT4JZ9R');</script>
+  <script>
+    gtag('js', new Date());
+    gtag('config', 'G-1LFTT4JZ9R');
+  </script>
 </head>
 <body class="bg-cream text-dark font-body antialiased">
 

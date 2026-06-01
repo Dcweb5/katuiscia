@@ -32,6 +32,28 @@ class ReviewController extends Controller
         $approved = Review::where('is_approved', true)->count();
         return view('admin.reviews.index', compact('reviews','pending','approved'));
     }
-    public function approve(Review $review) { $review->update(['is_approved' => true]); $review->user->increment('loyalty_points', 50); return back()->with('success','Avis approuvé. +50 pts fidélité.'); }
+    public function approve(Review $review) {
+        $review->update(['is_approved' => true]);
+        
+        $points = 0;
+        if (\App\Services\LoyaltyService::isEnabled() && $review->user) {
+            $points = (int) \App\Models\Setting::get('loyalty_points_per_review', 50);
+            if ($points > 0) {
+                \App\Services\LoyaltyService::addPoints(
+                    $review->user,
+                    $points,
+                    'review',
+                    'Avis approuvé sur le produit : ' . ($review->product ? $review->product->name : 'Produit')
+                );
+            }
+        }
+        
+        $message = 'Avis approuvé.';
+        if ($points > 0) {
+            $message .= " +{$points} pts fidélité.";
+        }
+        
+        return back()->with('success', $message);
+    }
     public function destroy(Review $review) { $review->delete(); return back()->with('success','Avis supprimé.'); }
 }

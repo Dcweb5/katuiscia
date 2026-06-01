@@ -35,10 +35,16 @@
   }
 
   // Ajouter au panier
-  async function addToCart(productId, quantity) {
+  async function addToCart(productId, quantity, collectionId) {
+    var payload = { quantity: quantity || 1 };
+    if (collectionId) {
+      payload.collection_id = collectionId;
+    } else {
+      payload.product_id = productId;
+    }
     var data = await apiFetch('/panier/ajouter', {
       method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({product_id: productId, quantity: quantity || 1})
+      body: JSON.stringify(payload)
     });
     if (data.success) { refreshBadge(); toast('Ajouté ✓'); }
   }
@@ -81,11 +87,11 @@
       if (subEl) subEl.textContent = data.total;
       var totalEl = document.getElementById('cart-total-display');
       if (!totalEl) return;
-      var rawTotal = (parseFloat(data.total) || 0);
+      var rawTotal = (parseFloat(data.total_raw) || 0);
       var disInput = document.getElementById('coupon-discount-input');
       var discount = (disInput && disInput.value) ? parseFloat(disInput.value) : 0;
       var final = Math.max(0, rawTotal - discount);
-      totalEl.textContent = final.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+      totalEl.textContent = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(final) + ' €';
       var countEl = document.getElementById('cart-count-display');
       if (countEl) countEl.textContent = data.count + ' article(s)';
     });
@@ -120,9 +126,10 @@
     var btn = e.target.closest('.cart-add-btn');
     if (btn) {
       e.preventDefault(); e.stopPropagation();
-      var pid = parseInt(btn.dataset.productId);
+      var pid = btn.dataset.productId ? parseInt(btn.dataset.productId) : null;
+      var cid = btn.dataset.collectionId ? parseInt(btn.dataset.collectionId) : null;
       var qty = parseInt(btn.dataset.quantity) || 1;
-      addToCart(pid, qty);
+      addToCart(pid, qty, cid);
       return;
     }
 
@@ -153,9 +160,12 @@
       return;
     }
 
-    // Appliquer coupon (panier + checkout)
+    // Appliquer coupon (panier uniquement, checkout est géré localement dans paiement.blade.php)
     var couponBtn = e.target.closest('#apply-coupon');
     if (couponBtn) {
+      if (window.location.pathname === '/paiement' || document.getElementById('checkout-submit-btn')) {
+        return;
+      }
       e.preventDefault();
       var codeInput = document.getElementById('coupon-code');
       var code = codeInput ? codeInput.value.trim() : '';

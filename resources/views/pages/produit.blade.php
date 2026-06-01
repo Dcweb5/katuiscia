@@ -11,6 +11,29 @@
   .gallery-thumb.active, .gallery-thumb:hover { border-color: var(--color-dark); opacity: 1; }
   .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
 </style>
+<script type="application/ld+json">
+{
+  "{{ '@context' }}": "https://schema.org/",
+  "{{ '@type' }}": "Product",
+  "name": @json($product->name),
+  "image": [
+    @json(asset($product->image_primary))
+    @if($product->image_secondary)
+    , @json(asset($product->image_secondary))
+    @endif
+  ],
+  "description": @json(strip_tags($product->long_description ?? $product->description ?? '')),
+  "sku": @json($product->sku ?? 'KAT-PROD-'.$product->id),
+  "offers": {
+    "@type": "Offer",
+    "url": @json(request()->fullUrl()),
+    "priceCurrency": "EUR",
+    "price": @json($product->price),
+    "itemCondition": "https://schema.org/NewCondition",
+    "availability": @json($product->stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock')
+  }
+}
+</script>
 @endif
 @endsection
 
@@ -25,7 +48,7 @@
       $images = $product->images()->orderBy('order')->get();
       $mainImage = $images->first();
     @endphp
-    <div class="relative rounded-2xl overflow-hidden bg-gray-k aspect-square">
+    <div class="relative rounded-2xl overflow-hidden bg-gray-k aspect-[3/4]">
       @if($product->badge)
       <span class="absolute top-4 left-4 z-10 bg-warm text-white text-xs font-semibold tracking-wider uppercase px-4 py-1.5 rounded-full">{{ $product->badge }}</span>
       @endif
@@ -59,11 +82,37 @@
     <h1 class="font-heading text-4xl lg:text-5xl font-light text-dark leading-tight mb-6">{{ $product->name }}</h1>
 
     <div class="flex items-baseline gap-4 mb-6">
-      <span class="text-3xl font-semibold text-dark">{{ number_format($product->price, 0, ',', ' ') }} €</span>
-      @if($product->sale_price)
-      <span class="text-lg text-text-muted line-through">{{ number_format($product->sale_price, 0, ',', ' ') }} €</span>
+      @if($product->has_discount)
+      <span class="text-3xl font-semibold text-dark">{{ number_format($product->price, 2, ',', ' ') }} €</span>
+      <span class="text-lg text-text-muted line-through">{{ number_format($product->sale_price, 2, ',', ' ') }} €</span>
+      @else
+      <span class="text-3xl font-semibold text-dark">{{ number_format($product->price, 2, ',', ' ') }} €</span>
       @endif
     </div>
+
+    @if($product->promo_expires_at && \Carbon\Carbon::parse($product->promo_expires_at)->isFuture())
+    <div class="bg-cream/40 border border-border-k p-5 rounded-2xl shadow-sm mb-8 max-w-md">
+      <span class="text-xs font-semibold tracking-widest uppercase text-warm block mb-3">L'OFFRE SE TERMINE DANS...</span>
+      <div class="flex gap-4 text-center" id="countdown-timer" data-expires="{{ \Carbon\Carbon::parse($product->promo_expires_at)->toISOString() }}">
+        <div class="flex flex-col min-w-[50px] bg-white p-2.5 rounded-xl shadow-xs">
+          <span class="font-heading text-2xl font-light text-dark" id="timer-days">00</span>
+          <span class="text-[9px] text-text-muted font-bold tracking-wide uppercase mt-1">JOURS</span>
+        </div>
+        <div class="flex flex-col min-w-[50px] bg-white p-2.5 rounded-xl shadow-xs">
+          <span class="font-heading text-2xl font-light text-dark" id="timer-hours">00</span>
+          <span class="text-[9px] text-text-muted font-bold tracking-wide uppercase mt-1">HEURES</span>
+        </div>
+        <div class="flex flex-col min-w-[50px] bg-white p-2.5 rounded-xl shadow-xs">
+          <span class="font-heading text-2xl font-light text-dark" id="timer-minutes">00</span>
+          <span class="text-[9px] text-text-muted font-bold tracking-wide uppercase mt-1">MIN</span>
+        </div>
+        <div class="flex flex-col min-w-[50px] bg-white p-2.5 rounded-xl shadow-xs">
+          <span class="font-heading text-2xl font-light text-dark" id="timer-seconds">00</span>
+          <span class="text-[9px] text-text-muted font-bold tracking-wide uppercase mt-1">SEC</span>
+        </div>
+      </div>
+    </div>
+    @endif
 
     <p class="text-base text-text-light leading-relaxed mb-8">{{ $product->long_description ?? $product->description }}</p>
 
@@ -83,24 +132,43 @@
       </div>
       <button type="button" class="btn-katuiscia-filled w-full !justify-center cart-add-btn" data-product-id="{{ $product->id }}" id="add-to-cart-btn">AJOUTER AU PANIER</button>
       <button type="button" class="btn-katuiscia-warm w-full !justify-center" onclick="buyNow({{ $product->id }})" style="margin-top:var(--space-sm);">⚡ ACHETER MAINTENANT</button>
-</div>
+    </div>
 
-    <div class="flex gap-6 text-sm text-text-light mb-8">
-      <span class="flex items-center gap-2"><svg class="w-4 h-4 text-warm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> Livraison Gratuite</span>
+    <div class="flex gap-6 text-sm text-text-light mb-4">
       <span class="flex items-center gap-2"><svg class="w-4 h-4 text-warm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Authenticité Garantie</span>
     </div>
 
-    @if($product->ingredients)
+    <!-- Dynamic Shipping Estimator -->
+    <div class="bg-cream/20 p-4 rounded-xl border border-border-k/50 mb-8 text-sm" id="shipping-estimator-box" style="display:none;">
+      <div class="flex items-center gap-3 text-dark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5 text-warm flex-shrink-0"><rect x="1" y="3" width="15" height="13" rx="2" ry="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        <div id="shipping-estimator-text">
+          Calcul des frais de livraison en cours...
+        </div>
+      </div>
+    </div>
+
     <div class="space-y-0 border-t border-border-k">
+      @if($product->key_ingredients || $product->ingredients)
       <details class="group border-b border-border-k">
         <summary class="flex items-center justify-between py-4 cursor-pointer text-sm font-semibold tracking-wide uppercase text-dark">
           <span>Ingrédients Clés</span>
           <svg class="w-4 h-4 text-text-muted transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
         </summary>
-        <div class="pb-4 text-sm text-text-light leading-relaxed">{{ $product->ingredients }}</div>
+        <div class="pb-4 text-sm text-text-light leading-relaxed whitespace-pre-line">{{ $product->key_ingredients ?: $product->ingredients }}</div>
       </details>
+      @endif
+
+      @if($product->application_ritual)
+      <details class="group border-b border-border-k">
+        <summary class="flex items-center justify-between py-4 cursor-pointer text-sm font-semibold tracking-wide uppercase text-dark">
+          <span>Rituel d'Application</span>
+          <svg class="w-4 h-4 text-text-muted transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <div class="pb-4 text-sm text-text-light leading-relaxed whitespace-pre-line">{{ $product->application_ritual }}</div>
+      </details>
+      @endif
     </div>
-    @endif
   </div>
 </section>
 
@@ -166,11 +234,22 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       @foreach($related as $rp)
       <a href="{{ url('produit/' . $rp->slug) }}" class="group block rounded-xl overflow-hidden bg-cream shadow-card hover:shadow-lg transition-all hover:-translate-y-1 reveal-k-k delay-{{ $loop->index }}">
-        <div class="h-[260px] bg-gray-k flex items-center justify-center p-6">
+        <div class="aspect-[3/4] w-full overflow-hidden bg-gray-k flex items-center justify-center">
           <img src="{{ $rp->images->first() ? asset('storage/' . $rp->images->first()->path) : asset($rp->image_primary ?: 'assets/images/product-1a.webp') }}"
-               alt="{{ $rp->name }}" class="max-h-full object-contain transition-transform duration-500 group-hover:scale-110" loading="lazy">
+               alt="{{ $rp->name }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
         </div>
-        <div class="p-5"><h3 class="font-heading text-lg font-medium text-dark">{{ $rp->name }}</h3><p class="text-sm text-text-light">{{ $rp->description }}</p><span class="text-md font-semibold text-dark mt-2 block">{{ number_format($rp->price, 0, ',', ' ') }} €</span></div>
+        <div class="p-5">
+          <h3 class="font-heading text-lg font-medium text-dark">{{ $rp->name }}</h3>
+          <p class="text-sm text-text-light">{{ $rp->description }}</p>
+          <span class="text-md font-semibold text-dark mt-2 block">
+            @if($rp->has_discount)
+              <span class="text-warm mr-2 font-semibold">{{ number_format($rp->price, 2, ',', ' ') }} €</span>
+              <span class="text-text-muted line-through text-xs font-normal">{{ number_format($rp->sale_price, 2, ',', ' ') }} €</span>
+            @else
+              {{ number_format($rp->price, 2, ',', ' ') }} €
+            @endif
+          </span>
+        </div>
       </a>
       @endforeach
     </div>
@@ -213,6 +292,64 @@ document.addEventListener('DOMContentLoaded', function() {
   var qty = document.getElementById('qty-input');
   document.getElementById('qty-minus')?.addEventListener('click', function() { var v = parseInt(qty.value); if (v > 1) qty.value = v - 1; document.getElementById('add-to-cart-btn').dataset.quantity = qty.value; });
   document.getElementById('qty-plus')?.addEventListener('click', function() { var v = parseInt(qty.value); if (v < 10) qty.value = v + 1; document.getElementById('add-to-cart-btn').dataset.quantity = qty.value; });
+
+  // === TIMER COMPTE À REBOURS ===
+  var timerEl = document.getElementById('countdown-timer');
+  if (timerEl) {
+    var expiresAt = new Date(timerEl.dataset.expires).getTime();
+    var timerInterval = setInterval(function() {
+      var now = new Date().getTime();
+      var distance = expiresAt - now;
+      if (distance < 0) {
+        clearInterval(timerInterval);
+        timerEl.closest('.card').innerHTML = '<span class="text-sm text-text-muted font-medium">L\'offre est terminée.</span>';
+        return;
+      }
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById('timer-days').textContent = String(days).padStart(2, '0');
+      document.getElementById('timer-hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('timer-minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('timer-seconds').textContent = String(seconds).padStart(2, '0');
+    }, 1000);
+  }
+
+  // === ESTIMATEUR GÉOLOCALISÉ DE LIVRAISON ===
+  var shippingText = document.getElementById('shipping-estimator-text');
+  var shippingBox = document.getElementById('shipping-estimator-box');
+  if (shippingBox) {
+    shippingBox.style.display = 'block';
+    fetch('https://ipapi.co/json/')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var country = data.country_code || 'FR';
+        var region = data.region || 'Île-de-France';
+        
+        fetch('/api/shipping/estimate?country=' + country + '&region=' + encodeURIComponent(region))
+          .then(function(res) { return res.json(); })
+          .then(function(resData) {
+            if (resData.success && resData.available) {
+              var displayRegion = data.region || resData.zone_name;
+              if (resData.price === 0) {
+                shippingText.innerHTML = '🚚 <strong>Livraison gratuite</strong> (' + resData.delivery_time + ') pour <strong>' + displayRegion + ', ' + data.country_name + '</strong>';
+              } else {
+                shippingText.innerHTML = '🚚 Livraison : <strong>' + resData.price + ' €</strong> (' + resData.delivery_time + ') pour <strong>' + displayRegion + ', ' + data.country_name + '</strong>';
+              }
+            } else {
+              shippingText.innerHTML = '⚠️ ' + (resData.message || 'Livraison non disponible pour votre région.');
+            }
+          })
+          .catch(function() {
+            shippingText.innerHTML = '🚚 Livraison gratuite en France Métropolitaine (2-3 jours).';
+          });
+      })
+      .catch(function() {
+        shippingText.innerHTML = '🚚 Livraison gratuite en France Métropolitaine (2-3 jours).';
+      });
+  }
 });
 </script>
 @endsection

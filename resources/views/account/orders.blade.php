@@ -23,7 +23,7 @@
           @if($order->invoice)
           <a href="{{ route('invoice.download', $order->invoice) }}" class="action-btn" title="Télécharger la facture" style="width:auto;padding:4px 10px;text-decoration:none;font-size:11px;gap:4px;">📄 Facture</a>
           @endif
-          <strong style="font-family:var(--font-display);">{{ number_format($order->total, 0, ',', ' ') }} €</strong>
+          <strong style="font-family:var(--font-display);">{{ number_format($order->total, 2, ',', ' ') }} €</strong>
         </div>
       </div>
 
@@ -45,7 +45,7 @@
       @endif
 
       <!-- Articles -->
-      <div style="display:flex;gap:var(--space-md);flex-wrap:wrap;">
+      <div style="display:flex;gap:var(--space-md);flex-wrap:wrap;margin-bottom:12px;">
         @foreach($order->items as $item)
         <div style="display:flex;align-items:center;gap:var(--space-sm);background:var(--color-gray-k);padding:8px 12px;border-radius:var(--radius-sm);">
           <span style="font-size:var(--text-sm);">{{ $item->product_name }}</span>
@@ -53,6 +53,41 @@
         </div>
         @endforeach
       </div>
+
+      <!-- Cost breakdown -->
+      <div style="padding-top:12px;border-top:1px dashed var(--color-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--color-text-light);">
+        <div>
+          <span>Sous-total : {{ number_format($order->subtotal, 2, ',', ' ') }} €</span>
+          @if($order->discount > 0)
+            <span style="margin-left:10px;">| Réduction : -{{ number_format($order->discount, 2, ',', ' ') }} € @if($order->coupon_code)({{ $order->coupon_code }})@endif</span>
+          @endif
+          <span style="margin-left:10px;">| Livraison : 
+            @if($order->shipping == 0)
+              <span style="color:var(--color-success);font-weight:600;">Gratuite</span>
+            @else
+              {{ number_format($order->shipping, 2, ',', ' ') }} €
+            @endif
+          </span>
+        </div>
+        <div style="font-size:14px;color:var(--color-dark);">
+          Total : <strong>{{ number_format($order->total, 2, ',', ' ') }} €</strong>
+        </div>
+      </div>
+
+      <!-- Timeline de suivi des actions -->
+      <details style="margin-top:16px;padding-top:12px;border-top:1px dashed var(--color-border);cursor:pointer;outline:none;">
+        <summary style="font-size:12px;color:var(--color-warm);font-weight:600;outline:none;user-select:none;">⏳ Consulter le suivi détaillé de ma commande (Timeline)</summary>
+        <div style="margin-top:14px;padding-left:1.25rem;border-left:2px solid var(--color-warm);display:flex;flex-direction:column;gap:14px;font-size:12px;cursor:default;" onclick="event.stopPropagation();">
+          @foreach($order->histories as $history)
+          <div style="position:relative;">
+            <!-- pastille -->
+            <div style="position:absolute;left:calc(-1.25rem - 5px);top:3px;width:8px;height:8px;border-radius:50%;background:var(--color-warm);border:2px solid white;box-shadow:0 0 0 2px var(--color-warm);"></div>
+            <div style="color:var(--color-text-muted);font-size:10px;">{{ $history->created_at->format('d/m/Y \à H:i:s') }}</div>
+            <div style="color:var(--color-dark);font-weight:600;margin-top:2px;">{{ $history->comment }}</div>
+          </div>
+          @endforeach
+        </div>
+      </details>
     </div>
     @endforeach
   </div>

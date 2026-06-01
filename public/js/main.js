@@ -173,12 +173,28 @@ function initCookiePopup() {
 
   popup.querySelector('[data-cookie-accept]')?.addEventListener('click', () => {
     localStorage.setItem('katuiscia_cookies', 'accepted');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': 'granted',
+        'ad_user_data': 'granted',
+        'ad_personalization': 'granted',
+        'analytics_storage': 'granted'
+      });
+    }
     popup.classList.add('hiding');
     setTimeout(() => popup.remove(), 500);
   });
 
   popup.querySelector('[data-cookie-decline]')?.addEventListener('click', () => {
     localStorage.setItem('katuiscia_cookies', 'declined');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'analytics_storage': 'denied'
+      });
+    }
     popup.classList.add('hiding');
     setTimeout(() => popup.remove(), 500);
   });

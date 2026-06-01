@@ -43,6 +43,7 @@ class CheckoutController extends Controller
             'postal_code' => 'required|string|max:20',
             'city' => 'required|string|max:255',
             'country' => 'required|string|max:2',
+            'region' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
             'payment_method' => 'required|in:card,cod',
             'coupon_code' => 'nullable|string|max:50',
@@ -55,11 +56,13 @@ class CheckoutController extends Controller
         if ($couponCode) {
             $coupon = \App\Models\Coupon::where('code', $couponCode)->first();
             if ($coupon && $coupon->isValid($cart->total)) {
-                $discount = $coupon->calculateDiscount($cart->total);
+                if (!$coupon->user_id || (auth()->check() && auth()->id() === $coupon->user_id)) {
+                    $discount = $coupon->calculateDiscount($cart->total);
+                }
             }
         }
 
-        $total = max(0, $cart->total - $discount);
+        $baseTotal = max(0, $cart->total - $discount);
 
         // Si le panier contient des items de collection, appliquer la réduction
         $collectionItem = $cart->items->where('collection_id', '!=', null)->first();
@@ -67,22 +70,63 @@ class CheckoutController extends Controller
             $collection = \App\Models\Collection::find($collectionItem->collection_id);
             if ($collection) {
                 $discount = $cart->total - $collection->price;
-                $total = $collection->price;
+                $baseTotal = $collection->price;
             }
         }
 
+        // Calcul des frais de livraison
+        $shippingZone = \App\Http\Controllers\ShippingController::getZoneForCountryAndRegion($validated['country'], $validated['region']);
+        if (!$shippingZone) {
+            return redirect()->back()->withInput()->with('error', 'La livraison n\'est pas disponible pour ce pays ou cette région.');
+        }
+
+        if ($validated['payment_method'] === 'cod') {
+            if (strtolower(trim($validated['city'])) !== 'paris') {
+                return redirect()->back()->withInput()->with('error', 'Le paiement à la livraison est disponible uniquement pour la ville de Paris.');
+            }
+            $shippingFee = 0.0;
+        } else {
+            $shippingFee = (float)$shippingZone->price;
+        }
+        $total = $baseTotal + $shippingFee;
+
         if ($validated['payment_method'] === 'cod') {
             // Paiement à la livraison : flow classique
-            $order = $this->createOrder($validated, $cart, $discount, $couponCode, $total);
+            $order = $this->createOrder($validated, $cart, $discount, $couponCode, $total, $shippingFee);
             $order->update(['payment_status' => 'paid', 'status' => 'confirmed', 'paid_at' => now()]);
             $this->clearCart($cart);
-            if (auth()->check()) auth()->user()->increment('loyalty_points', (int) $total);
+            
+            // Lier au compte utilisateur si l'email correspond et non connecté
+            if (!auth()->check()) {
+                $user = \App\Models\User::where('email', $validated['email'])->first();
+                if ($user) {
+                    $order->update(['user_id' => $user->id]);
+                }
+            }
+            
+            $orderUser = auth()->user() ?: ($order->user_id ? \App\Models\User::find($order->user_id) : null);
+            if ($orderUser && \App\Services\LoyaltyService::isEnabled()) {
+                $pointsRate = (int) \App\Models\Setting::get('loyalty_points_per_euro', 1);
+                $pointsToAward = (int) ($order->total * $pointsRate);
+                if ($pointsToAward > 0) {
+                    \App\Services\LoyaltyService::addPoints($orderUser, $pointsToAward, 'purchase', 'Points cumulés pour la commande #' . $order->order_number);
+                }
+            }
+            
+            if ($order->coupon_code) {
+                $coupon = \App\Models\Coupon::where('code', $order->coupon_code)->first();
+                if ($coupon) {
+                    $coupon->increment('used_count');
+                    $coupon->update(['last_used_at' => now()]);
+                }
+            }
+            
             try { $this->generateInvoice($order); } catch (\Exception $e) { \Log::error('COD invoice failed: ' . $e->getMessage()); }
             return redirect('/checkout/success/' . $order->order_number);
         }
 
         // Paiement par carte : Stripe Checkout
-        $order = $this->createOrder($validated, $cart, $discount, $couponCode, $total);
+        $order = $this->createOrder($validated, $cart, $discount, $couponCode, $total, $shippingFee);
         $order->update(['payment_status' => 'pending_payment']);
 
         // Lier au compte utilisateur si l'email correspond
@@ -118,9 +162,25 @@ class CheckoutController extends Controller
             'metadata' => ['order_id' => $order->id],
         ];
 
+        // Ajouter les frais de livraison natifs à Stripe (évite d'appliquer la réduction sur la livraison)
+        if ($shippingFee > 0) {
+            $sessionData['shipping_options'] = [
+                [
+                    'shipping_rate_data' => [
+                        'type' => 'fixed_amount',
+                        'fixed_amount' => [
+                            'amount' => (int) round($shippingFee * 100),
+                            'currency' => 'eur',
+                        ],
+                        'display_name' => 'Frais de livraison (' . $shippingZone->name . ')',
+                    ],
+                ],
+            ];
+        }
+
         if ($discount > 0 && $couponCode) {
             $stripeCoupon = $stripe->coupons->create([
-                'percent_off' => round(($discount / $cart->total) * 100),
+                'percent_off' => (int) round(($discount / $cart->total) * 100),
                 'duration' => 'once',
             ]);
             $sessionData['discounts'] = [['coupon' => $stripeCoupon->id]];
@@ -132,7 +192,7 @@ class CheckoutController extends Controller
         return redirect($session->url);
     }
 
-    private function createOrder($data, $cart, $discount, $couponCode, $total): Order
+    private function createOrder($data, $cart, $discount, $couponCode, $total, $shippingFee): Order
     {
         $order = Order::create([
             'user_id' => auth()->id(),
@@ -146,10 +206,11 @@ class CheckoutController extends Controller
             'postal_code' => $data['postal_code'],
             'city' => $data['city'],
             'country' => $data['country'] ?? 'FR',
+            'region' => $data['region'] ?? null,
             'phone' => $data['phone'] ?? null,
             'subtotal' => $cart->total,
             'discount' => $discount,
-            'shipping' => 0,
+            'shipping' => $shippingFee,
             'total' => $total,
             'coupon_code' => $couponCode ?: null,
             'status' => 'pending_payment',
@@ -220,8 +281,21 @@ class CheckoutController extends Controller
             'paid_at' => now(),
         ]);
 
-        if (auth()->check()) {
-            auth()->user()->increment('loyalty_points', (int) $order->total);
+        $orderUser = auth()->user() ?: ($order->user_id ? \App\Models\User::find($order->user_id) : null);
+        if ($orderUser && \App\Services\LoyaltyService::isEnabled()) {
+            $pointsRate = (int) \App\Models\Setting::get('loyalty_points_per_euro', 1);
+            $pointsToAward = (int) ($order->total * $pointsRate);
+            if ($pointsToAward > 0) {
+                \App\Services\LoyaltyService::addPoints($orderUser, $pointsToAward, 'purchase', 'Points cumulés pour la commande #' . $order->order_number);
+            }
+        }
+        
+        if ($order->coupon_code) {
+            $coupon = \App\Models\Coupon::where('code', $order->coupon_code)->first();
+            if ($coupon) {
+                $coupon->increment('used_count');
+                $coupon->update(['last_used_at' => now()]);
+            }
         }
 
         // Générer la facture
@@ -263,10 +337,13 @@ class CheckoutController extends Controller
         }
         $pdf->save($pdfPath);
 
-        \Mail::to($order->email, $order->firstname . ' ' . $order->lastname)
-            ->send(new \App\Mail\InvoiceMail($order, $invoice, $pdfPath));
-
-        $invoice->update(['is_emailed' => true]);
+        try {
+            \Mail::to($order->email, $order->firstname . ' ' . $order->lastname)
+                ->send(new \App\Mail\InvoiceMail($order, $invoice, $pdfPath));
+            $invoice->update(['is_emailed' => true]);
+        } catch (\Throwable $e) {
+            \Log::error('Failed to send invoice email for order ' . $order->order_number . ': ' . $e->getMessage());
+        }
     }
 }
 

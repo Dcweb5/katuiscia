@@ -41,8 +41,8 @@
         <tr>
           <td><strong style="font-family:monospace;font-size:var(--text-md);">{{ $c->code }}</strong></td>
           <td>{{ $c->type === 'percentage' ? '%' : ($c->type === 'fixed' ? '€' : '🚚') }}</td>
-          <td>{{ $c->type === 'free_shipping' ? '—' : $c->value }}</td>
-          <td>{{ $c->min_order_amount ? number_format($c->min_order_amount,0,',',' ') . ' €' : '—' }}</td>
+          <td>{{ $c->type === 'free_shipping' ? '—' : ($c->type === 'fixed' ? number_format($c->value, 2, ',', ' ') . ' €' : $c->value . ' %') }}</td>
+          <td>{{ $c->min_order_amount ? number_format($c->min_order_amount, 2, ',', ' ') . ' €' : '—' }}</td>
           <td>{{ $c->used_count }} / {{ $c->max_uses ?? '∞' }}</td>
           <td>{{ $c->last_used_at ? $c->last_used_at->format('d/m/Y H:i') : '—' }}</td>
           <td>{{ $c->expires_at ? $c->expires_at->format('d/m/Y') : '—' }}</td>

@@ -5,15 +5,27 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up(): void {
-        Schema::table('contact_messages', function (Blueprint $table) {
-            if (!Schema::hasColumn('contact_messages','name')) {
-                $table->string('name')->after('id');
-                $table->string('email')->after('name');
-                $table->string('subject')->nullable()->after('email');
-                $table->text('message')->after('subject');
-                $table->boolean('is_read')->default(false)->after('message');
-            }
-        });
+        if (!Schema::hasTable('contact_messages')) {
+            Schema::create('contact_messages', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->string('email');
+                $table->string('subject')->nullable();
+                $table->text('message');
+                $table->boolean('is_read')->default(false);
+                $table->timestamps();
+            });
+        } else {
+            Schema::table('contact_messages', function (Blueprint $table) {
+                if (!Schema::hasColumn('contact_messages','name')) {
+                    $table->string('name')->after('id');
+                    $table->string('email')->after('name');
+                    $table->string('subject')->nullable()->after('email');
+                    $table->text('message')->after('subject');
+                    $table->boolean('is_read')->default(false)->after('message');
+                }
+            });
+        }
         Schema::table('home_sections', function (Blueprint $table) {
             if (!Schema::hasColumn('home_sections','name')) {
                 $table->string('name')->after('id');

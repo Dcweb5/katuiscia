@@ -111,7 +111,7 @@
 
       <div class="admin-form-group">
         <label class="admin-label">Image de couverture</label>
-        <input type="file" name="image" id="input-image" class="admin-input" accept="image/*">
+        <input type="file" name="image" id="input-image" class="admin-input" accept="image/*" onchange="validateSingleImage(this)">
         <div id="current-image" style="display:none;margin-top:0.5rem;"></div>
       </div>
 
@@ -120,9 +120,9 @@
         <textarea name="excerpt" id="input-excerpt" class="admin-input" rows="2" required style="resize:vertical;"></textarea>
       </div>
 
-      <div class="admin-form-group" style="flex:1;display:flex;flex-direction:column;min-height:0;">
+      <div class="admin-form-group">
         <label class="admin-label">Contenu *</label>
-        <div id="editor-container" style="flex:1;min-height:300px;"></div>
+        <div id="editor-container" style="height:300px;"></div>
         <textarea name="content" id="input-content" style="display:none;"></textarea>
       </div>
 
@@ -131,10 +131,10 @@
         <input type="text" name="tags" id="input-tags" class="admin-input" placeholder="cheveux, karité, routine">
       </div>
 
-      <div style="display:flex;gap:0.75rem;justify-content:flex-end;padding-top:1rem;border-top:1px solid var(--color-border);">
-        <button type="button" onclick="closeModal()" class="action-btn" style="padding:0.5rem 1rem;">Annuler</button>
-        <button type="submit" name="action" value="draft" class="btn-primary" style="background:transparent;color:var(--color-text);border:1px solid var(--color-border);">Sauvegarder brouillon</button>
-        <button type="submit" name="action" value="published" class="btn-primary">Publier</button>
+      <div class="admin-form-actions" style="padding-top:1rem;border-top:1px solid var(--color-border);">
+        <button type="button" onclick="closeModal()" class="btn-katuiscia">Annuler</button>
+        <button type="submit" name="action" value="draft" class="btn-katuiscia">Sauvegarder brouillon</button>
+        <button type="submit" name="action" value="published" class="btn-katuiscia-filled">Publier</button>
       </div>
     </form>
   </div>
@@ -148,10 +148,18 @@
 .fs-modal__close { background:none;border:none;font-size:1.8rem;cursor:pointer;color:var(--color-text-muted);line-height:1;padding:0 4px; }
 .fs-modal__body { padding:1.5rem 2rem;overflow-y:auto;flex:1;display:flex;flex-direction:column; }
 .ql-toolbar.ql-snow { border:2px solid #d1d5db;border-bottom:none;border-radius:8px 8px 0 0;background:#fafafa;padding:8px 12px; }
-.ql-container.ql-snow { border:2px solid #d1d5db;border-top:none;border-radius:0 0 8px 8px;font-size:15px;font-family:inherit;background:#fff;min-height:250px; }
-.ql-editor { min-height:250px;line-height:1.7; }
+.ql-container.ql-snow { border:2px solid #d1d5db;border-top:none;border-radius:0 0 8px 8px;font-size:15px;font-family:inherit;background:#fff;height:calc(100% - 42px); }
+.ql-editor { height:100%;overflow-y:auto;line-height:1.7; }
 .ql-editor.ql-blank::before { color:#9ca3af;font-style:normal; }
 .ql-snow .ql-tooltip { z-index:99999 !important; }
+
+/* Force font weights inside the editor to allow bold to visual toggle correctly */
+.ql-editor p, .ql-editor span, .ql-editor li {
+  font-weight: 400 !important;
+}
+.ql-editor strong, .ql-editor strong *, .ql-editor b, .ql-editor b * {
+  font-weight: 700 !important;
+}
 </style>
 @endsection
 
@@ -266,5 +274,19 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.querySelectorAll('.sidebar-link[data-page]').forEach(function(l) { if(l.dataset.page === 'admin-blog') l.classList.add('active'); });
+
+function validateSingleImage(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var maxSize = 2 * 1024 * 1024; // 2 Mo
+  if (file.size > maxSize) {
+    if (typeof showToast === 'function') {
+      showToast("L'image \"" + file.name + "\" est trop volumineuse (max 2 Mo). Veuillez la compresser avant de l'ajouter.", "error");
+    } else {
+      alert("L'image \"" + file.name + "\" est trop volumineuse (max 2 Mo). Veuillez la compresser avant de l'ajouter.");
+    }
+    input.value = ''; // Reset input
+  }
+}
 </script>
 @endsection

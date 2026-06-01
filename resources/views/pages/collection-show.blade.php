@@ -26,15 +26,26 @@
   width:100%;max-height:420px;object-fit:cover;border-radius:16px;
   margin-bottom:2.5rem;box-shadow:0 4px 24px rgba(0,0,0,0.06);
 }
-.collection-products { display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin-bottom:2.5rem; }
+.collection-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 340px));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  justify-content: center;
+}
 .collection-product {
-  display:flex;align-items:center;gap:1rem;padding:1rem;
-  border:1px solid #ede4db;border-radius:12px;background:#fff;
-  text-decoration:none;color:inherit;transition:all 0.2s;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #ede4db;
+  border-radius: 12px;
+  background: #fff;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s;
 }
 .collection-product:hover { border-color:#c4967a;box-shadow:0 4px 16px rgba(0,0,0,0.04); }
-.collection-product { cursor:pointer; }
-.collection-product.expanded .collection-product__desc { max-height:200px !important; margin-top:0.5rem !important; }
 .collection-product__img { width:56px;height:56px;border-radius:8px;object-fit:cover;flex-shrink:0; }
 .collection-product__placeholder { width:56px;height:56px;border-radius:8px;background:var(--color-peach);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0; }
 .collection-product__name { font-weight:500;font-size:14px;margin-bottom:0.25rem;color:var(--color-dark);text-decoration:none;display:block; }
@@ -91,30 +102,36 @@
     {{-- Pricing --}}
     <div class="collection-pricing">
       @if($collection->original_price && $collection->original_price > $collection->price)
-      <div class="collection-pricing__original">{{ number_format($collection->original_price, 0, ',', ' ') }} €</div>
+      <div class="collection-pricing__original">{{ number_format($collection->original_price, 2, ',', ' ') }} €</div>
       @endif
-      <div class="collection-pricing__price">{{ number_format($collection->price, 0, ',', ' ') }} €</div>
+      <div class="collection-pricing__price">{{ number_format($collection->price, 2, ',', ' ') }} €</div>
       @if($collection->discount_percent > 0)
-      <div class="collection-pricing__save">Vous économisez {{ $collection->discount_percent }}% ({{ number_format($collection->original_price - $collection->price, 0, ',', ' ') }} €)</div>
+      <div class="collection-pricing__save">Vous économisez {{ $collection->discount_percent }}% ({{ number_format($collection->original_price - $collection->price, 2, ',', ' ') }} €)</div>
       @endif
     </div>
 
     {{-- Products in collection --}}
-    <h2 style="font-family:var(--font-heading);font-size:1.25rem;font-weight:400;color:#2d2117;margin-bottom:1rem;text-align:center;">
+    <h2 style="font-family:var(--font-heading);font-size:1.25rem;font-weight:400;color:#2d2117;margin-bottom:1.5rem;text-align:center;">
       {{ $collection->products->count() }} produit(s) inclus
     </h2>
     <div class="collection-products">
       @foreach($collection->products as $product)
-      <div class="collection-product" onclick="this.classList.toggle('expanded')">
+      <div class="collection-product">
         @if($product->image_url)
         <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="collection-product__img" onerror="this.src='{{ asset('assets/images/K ICONE.webp') }}'">
         @else
         <div class="collection-product__placeholder">📦</div>
         @endif
-        <div>
-          <a href="{{ url('produit/'.$product->slug) }}" class="collection-product__name" onclick="event.stopPropagation()">{{ $product->name }}</a>
+        <div style="flex:1; min-width:0;">
+          <a href="{{ url('produit/'.$product->slug) }}" class="collection-product__name">{{ $product->name }}</a>
           <div class="collection-product__qty">Qté : {{ $product->pivot->quantity ?? 1 }}</div>
-          <div class="collection-product__desc" style="max-height:0;overflow:hidden;transition:max-height 0.3s;font-size:13px;color:var(--color-text-muted);line-height:1.5;margin-top:0.25rem;">{{ $product->description }}</div>
+          @if($product->description)
+          <div class="collection-product__desc" style="max-height:0;overflow:hidden;transition:max-height 0.3s ease-in-out;font-size:13px;color:var(--color-text-muted);line-height:1.5;margin-top:0;">{{ $product->description }}</div>
+          <button class="toggle-desc-btn" style="background:none;border:none;color:var(--color-warm);font-size:11px;font-weight:600;text-transform:uppercase;cursor:pointer;padding:0;margin-top:0.5rem;display:inline-flex;align-items:center;gap:3px;" onclick="toggleDescription(this, event)">
+            <span>Afficher la description</span>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform duration-200" style="transform-origin:center;"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          @endif
         </div>
       </div>
       @endforeach
@@ -122,7 +139,7 @@
 
     {{-- CTA --}}
     <div style="text-align:center;margin-bottom:2rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-      <button class="collection-cta" onclick="addCollectionToCart({{ $collection->id }})">
+      <button class="collection-cta cart-add-btn" data-collection-id="{{ $collection->id }}" data-quantity="1">
         🛒 Ajouter le pack au panier
       </button>
       <button class="collection-cta" style="background:var(--color-warm);" onclick="buyNowCollection({{ $collection->id }})">
@@ -144,18 +161,24 @@
 @section('scripts')
 <script type="module" src="{{ asset('js/main.js') }}"></script>
 <script>
-function addCollectionToCart(collectionId) {
-  var csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
-  fetch('{{ url('panier/ajouter') }}', {
-    method: 'POST',
-    headers: {'Content-Type':'application/x-www-form-urlencoded','X-CSRF-TOKEN':csrf,'Accept':'application/json'},
-    body: 'collection_id='+collectionId+'&quantity=1'
-  }).then(function(){
-    fetch('{{ url('panier/count') }}').then(r=>r.json()).then(d=>{
-      var badge = document.getElementById('cart-badge');
-      if (badge) badge.textContent = d.count;
-    });
-  }).catch(function(){});
+function toggleDescription(btn, event) {
+  event.stopPropagation();
+  var card = btn.closest('.collection-product');
+  var desc = card.querySelector('.collection-product__desc');
+  var arrow = btn.querySelector('svg');
+  var label = btn.querySelector('span');
+  
+  if (desc.style.maxHeight === '0px' || !desc.style.maxHeight) {
+    desc.style.maxHeight = desc.scrollHeight + 'px';
+    desc.style.marginTop = '0.5rem';
+    arrow.style.transform = 'rotate(180deg)';
+    label.textContent = 'Masquer la description';
+  } else {
+    desc.style.maxHeight = '0px';
+    desc.style.marginTop = '0';
+    arrow.style.transform = '';
+    label.textContent = 'Afficher la description';
+  }
 }
 
 function buyNowCollection(collectionId) {

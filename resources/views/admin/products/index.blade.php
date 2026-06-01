@@ -63,11 +63,11 @@
           <td style="color:var(--color-text-muted);">{{ $product->sku ?? '—' }}</td>
           <td>{{ $product->categories->first()?->name ?? '—' }}</td>
           <td>
-            @if($product->sale_price && $product->sale_price < $product->price)
-            <span style="text-decoration:line-through;color:var(--color-text-muted);font-size:12px;">{{ number_format($product->price,0,',',' ') }} €</span><br>
-            <span style="color:var(--color-success);">{{ number_format($product->sale_price,0,',',' ') }} €</span>
+            @if($product->sale_price && $product->sale_price > $product->price)
+            <span style="text-decoration:line-through;color:var(--color-text-muted);font-size:12px;">{{ number_format($product->sale_price, 2, ',', ' ') }} €</span><br>
+            <span style="color:var(--color-success);">{{ number_format($product->price, 2, ',', ' ') }} €</span>
             @else
-            {{ number_format($product->price,0,',',' ') }} €
+            {{ number_format($product->price, 2, ',', ' ') }} €
             @endif
           </td>
           <td>

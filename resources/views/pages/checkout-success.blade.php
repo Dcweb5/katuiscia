@@ -11,13 +11,22 @@
     <div class="max-w-lg mx-auto bg-white rounded-xl p-8 shadow-card text-left mb-8">
       <h3 class="font-heading text-lg mb-4">Récapitulatif</h3>
       @foreach($order->items as $item)
-      <div class="flex justify-between text-sm py-2 border-b border-border-k"><span>{{ $item->product_name }} x{{ $item->quantity }}</span><span>{{ number_format($item->subtotal, 0, ',', ' ') }} €</span></div>
+      <div class="flex justify-between text-sm py-2 border-b border-border-k"><span>{{ $item->product_name }} x{{ $item->quantity }}</span><span>{{ number_format($item->subtotal, 2, ',', ' ') }} €</span></div>
       @endforeach
       @if($order->discount > 0)
-      <div class="flex justify-between text-sm py-2 border-b border-border-k"><span class="text-text-muted">Réduction ({{ $order->coupon_code }})</span><span style="color:var(--color-success);">-{{ number_format($order->discount, 0, ',', ' ') }} €</span></div>
+      <div class="flex justify-between text-sm py-2 border-b border-border-k"><span class="text-text-muted">Réduction ({{ $order->coupon_code }})</span><span style="color:var(--color-success);">-{{ number_format($order->discount, 2, ',', ' ') }} €</span></div>
       @endif
-      <div class="flex justify-between text-sm py-2"><span class="text-text-muted">Livraison</span><span class="text-success">OFFERTE</span></div>
-      <div class="flex justify-between font-heading text-lg mt-4 pt-4 border-t border-dark"><span>Total</span><span>{{ number_format($order->total, 0, ',', ' ') }} €</span></div>
+      <div class="flex justify-between text-sm py-2">
+        <span class="text-text-muted">Livraison</span>
+        <span>
+          @if($order->shipping == 0)
+            <span class="text-success">Gratuite</span>
+          @else
+            {{ number_format($order->shipping, 2, ',', ' ') }} €
+          @endif
+        </span>
+      </div>
+      <div class="flex justify-between font-heading text-lg mt-4 pt-4 border-t border-dark"><span>Total</span><span>{{ number_format($order->total, 2, ',', ' ') }} €</span></div>
       <div class="mt-4 text-sm text-text-muted">
         <p>📧 {{ $order->email }}</p>
         <p>📍 {{ $order->address }}, {{ $order->postal_code }} {{ $order->city }}</p>

@@ -10,53 +10,138 @@ class ChatbotController extends Controller
     {
         $request->validate(['message' => 'required|string|max:2000']);
 
-        $apiKey = env('DEEPSEEK_API_KEY');
+        $apiKey = env('GEMINI_API_KEY');
         if (!$apiKey) {
-            return response()->json(['reply' => 'Chatbot non configuré.']);
+            return response()->json(['reply' => 'Bonjour, je suis Sophie de KATUISCIA. Notre service de messagerie instantanée rencontre des difficultés techniques actuellement. N\'hésitez pas à m\'écrire par e-mail à contact@katuiscia.com.']);
         }
 
-        $context = "Tu es l'assistant virtuel de KATUISCIA, une marque française de cosmétiques botaniques artisanaux. "
-            . "Tu réponds en français, de manière chaleureuse et professionnelle. "
-            . "Tu aides les clients sur : les produits (soins visage, corps, cheveux, aromathérapie), "
-            . "les commandes, la livraison (2-5 jours, offerte dès 80€), les retours, "
-            . "les formations beauté, le programme grossiste, et le programme de fidélité. "
-            . "Le site est katuiscia.com. L'email de contact est contact@katuiscia.com. "
-            . "Sois concis (2-4 phrases maximum). Si tu ne connais pas la réponse, propose de contacter le service client.";
+        // Fetch active products and collections to inject into context
+        $productsContext = "";
+        try {
+            $products = \App\Modules\Product\Models\Product::where('is_active', true)->get(['name', 'price', 'description']);
+            foreach ($products as $p) {
+                $productsContext .= "- Produit: {$p->name} | Prix: " . number_format($p->price, 2, ',', ' ') . " € | Description: " . strip_tags($p->description ?? '') . "\n";
+            }
+            $collections = \App\Models\Collection::active()->get(['name', 'price', 'description']);
+            foreach ($collections as $c) {
+                $productsContext .= "- Pack/Collection: {$c->name} | Prix: " . number_format($c->price, 2, ',', ' ') . " € | Description: " . strip_tags($c->description ?? '') . "\n";
+            }
+        } catch (\Exception $e) {
+            \Log::error("Error loading products/collections for Chatbot context: " . $e->getMessage());
+        }
+
+        // Fetch active shipping zones with covered countries
+        $shippingContext = "";
+        try {
+            $shippingZones = \App\Models\ShippingZone::where('is_active', true)->get();
+            $zoneCountries = [
+                'ile_de_france' => ['Paris', 'Île-de-France (région parisienne)'],
+                'france_other' => ['France Métropolitaine (hors Île-de-France)'],
+                'eu' => ['Allemagne', 'Autriche', 'Belgique', 'Bulgarie', 'Chypre', 'Croatie', 'Danemark', 'Espagne', 'Estonie', 'Finlande', 'Grèce', 'Hongrie', 'Irlande', 'Italie', 'Lettonie', 'Lituanie', 'Luxembourg', 'Malte', 'Pays-Bas', 'Pologne', 'Portugal', 'République Tchèque', 'Roumanie', 'Slovaquie', 'Slovénie', 'Suède'],
+                'europe_non_eu' => ['Royaume-Uni', 'Suisse', 'Norvège', 'Islande', 'Liechtenstein', 'Ukraine', 'Biélorussie', 'Moldavie', 'Albanie', 'Monténégro', 'Serbie', 'Macédoine du Nord', 'Bosnie-Herzégovine', 'Andorre', 'Monaco', 'Saint-Marin', 'Vatican'],
+                'americas' => ['États-Unis', 'Canada', 'Mexique', 'Brésil', 'Argentine', 'Colombie', 'Chili', 'Pérou', 'Venezuela', 'Équateur', 'Bolivie', 'Paraguay', 'Uruguay', 'Panama', 'Costa Rica', 'Jamaïque', 'Porto Rico', 'Haïti', 'République Dominicaine', 'Guatemala', 'Honduras', 'Salvador', 'Nicaragua'],
+                'africa' => ['Algérie', 'Maroc', 'Tunisie', 'Égypte', 'Afrique du Sud', 'Nigeria', 'Kenya', 'Sénégal', 'Côte d\'Ivoire', 'Cameroun', 'RD Congo', 'Madagascar', 'Ghana', 'Angola', 'Mozambique', 'Ouganda', 'Soudan', 'Libye', 'Mauritanie', 'Mali', 'Niger', 'Tchad', 'Burkina Faso', 'Guinée', 'Liberia', 'Sierra Leone', 'Togo', 'Bénin', 'Gabon', 'Congo', 'Burundi', 'Rwanda', 'Tanzanie', 'Zambie', 'Zimbabwe', 'Namibie', 'Botswana', 'Eswatini', 'Lesotho', 'Malawi', 'Somalie', 'Éthiopie', 'Djibouti', 'Érythrée'],
+                'asia' => ['Chine', 'Japon', 'Inde', 'Australie', 'Nouvelle-Zélande', 'Singapour', 'Corée du Sud', 'Thaïlande', 'Vietnam', 'Indonésie', 'Malaisie', 'Philippines', 'Pakistan', 'Bangladesh', 'Sri Lanka', 'Népal', 'Birmanie', 'Cambodge', 'Laos', 'Taïwan', 'Hong Kong', 'Macao', 'Israël', 'Arabie Saoudite', 'Émirats Arabes Unis', 'Turquie', 'Iran', 'Irak', 'Jordanie', 'Liban', 'Syrie', 'Yémen', 'Oman', 'Qatar', 'Bahreïn', 'Koweït', 'Kazakhstan', 'Ouzbékistan', 'Turkménistan', 'Kirghizistan', 'Tadjikistan', 'Afghanistan', 'Fidji', 'Papouasie-Nouvelle-Guinée', 'Îles Salomon', 'Vanuatu']
+            ];
+            foreach ($shippingZones as $zone) {
+                $countriesList = isset($zoneCountries[$zone->code]) ? implode(', ', $zoneCountries[$zone->code]) : 'Non spécifié';
+                $shippingContext .= "- Zone: {$zone->name} (code: {$zone->code}) | Frais de port: " . ($zone->price == 0 ? 'Gratuit' : number_format($zone->price, 2, ',', ' ') . " €") . " | Délai de livraison: {$zone->delivery_time} | Pays/Territoires couverts: {$countriesList}\n";
+            }
+        } catch (\Exception $e) {
+            \Log::error("Error loading shipping zones for Chatbot context: " . $e->getMessage());
+        }
+
+        $systemInstruction = "Tu es Sophie, conseillère clientèle humaine et experte en cosmétique chez KATUISCIA (une marque française haut de gamme de soins botaniques artisanaux).\n"
+            . "Les clients doivent avoir l'impression de discuter avec un être humain chaleureux, bienveillant, et professionnel. Ne dis JAMAIS que tu es une intelligence artificielle ou un chatbot, et ne te présente pas comme un modèle linguistique.\n"
+            . "Tu devez STRICTEMENT limiter tes réponses aux produits, collections, et services de KATUISCIA. Ne réponds à aucun sujet hors de ce cadre (ex: questions d'actualités, mathématiques, programmation, autres marques). Si on te pose une question non liée à KATUISCIA, réponds poliment que tu es uniquement formée pour aider avec les soins et services de KATUISCIA.\n\n"
+            . "Voici les informations sur les produits et packs réels actuellement disponibles en boutique :\n"
+            . $productsContext . "\n"
+            . "Informations sur les zones de livraison configurées en base de données (utilise ces informations précises pour indiquer si la livraison est possible dans un pays/région donné et à quel tarif/délai) :\n"
+            . $shippingContext . "\n"
+            . "Informations clés sur les services :\n"
+            . "- Livraison offerte en France métropolitaine dès 80 € d'achat (sauf paiement à la livraison, disponible uniquement pour Paris avec livraison gratuite).\n"
+            . "- Émail de contact : contact@katuiscia.com\n"
+            . "- Diagnostic de peau en ligne disponible gratuitement sur le site.\n"
+            . "- Retours sous 14 jours.\n\n"
+            . "Règles de style :\n"
+            . "- Reste concise (2 à 4 phrases maximum).\n"
+            . "- Exprime-toi d'un ton chaleureux, humain, naturel et digne d'une marque de luxe.\n"
+            . "- Ne cite jamais d'identifiants techniques ou de codes de base de données.";
+
+        // Chat History (multi-turn)
+        try {
+            $chatHistory = \App\Models\ChatMessage::where('session_id', session()->getId())
+                ->orderBy('created_at', 'asc')
+                ->take(10)
+                ->get();
+        } catch (\Exception $e) {
+            $chatHistory = collect();
+        }
+
+        $contents = [];
+        foreach ($chatHistory as $msg) {
+            $contents[] = [
+                'role' => 'user',
+                'parts' => [['text' => $msg->message]]
+            ];
+            $contents[] = [
+                'role' => 'model',
+                'parts' => [['text' => $msg->reply]]
+            ];
+        }
+
+        // Add current user message
+        $contents[] = [
+            'role' => 'user',
+            'parts' => [['text' => $request->message]]
+        ];
 
         try {
             $response = Http::timeout(15)
                 ->withOptions(['verify' => !app()->isLocal()])
-                ->withToken($apiKey)
-                ->post('https://api.deepseek.com/v1/chat/completions', [
-                    'model' => 'deepseek-chat',
-                    'messages' => [
-                        ['role' => 'system', 'content' => $context],
-                        ['role' => 'user', 'content' => $request->message],
+                ->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}", [
+                    'contents' => $contents,
+                    'systemInstruction' => [
+                        'parts' => [
+                            ['text' => $systemInstruction]
+                        ]
                     ],
-                    'temperature' => 0.7,
-                    'max_tokens' => 500,
+                    'generationConfig' => [
+                        'maxOutputTokens' => 2048,
+                        'temperature' => 0.7,
+                    ]
                 ]);
 
             if (!$response->successful()) {
-                \Log::error('DeepSeek API error: ' . $response->status() . ' - ' . $response->body());
-                return response()->json(['reply' => 'Service momentanément indisponible. Veuillez réessayer.']);
+                \Log::error('Gemini API error: ' . $response->status() . ' - ' . $response->body());
+                return response()->json(['reply' => 'Bonjour, je rencontre un petit contretemps pour accéder à vos informations. N\'hésitez pas à retaper votre message ou à m\'envoyer un e-mail à contact@katuiscia.com.']);
             }
 
             $data = $response->json();
-            $reply = $data['choices'][0]['message']['content'] ?? 'Désolé, je n\'ai pas compris. Pouvez-vous reformuler ?';
+            $reply = $data['candidates'][0]['content']['parts'][0]['text'] ?? '';
             $reply = trim($reply);
 
-            \App\Models\ChatMessage::create([
-                'session_id' => session()->getId(),
-                'user_id' => auth()->id(),
-                'message' => $request->message,
-                'reply' => $reply,
-            ]);
+            if (empty($reply)) {
+                $reply = 'Désolée, je n\'ai pas bien compris. Pouvez-vous reformuler votre question sur nos soins ?';
+            }
+
+            // Save to database
+            try {
+                \App\Models\ChatMessage::create([
+                    'session_id' => session()->getId(),
+                    'user_id' => auth()->id(),
+                    'message' => $request->message,
+                    'reply' => $reply,
+                ]);
+            } catch (\Exception $e) {
+                \Log::error('Chatbot db error: ' . $e->getMessage());
+            }
 
             return response()->json(['reply' => $reply]);
+
         } catch (\Exception $e) {
             \Log::error('Chatbot exception: ' . $e->getMessage());
-            return response()->json(['reply' => 'Je rencontre un problème technique. Veuillez réessayer dans un instant.']);
+            return response()->json(['reply' => 'Bonjour, je rencontre un souci technique de mon côté. Veuillez réessayer dans un court instant ou m\'écrire par e-mail.']);
         }
     }
 }

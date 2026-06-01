@@ -64,6 +64,14 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 12H4"/><path d="M20 12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2 2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z"/><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/></svg>
       Coupons
     </a>
+    <a href="{{ route('admin.shipping-zones.index') }}" class="sidebar-link" data-page="admin-shipping-zones">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2" ry="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      Livraison
+    </a>
+    <a href="{{ url('admin/newsletter') }}" class="sidebar-link" data-page="admin-newsletter">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Newsletter
+    </a>
     <a href="{{ url('admin/funnels') }}" class="sidebar-link" data-page="admin-funnels">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 3 2 3 10 12.46V19l4 2v-8.54L22 3z"/></svg>
       Marketing
@@ -75,6 +83,14 @@
     <a href="{{ url('admin/analytics') }}" class="sidebar-link" data-page="admin-analytics">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
       Analytics
+    </a>
+    <a href="{{ url('admin/diagnostics') }}" class="sidebar-link" data-page="admin-diagnostics">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M7 12h10"/><path d="M12 7v10"/></svg>
+      Diagnostics IA
+    </a>
+    <a href="{{ url('admin/rewards') }}" class="sidebar-link" data-page="admin-rewards">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+      Récompenses
     </a>
 
     <!-- Déconnexion admin -->

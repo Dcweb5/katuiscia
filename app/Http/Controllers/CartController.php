@@ -109,7 +109,7 @@ class CartController extends Controller
                 'success' => true,
                 'message' => 'Ajouté au panier',
                 'cart_count' => $cart->items_count,
-                'cart_total' => number_format($cart->total, 0, ',', ' ') . ' €',
+                'cart_total' => number_format($cart->total, 2, ',', ' ') . ' €',
             ]);
         }
 
@@ -130,8 +130,8 @@ class CartController extends Controller
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'item_subtotal' => number_format($item->subtotal, 0, ',', ' ') . ' €',
-                'cart_total' => number_format($cart->fresh()->total, 0, ',', ' ') . ' €',
+                'item_subtotal' => number_format($item->subtotal, 2, ',', ' ') . ' €',
+                'cart_total' => number_format($cart->fresh()->total, 2, ',', ' ') . ' €',
             ]);
         }
 
@@ -150,7 +150,7 @@ class CartController extends Controller
         if (request()->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'cart_total' => number_format($cart->fresh()->total, 0, ',', ' ') . ' €',
+                'cart_total' => number_format($cart->fresh()->total, 2, ',', ' ') . ' €',
                 'cart_count' => $cart->fresh()->items->sum('quantity'),
             ]);
         }
@@ -163,7 +163,8 @@ class CartController extends Controller
         $cart = $this->getOrCreateCart();
         return response()->json([
             'count' => $cart->items->sum('quantity'),
-            'total' => number_format($cart->total, 0, ',', ' ') . ' €',
+            'total' => number_format($cart->total, 2, ',', ' ') . ' €',
+            'total_raw' => (float) $cart->total,
         ]);
     }
 
@@ -180,7 +181,7 @@ class CartController extends Controller
         if (!$coupon->isValid($cart->total)) {
             $msg = 'Code expiré ou invalide.';
             if ($coupon->max_uses && $coupon->used_count >= $coupon->max_uses) $msg = 'Limite atteinte.';
-            elseif ($coupon->min_order_amount && $cart->total < $coupon->min_order_amount) $msg = 'Min. ' . number_format($coupon->min_order_amount, 0) . ' € requis.';
+            elseif ($coupon->min_order_amount && $cart->total < $coupon->min_order_amount) $msg = 'Min. ' . number_format($coupon->min_order_amount, 2, ',', ' ') . ' € requis.';
             return response()->json(['valid' => false, 'message' => $msg]);
         }
 
@@ -193,9 +194,9 @@ class CartController extends Controller
 
         return response()->json([
             'valid' => true,
-            'discount' => number_format($discount, 0, ',', ' ') . ' €',
+            'discount' => number_format($discount, 2, ',', ' ') . ' €',
             'discount_raw' => $discount,
-            'new_total' => number_format($newTotal, 0, ',', ' ') . ' €',
+            'new_total' => number_format($newTotal, 2, ',', ' ') . ' €',
             'message' => $coupon->getDiscountLabel(),
         ]);
     }

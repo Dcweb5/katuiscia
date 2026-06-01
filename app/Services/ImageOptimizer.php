@@ -9,6 +9,7 @@ class ImageOptimizer
 {
     public static function store(UploadedFile $file, string $folder, int $maxWidth = 1600): string
     {
+        @ini_set('memory_limit', '256M');
         $filename = Str::uuid() . '.webp';
         $path = storage_path('app/public/' . $folder);
 
@@ -26,7 +27,7 @@ class ImageOptimizer
         }
 
         if ($img->width() > $maxWidth) {
-            $img->resize($maxWidth, null);
+            $img->scale(width: $maxWidth);
         }
 
         $img->save($path . '/' . $filename, quality: 90);
@@ -36,7 +37,7 @@ class ImageOptimizer
         if (file_exists($savedPath)) {
             $thumb = Image::decode($savedPath);
             if ($thumb->width() > 300) {
-                $thumb->resize(300, null);
+                $thumb->scale(width: 300);
             }
             $thumb->save($path . '/thumb_' . $filename, quality: 75);
         }

@@ -21,7 +21,7 @@
         <div class="flex-1 min-w-0">
           <h3 class="font-heading text-lg text-dark">{{ $item->product->name }}</h3>
           <p class="text-sm text-text-muted">{{ $item->product->size ?? '' }}</p>
-          <p class="text-sm font-semibold text-dark mt-1"><span class="item-subtotal">{{ number_format($item->subtotal, 0, ',', ' ') }} €</span> <small class="text-text-muted">({{ number_format($item->price, 0, ',', ' ') }} €/u)</small></p>
+          <p class="text-sm font-semibold text-dark mt-1"><span class="item-subtotal">{{ number_format($item->subtotal, 2, ',', ' ') }} €</span> <small class="text-text-muted">({{ number_format($item->price, 2, ',', ' ') }} €/u)</small></p>
         </div>
         <div class="flex items-center gap-3 flex-shrink-0">
           <button type="button" class="w-8 h-8 border border-border-k rounded-full qty-btn" data-delta="-1">−</button>
@@ -36,7 +36,7 @@
     <div class="lg:w-[380px] reveal-k-k delay-2">
       <div class="bg-white rounded-xl p-6 shadow-card space-y-4 sticky top-[220px]">
         <h3 class="font-heading text-xl text-dark">Récapitulatif</h3>
-        <div class="flex justify-between text-sm"><span class="text-text-muted">Sous-total (<span id="cart-count-display">{{ $cart->items_count }} article(s)</span>)</span><span id="cart-subtotal-display">{{ number_format($cart->total, 0, ',', ' ') }} €</span></div>
+        <div class="flex justify-between text-sm"><span class="text-text-muted">Sous-total (<span id="cart-count-display">{{ $cart->items_count }} article(s)</span>)</span><span id="cart-subtotal-display">{{ number_format($cart->total, 2, ',', ' ') }} €</span></div>
         <span id="cart-discount" style="display:none;"></span>
         <div class="flex justify-between text-sm"><span class="text-text-muted">Livraison</span><span class="text-success">OFFERTE</span></div>
         <hr class="border-border-k">
@@ -48,7 +48,7 @@
           </div>
         </div>
         <div id="coupon-message" style="display:none;font-size:12px;"></div>
-        <div class="flex justify-between font-heading text-lg"><span>Total</span><span id="cart-total-display">{{ number_format($cart->total, 0, ',', ' ') }} €</span></div>
+        <div class="flex justify-between font-heading text-lg"><span>Total</span><span id="cart-total-display">{{ number_format($cart->total, 2, ',', ' ') }} €</span></div>
         <input type="hidden" id="coupon-code-input" value="" name="coupon_code">
         <input type="hidden" id="coupon-discount-input" value="0" name="coupon_discount">
         <a href="{{ url('paiement') }}" class="btn-katuiscia-filled w-full text-center block">Finaliser la commande</a>

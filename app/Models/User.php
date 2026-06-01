@@ -15,12 +15,23 @@ use Laravel\Sanctum\HasApiTokens;
     'phone', 'city', 'postal_code', 'country',
     'newsletter', 'birthday', 'avatar',
     'is_admin', 'is_active', 'loyalty_points',
+    'login_attempts', 'locked_until',
 ])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class User extends Authenticatable implements \Illuminate\Contracts\Auth\MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, HasApiTokens;
+
+    public function sendEmailVerificationNotification(): void
+    {
+        try {
+            $this->notify(new \App\Notifications\VerifyEmailNotification());
+        } catch (\Exception $e) {
+            \Log::error('Failed to send email verification notification: ' . $e->getMessage());
+            session()->flash('email_error', 'L\'e-mail de confirmation n\'a pas pu être envoyé suite à un problème de connexion au serveur de messagerie.');
+        }
+    }
 
     protected function casts(): array
     {
@@ -32,6 +43,8 @@ class User extends Authenticatable
             'is_active' => 'boolean',
             'birthday' => 'date',
             'loyalty_points' => 'integer',
+            'login_attempts' => 'integer',
+            'locked_until' => 'datetime',
         ];
     }
 
@@ -44,7 +57,12 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token): void
     {
         cache()->put('pwd_reset_raw_' . $this->email, $token, 3600);
-        $this->notify(new \App\Notifications\ResetPasswordNotification($token));
+        try {
+            $this->notify(new \App\Notifications\ResetPasswordNotification($token));
+        } catch (\Exception $e) {
+            \Log::error('Failed to send password reset notification: ' . $e->getMessage());
+            session()->flash('email_error', 'L\'e-mail de réinitialisation n\'a pas pu être envoyé suite à un problème de connexion au serveur de messagerie.');
+        }
     }
 
     public function reviews() { return $this->hasMany(Review::class); }

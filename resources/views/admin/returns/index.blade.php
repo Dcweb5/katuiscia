@@ -39,7 +39,11 @@
       <tbody>
         @forelse($returns as $r)
         <tr>
-          <td style="font-family:monospace;font-size:13px;">{{ $r->request_number }}</td>
+          <td style="font-family:monospace;font-size:13px;">
+            <a href="javascript:void(0)" onclick="toggleTimeline({{ $r->id }})" style="color:var(--color-warm);font-weight:bold;text-decoration:none;border-bottom:1px dashed var(--color-warm);" title="Consulter l'historique">
+              {{ $r->request_number }}
+            </a>
+          </td>
           <td>
             <strong>{{ $r->user->full_name ?? $r->user->name ?? 'N/A' }}</strong>
             <br><small style="color:var(--color-text-muted);">{{ $r->user->email ?? '' }}</small>
@@ -77,6 +81,32 @@
             </div>
           </td>
         </tr>
+        <tr id="timeline-{{ $r->id }}" style="display:none;background:#faf8f5;">
+          <td colspan="9" style="padding:1.25rem 1.5rem;border-bottom:1px solid var(--color-border);">
+            <div style="font-weight:700;font-size:13px;margin-bottom:10px;color:var(--color-warm);font-family:var(--font-heading);">
+              ⏳ Suivi Historique des Actions - Demande {{ $r->request_number }}
+            </div>
+            @if($r->histories && $r->histories->isNotEmpty())
+            <div style="display:flex;flex-direction:column;gap:12px;position:relative;padding-left:1.5rem;border-left:2px solid var(--color-warm);margin-left:0.5rem;padding-top:0.25rem;">
+              @foreach($r->histories as $history)
+              <div style="position:relative;font-size:12px;">
+                <!-- Dot -->
+                <div style="position:absolute;left:calc(-1.5rem - 5px);top:4px;width:8px;height:8px;border-radius:50%;background:var(--color-warm);border:2px solid white;box-shadow:0 0 0 2px var(--color-warm);"></div>
+                <div style="color:var(--color-text-muted);font-size:10px;">{{ $history->created_at->format('d/m/Y \à H:i:s') }}</div>
+                <div style="color:var(--color-dark);font-weight:600;margin-top:2px;">
+                  {{ $history->comment }}
+                </div>
+                <div style="font-size:11px;color:var(--color-text-light);margin-top:1px;">
+                  Statut : <span style="font-weight:600;color:var(--color-warm);">{{ strtoupper($history->status) }}</span>
+                </div>
+              </div>
+              @endforeach
+            </div>
+            @else
+            <p style="color:var(--color-text-muted);font-size:12px;margin:0 0 0 0.5rem;">Aucune action enregistrée.</p>
+            @endif
+          </td>
+        </tr>
         @empty
         <tr><td colspan="9" style="text-align:center;padding:3rem;color:var(--color-text-muted);">Aucune demande de retour.</td></tr>
         @endforelse
@@ -91,6 +121,16 @@
 .expanded { white-space:normal !important; overflow:visible !important; text-overflow:unset !important; max-width:none !important; background:#faf7f2;padding:8px 12px;border-radius:6px; }
 </style>
 <script>
+function toggleTimeline(id) {
+  var el = document.getElementById('timeline-' + id);
+  if (el) {
+    if (el.style.display === 'none') {
+      el.style.display = 'table-row';
+    } else {
+      el.style.display = 'none';
+    }
+  }
+}
 function updateStatus(sel, id) {
   if (!sel.value) return;
   var label = sel.options[sel.selectedIndex].text;

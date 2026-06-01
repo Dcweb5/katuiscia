@@ -37,7 +37,12 @@
           <span class="product-card__category">{{ $product->categories->first()->name ?? 'Produit' }}</span>
           <h3 class="product-card__name">{{ $product->name }}</h3>
           <p class="product-card__description">{{ $product->description }}</p>
-          <span class="product-card__price">{{ number_format($product->price, 0, ',', ' ') }} €</span>
+          @if($product->sale_price && $product->sale_price > $product->price)
+          <span class="product-card__price" style="color:var(--color-warm);font-weight:600;">{{ number_format($product->price, 2, ',', ' ') }} €</span>
+          <span class="product-card__price-old" style="text-decoration:line-through;color:var(--color-text-muted);font-size:12px;margin-left:8px;">{{ number_format($product->sale_price, 2, ',', ' ') }} €</span>
+          @else
+          <span class="product-card__price">{{ number_format($product->price, 2, ',', ' ') }} €</span>
+          @endif
         </a>
       </div>
     </article>

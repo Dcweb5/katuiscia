@@ -91,14 +91,37 @@
           </div>
         </div>
 
-        <div style="border-top:1px solid var(--color-border);padding-top:1rem;display:flex;justify-content:space-between;align-items:center;">
+        <div style="border-top:1px solid var(--color-border);padding-top:1rem;margin-bottom:1rem;font-size:var(--text-xs);color:var(--color-text-muted);">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span>Sous-total</span>
+            <span>{{ number_format($order->subtotal, 2, ',', ' ') }} €</span>
+          </div>
+          @if($order->discount > 0)
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;color:var(--color-success);">
+            <span>Réduction @if($order->coupon_code)({{ $order->coupon_code }})@endif</span>
+            <span>-{{ number_format($order->discount, 2, ',', ' ') }} €</span>
+          </div>
+          @endif
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span>Livraison</span>
+            <span>
+              @if($order->shipping == 0)
+                <span style="color:var(--color-success);">Gratuite</span>
+              @else
+                {{ number_format($order->shipping, 2, ',', ' ') }} €
+              @endif
+            </span>
+          </div>
+        </div>
+
+        <div style="border-top:1px dashed var(--color-border);padding-top:1rem;display:flex;justify-content:space-between;align-items:center;">
           <div>
             <span style="font-size:var(--text-sm);color:var(--color-text-muted);">Total</span>
-            <strong style="font-family:var(--font-display);font-size:var(--text-xl);margin-left:0.5rem;">{{ number_format($order->total, 0, ',', ' ') }} €</strong>
+            <strong style="font-family:var(--font-display);font-size:var(--text-xl);margin-left:0.5rem;">{{ number_format($order->total, 2, ',', ' ') }} €</strong>
           </div>
           <div style="font-size:var(--text-xs);color:var(--color-text-muted);">
             @if($order->payment_method)
-            Paiement : {{ $order->payment_method === 'card' ? 'Carte bancaire' : ($order->payment_method === 'paypal' ? 'PayPal' : $order->payment_method) }}
+            Paiement : {{ $order->payment_method === 'card' ? 'Carte bancaire' : ($order->payment_method === 'cod' ? 'Paiement à la livraison' : $order->payment_method) }}
             @endif
           </div>
         </div>

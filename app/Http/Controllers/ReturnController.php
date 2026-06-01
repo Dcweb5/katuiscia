@@ -10,7 +10,7 @@ class ReturnController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $returns = ReturnRequest::with(['order', 'item', 'images'])->where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+        $returns = ReturnRequest::with(['order', 'item', 'images', 'histories'])->where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
         $orders = Order::with('items')->where('user_id', $user->id)->where('status', 'delivered')->orderBy('created_at', 'desc')->get();
 
         return view('account.returns', compact('user', 'returns', 'orders'));

@@ -123,7 +123,7 @@
         <p class="landing-section__desc">Au-delà de la distribution, nous vous aidons à bâtir une marque forte et une présence digitale performante.</p>
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;max-width:1100px;margin:0 auto;">
+      <div class="landing-accompagnement-grid">
         <div style="background:#fff;border:1px solid #ede4db;border-radius:14px;padding:1.75rem 1.5rem;text-align:center;transition:all 0.25s;">
           <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg, #ede4db, #d4c5b8);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6b5d53" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
